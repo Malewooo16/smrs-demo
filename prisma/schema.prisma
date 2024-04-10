@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Link to ER Diagram https://app.eraser.io/workspace/DJAaBQoiClFkIFAIKCEa?origin=share
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  password  String
+  role      UserRole
+  parent    Parent?   @relation(fields: [parentId], references: [id])
+  parentId  Int? @unique
+  teacher   Teacher?  @relation(fields: [teacherId], references: [id])
+  teacherId Int? @unique
+}
+
+model Parent {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  phoneNumber  String @default("")
+  identifier String @unique @default(uuid())
+  students  Student[]
+  user      User?
+  admissions  Admission[]
+}
+
+model Classes {
+  id       Int      @id @default(autoincrement())
+  name     String
+  students Student[]
+  school   School?  @relation(fields: [schoolId], references: [id])
+  schoolId Int?
+}
+
+model School {
+  id          Int       @id @default(autoincrement())
+  name        String
+  address     String
+  admissionStatus   Json?
+  // Other fields specific to the school
+
+  // Define relationships with other models
+  students    Student[]  // One-to-many relationship with students
+  teachers    Teacher[]  // One-to-many relationship with teachers
+  classes     Classes[]  //
+  admissions  Admission[] @relation("AdmissionSchools")
+}
+
+model Admission{
+  id          String @id @default(uuid())
+  firstName   String
+  lastName    String
+  homeAddress String 
+  dob         DateTime
+  imgUrl      String?
+  objects     Json?
+  status      String?   @default("Pending")
+  parent      Parent    @relation(fields: [parentId], references: [id])
+  parentId    Int
+  schools     School[]  @relation("AdmissionSchools")
+
+}
+
+model Student {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  age       Int?
+  parent    Parent?   @relation(fields: [parentId], references: [id])
+  parentId  Int?
+  school      School?   @relation(fields: [schoolId], references: [id])
+  schoolId    Int?      // Foreign key referencing School model
+  class        Classes?     @relation(fields: [classId], references: [id])
+  classId      Int?
+  courseEnrollments CourseEnrollment[]
+}
+
+model Teacher {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  identifier String @unique @default(uuid())
+  email     String    @unique
+  courses   Course[]
+  school      School?   @relation(fields: [schoolId], references: [id])
+  schoolId    Int?      // Foreign key referencing School model
+  user      User?
+}
+
+
+model Course {
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String?
+  teacher     Teacher?       @relation(fields: [teacherId], references: [id])
+  teacherId   Int?
+  enrollments CourseEnrollment[]
+}
+
+model CourseEnrollment {
+  id        Int      @id @default(autoincrement())
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+  score     Json?   // Score for the student in the course
+}
+
+enum UserRole{
+    Parent
+    Teacher
+    HeadTeacher
+    SysAdd
+}
+
+
+
