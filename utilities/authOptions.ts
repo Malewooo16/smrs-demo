@@ -32,13 +32,14 @@ export const authOptions:NextAuthOptions={
             const existingUser=await prisma.user.findUnique({
                 where:{username:credentials.username}
             })
-
             if(!existingUser){
+              console.log("validation error")
                 return null
             }
             
              
             if(credentials.password !== existingUser.password){
+                console.log("validation error password error")
                 return null
             }
             return{ 

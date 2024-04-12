@@ -1,7 +1,7 @@
 import {create} from "zustand"
 interface IAdmission{
     admissionId:string;
-    addAdmissionId:(id:string) => void;
+    addAdmissionId:(id:string | undefined) => void;
     clearAdmission:()=>void;
 }
 const admissionStore = create <IAdmission>() ((set)=>({

@@ -5,8 +5,8 @@ import AWS from "aws-sdk";
 //import { promises as fsPromises } from 'fs';
 
 const b2Credentials = {
-  accessKeyId: '005a22d462ac6d30000000007',
-  secretAccessKey: 'K005A6CwYA0QmFRT0maMKp67SvwxYnM',
+  accessKeyId: '005a22d462ac6d30000000008',
+  secretAccessKey: 'K005iBeLjL2ku4VvoZSO6Y1XfoKzVBE',
   endpoint: 'https://s3.us-east-005.backblazeb2.com',
   s3ForcePathStyle: true,
 };
@@ -30,7 +30,7 @@ export default async function userPicUpload(formData: FormData, emailAddress:str
 
     // Set the parameters for the S3 upload
     const params = {
-      Bucket: 'WMA-File-Test',
+      Bucket: 'SMRS-Demo',
       Key: fileData.name,
       Body: buffer,
       

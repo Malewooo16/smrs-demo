@@ -1,6 +1,24 @@
+import admissionStore from "@/store/admissionState";
+import {useState} from 'react'
+ import ServerBtn from "./ServerBtn";
+import admissionObjectsUpload from "@/actions/admissions/admissionObjectsUpload";
+
 export default function ObjectsUplaod(props:{setNextStep:()=>void}) {
-  const uploadAdmissionFiles = () =>{
-    props.setNextStep()
+  const [objects, setObjects] = useState('');
+  const uploadAdmissionFiles = async (formData:FormData) =>{
+    const admissionId = admissionStore.getState().admissionId;
+    try{
+      const objectUploadresponse = await admissionObjectsUpload(formData, admissionId)
+      if(objectUploadresponse?.success == false){
+        alert(objectUploadresponse.message)
+      }
+      else{
+        props.setNextStep()
+      }
+    }
+    catch{
+      alert("An error occured")
+    }
   }
   return (
     <div>
@@ -13,7 +31,7 @@ export default function ObjectsUplaod(props:{setNextStep:()=>void}) {
               type="file"
               placeholder="Type here"
               className="file-input file-input-bordered w-full "
-              name="birthCert"
+              name="objects"
             />
           </label>
           <label className="form-control max-w-xl my-4 join-item">
@@ -22,7 +40,7 @@ export default function ObjectsUplaod(props:{setNextStep:()=>void}) {
               type="file"
               placeholder="Type here"
               className="file-input file-input-bordered w-full "
-              name="transcripts"
+              name="objects"
             />
           </label>
           <label className="form-control max-w-xl mt-4 mb-10 join-item">
@@ -31,16 +49,12 @@ export default function ObjectsUplaod(props:{setNextStep:()=>void}) {
             </p>
             <input
               type="file"
-              max={"2007-12-31"}
-              placeholder="Type here"
               className="file-input file-input-bordered w-full "
-              name="medicalRecords"
-            />
+              name={objects}
+              onChange={()=> setObjects("objects")}
+              />
           </label>
-          <button className="btn btn-success my-10" type="submit">
-            {" "}
-            Add User Details{" "}
-          </button>
+          <ServerBtn />
         </div>
       </form>
     </div>

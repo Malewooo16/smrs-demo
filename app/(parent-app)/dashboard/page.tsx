@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth'
 export default async function Dashboard() {
 
   const session= await getServerSession(authOptions)
-  console.log(session);
+  console.log("Session", session);
   
   return (
     

@@ -8,6 +8,8 @@ import { useSearchParams } from "next/navigation";
 import FileUploadModal from "./FileUploadModal";
 import { useSession } from "next-auth/react";
 import { IStudentAdmission } from "@/utilities/admissionTypes";
+import createAdmission from "@/actions/admissions/createAdmission";
+import admissionStore from "@/store/admissionState";
 
 
 
@@ -18,12 +20,13 @@ interface CompProps{
 }
 
 export default function AdmissionForm ( props : CompProps) {
-  
+
   const searchParams = useSearchParams();
   const newRegister = searchParams.get("newUser");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [introModal, setIntroModal] = useState(false);
+  const [loading, setloading] = useState(false);
   const {data} = useSession()
    useEffect(() => {
     if (newRegister === "true") {
@@ -44,8 +47,26 @@ export default function AdmissionForm ( props : CompProps) {
       });
 
       const uploadUser = async (formData:IStudentAdmission)=>{
-        props.setNextStep()
+        setloading(true)
+        if(data?.user.parent)
+        try{
+          const parentId = parseInt(data?.user.parent)
+          const admissionResponse = await createAdmission(formData, parentId)
+          if(admissionResponse?.success==false){
+            alert(admissionResponse.message)
+            setloading(false)
+          }
+          else{
+            admissionStore.getState().addAdmissionId(admissionResponse.admissionId)
+            setloading(false)
+            props.setNextStep()
+          }
+        }
           
+          catch{
+            setloading(false)
+            alert("An Error Occured")
+          }
       }
   return (
     <div>
@@ -76,7 +97,7 @@ export default function AdmissionForm ( props : CompProps) {
         <p className="text-error text-sm"> {errors.dob?.message} </p>
         </label>
         
-      <button className="btn btn-success my-10" type="submit"> Add User Details </button>
+      <button className="btn btn-success my-10" disabled={loading} type="submit"> Add User Details </button>
         
     </div>
     </form>

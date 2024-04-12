@@ -19,18 +19,18 @@ export default function LoginForm() {
 
     setLoading(true)
 
-    const signInData = await signIn("credentials",{
+    const signInData = await signIn("Credentials",{
       username:userName,
       password:password,
-      redirect:false
-    }) 
+      redirect:false,
+    },) 
     if(signInData?.error){
       setLoading(false)
       setErrorMessage("Login Error!! Please check credentials")
       console.log(signInData)
     }
     else{
-      router.push("/dashboard")
+      router.push('/dashboard', {scroll:false})
     }
   }
   return (

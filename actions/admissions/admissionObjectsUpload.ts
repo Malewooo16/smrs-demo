@@ -5,10 +5,10 @@ import AWS from "aws-sdk";
 //import { promises as fsPromises } from 'fs';
 
 const b2Credentials = {
-  accessKeyId: '005a22d462ac6d30000000007',
-  secretAccessKey: 'K005A6CwYA0QmFRT0maMKp67SvwxYnM',
-  endpoint: 'https://s3.us-east-005.backblazeb2.com',
-  s3ForcePathStyle: true,
+  accessKeyId: '005a22d462ac6d30000000008',
+    secretAccessKey: 'K005iBeLjL2ku4VvoZSO6Y1XfoKzVBE',
+    endpoint: 'https://s3.us-east-005.backblazeb2.com',
+    s3ForcePathStyle: true,
 };
 
 const s3 = new AWS.S3(b2Credentials);
@@ -18,10 +18,10 @@ const s3 = new AWS.S3(b2Credentials);
 export default async function admissionObjectsUpload(formData: FormData, emailAddress:string) {
   
   
-  const files = formData.getAll('admissionObjects') as File[] 
+  const files = formData.getAll('objects') as File[] 
   if (!files || files.length === 0  ) {
     console.log("No files detected");
-    return;
+    return{sucess:false, message:"No files were added"};
   }
 
   if (files.some((file) => !file.name.toLowerCase().endsWith('.pdf'))) {
