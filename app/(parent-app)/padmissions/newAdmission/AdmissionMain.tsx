@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react";
-import AdmissionForm from "../main-components/AdmissionForm";
-import UserPicUpload from "../main-components/UserPicUpload";
-import ObjectsUplaod from "../main-components/ObjectsUplaod";
+
 import SuccessItem from "./SuccessItem";
+import AdmissionForm from "@/app/main-components/AdmissionForm";
+import ObjectsUplaod from "@/app/main-components/ObjectsUplaod";
+import UserPicUpload from "@/app/main-components/UserPicUpload";
 
 export default function AdmissionMain() {
     const [step, setStep] = useState(1);

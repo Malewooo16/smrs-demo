@@ -5,3 +5,11 @@ export interface IStudentAdmission {
     homeAddress: string;
     
   }
+
+export interface ISchoolAdmission{
+    id: number;
+    name: string;
+    address: string;
+    admissionStatus: boolean | null;
+    admissionDates: {to:string; from:string;};
+}

@@ -16,10 +16,10 @@ const FileUploadModal : React.FC<ModalProps> = ({ isOpen, onClose, children, hea
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-50  flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none ">
-          <div className="relative w-auto max-w-3xl mx-auto my-6">
+        <div className="fixed inset-0 z-50  flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none  ">
+          <div className="relative  min-w-lg  max-w-3xl mx-auto my-6">
             {/* Modal content */}
-            <div className="relative flex flex-col w-full border-0 rounded-lg shadow-lg outline-none focus:outline-none card bg-base-200">
+            <div className="relative flex flex-col border-0 rounded-lg shadow-lg outline-none focus:outline-none card bg-base-200">
               {/* Header */}
               <div className="flex items-start justify-between p-5 border-b border-solid rounded-t">
                 <h3 className="text-2xl font-semibold">
@@ -33,7 +33,7 @@ const FileUploadModal : React.FC<ModalProps> = ({ isOpen, onClose, children, hea
                 </button>
               </div>
               {/* Body */}
-              <div className="relative p-6 flex-auto">
+              <div className="relative p-6 flex-auto lg:w-[40rem]">
                 {children}
               </div>
             </div>
