@@ -1,9 +1,18 @@
 
-import RegisterNewStudent from '../main-components/AddNewStudent'
-import AdmissionMain from './AdmissionMain'
 
-export default function ParentPage() {
+import getAdmissionsParents from '@/actions/parents/getAdmissions'
+import AdmissionMain from './AdmissionMain'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/utilities/authOptions'
+
+export default async function ParentPage() {
+  const session = await getServerSession(authOptions)
+  let parentId
+  if(session?.user.parent)
+    parentId = parseInt(session.user.parent)
+
+  const admissions = await getAdmissionsParents(parentId)
   return (
-    <AdmissionMain />
+    <AdmissionMain admissions={admissions} />
   )
 }

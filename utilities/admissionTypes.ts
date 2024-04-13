@@ -1,8 +1,10 @@
 export interface IStudentAdmission {
+    id:string;
     firstName: string;
     lastName: string;
-    dob: string;
+    dob: Date;
     homeAddress: string;
+    imgUrl:string | null;
     
   }
 
