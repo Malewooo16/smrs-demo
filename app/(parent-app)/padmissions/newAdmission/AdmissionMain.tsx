@@ -42,9 +42,9 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
                         {admissions.map((e:IStudentAdmission) => (
                             <li key={e.id} className="border rounded-lg p-4 shadow-md">
                                 <Link href={{
-                                    pathname:'/padmission/validateAdmission',
+                                    pathname:'/padmissions/validateAdmission',
                                     query:{
-                                        escuela:parseInt(escuela),
+                                        escuela,
                                         addyId:e.id
                                     }
                                 }} > <div className="flex flex-col h-full">

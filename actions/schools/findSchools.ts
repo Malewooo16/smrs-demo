@@ -1,8 +1,10 @@
 import prisma from "@/db/prisma";
+import { decryptData } from "./crypto";
 
 
 
-export async function getSchoolById(id:number){
+export async function getSchoolByIdForAdmission(encrpytedId:any){
+    const id = parseInt(decryptData(encrpytedId, "MySuperSecretKeyMySuperSecretKey"))
     try{
         const school = await prisma.school.findUnique({
             where:{

@@ -50,8 +50,12 @@ model School {
   id          Int       @id @default(autoincrement())
   name        String
   address     String
+  emailAddress String @default("")
+  phoneNumber  String @default("")
+  website      String @default("")
   admissionStatus   Boolean? @default(false)
   admissionDates  Json?
+  admissionClasses  String[] @default([])
   // Other fields specific to the school
 
   // Define relationships with other models
@@ -66,6 +70,7 @@ model Admission{
   firstName   String
   lastName    String
   homeAddress String 
+  admissionClass String @default("")
   dob         DateTime
   imgUrl      String?
   objects     Json?

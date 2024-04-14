@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as Yup from 'yup';
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import registerNewParent from "@/actions/parents/registerNewParent";

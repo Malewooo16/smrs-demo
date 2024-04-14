@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 import { getAdmissionById } from '@/actions/admissions/getAdmissions';
-import { getSchoolById } from '@/actions/schools/findSchools';
+import { getSchoolByIdForAdmission } from '@/actions/schools/findSchools';
 import ValidateAdmissionData from '@/app/main-components/AdmissionData';
+import BeemPay from '@/app/main-components/BeemPay';
 
 interface Admission {
     id: string;
@@ -22,14 +23,14 @@ interface Error {
 export default async function ValidateAdmission({searchParams}:{searchParams:{addyId:string, escuela:string}}){
     try{
         const admissionData = await getAdmissionById(searchParams.addyId);
-        const school = await getSchoolById(parseInt(searchParams.escuela));
+        const school = await getSchoolByIdForAdmission(searchParams.escuela);
 
         if(admissionData && school !== null){
-            console.log(school);
-            console.log(admissionData)
+            
             return (
-                <div>
+                <div className='flex flex-wrap h-full px-2 justify-between'>
                     <ValidateAdmissionData admission={admissionData} school={school} />
+                    <BeemPay />
                 </div>
             )
         }
