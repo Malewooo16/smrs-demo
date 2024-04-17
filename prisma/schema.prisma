@@ -62,23 +62,31 @@ model School {
   students    Student[]  // One-to-many relationship with students
   teachers    Teacher[]  // One-to-many relationship with teachers
   classes     Classes[]  //
-  admissions  Admission[] @relation("AdmissionSchools")
+  admissions  AdmissionStatus[] // One-to-many relation with AdmissionStatus
+  
 }
 
-model Admission{
-  id          String @id @default(uuid())
-  firstName   String
-  lastName    String
-  homeAddress String 
-  admissionClass String @default("")
-  dob         DateTime
-  imgUrl      String?
-  objects     Json?
-  status      String?   @default("Pending")
-  parent      Parent    @relation(fields: [parentId], references: [id])
-  parentId    Int
-  schools     School[]  @relation("AdmissionSchools")
+model Admission {
+  id             String          @id @default(uuid())
+  firstName      String
+  lastName       String
+  dob            DateTime
+  parentId       Int
+  imgUrl         String?
+  objects        Json?
+  homeAddress    String
+  Parent         Parent          @relation(fields: [parentId], references: [id])
+  AdmissionStats AdmissionStatus[]
+}
 
+// Define the AdmissionStatus model
+model AdmissionStatus {
+  id         Int        @id @default(autoincrement())
+  admission  Admission  @relation(fields: [admissionId], references: [id])
+  admissionId String
+  school     School     @relation(fields: [schoolId], references: [id])
+  schoolId   Int
+  status     String     @default("Pending")
 }
 
 model Student {

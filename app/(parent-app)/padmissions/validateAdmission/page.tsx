@@ -22,9 +22,9 @@ interface Error {
 
 export default async function ValidateAdmission({searchParams}:{searchParams:{addyId:string, escuela:string}}){
     try{
-        const admissionData = await getAdmissionById(searchParams.addyId);
+        const admissionData = await getAdmissionById(searchParams.addyId, searchParams.escuela);
         const school = await getSchoolByIdForAdmission(searchParams.escuela);
-
+        console.log(admissionData)
         if(admissionData && school !== null){
             
             return (

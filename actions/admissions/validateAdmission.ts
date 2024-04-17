@@ -3,16 +3,14 @@ import prisma from "@/db/prisma";
 import { decryptData } from "../schools/crypto";
 
 export async function validateAdmission(encrpytedId:any, admissionId:string | undefined){
-    const id = parseInt(decryptData(encrpytedId, "MySuperSecretKeyMySuperSecretKey"))
+    const schoold = parseInt(decryptData(encrpytedId, "MySuperSecretKeyMySuperSecretKey"))
     try{
-      const admissionSuccess = await prisma.admission.update({
-        where:{
-            id:admissionId
-        },
+      const validateAdmission = await prisma.admissionStatus.create({
+       
         data:{
-            schools:{connect:{id}}
+          schoolId:23,
+          admissionId: admissionId as string
         }
-        
       })
       return {success:true, message:"Student Admitted Succesfully"}
     }
