@@ -1,73 +1,62 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-// Link to ER Diagram https://app.eraser.io/workspace/DJAaBQoiClFkIFAIKCEa?origin=share
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
   password  String
   role      UserRole
-  parent    Parent?   @relation(fields: [parentId], references: [id])
-  parentId  Int? @unique
-  teacher   Teacher?  @relation(fields: [teacherId], references: [id])
-  teacherId Int? @unique
+  parentId  Int?     @unique
+  teacherId Int?     @unique
+  parent    Parent?  @relation(fields: [parentId], references: [id])
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
 }
 
 model Parent {
-  id        Int       @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String    @unique
-  phoneNumber  String @default("")
-  identifier String @unique @default(uuid())
-  students  Student[]
-  user      User?
+  id          Int         @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  email       String      @unique
+  identifier  String      @unique @default(uuid())
+  phoneNumber String      @default("")
   admissions  Admission[]
+  students    Student[]
+  user        User?
 }
 
 model Classes {
-  id       Int      @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   name     String
-  students Student[]
-  school   School?  @relation(fields: [schoolId], references: [id])
   schoolId Int?
+  school   School?   @relation(fields: [schoolId], references: [id])
+  students Student[]
 }
 
 model School {
-  id          Int       @id @default(autoincrement())
-  name        String
-  address     String
-  emailAddress String @default("")
-  phoneNumber  String @default("")
-  website      String @default("")
-  admissionStatus   Boolean? @default(false)
-  admissionDates  Json?
-  admissionClasses  String[] @default([])
-  // Other fields specific to the school
-
-  // Define relationships with other models
-  students    Student[]  // One-to-many relationship with students
-  teachers    Teacher[]  // One-to-many relationship with teachers
-  classes     Classes[]  //
-  admissions  AdmissionStatus[] // One-to-many relation with AdmissionStatus
-  
+  id               Int               @id @default(autoincrement())
+  name             String
+  address          String
+  admissionDates   Json?
+  admissionStatus  Boolean?          @default(false)
+  admissionClasses String[]          @default([])
+  emailAddress     String            @default("")
+  phoneNumber      String            @default("")
+  website          String            @default("")
+  admissions       AdmissionStatus[]
+  classes          Classes[]
+  students         Student[]
+  teachers         Teacher[]
 }
 
 model Admission {
-  id             String          @id @default(uuid())
+  id             String            @id @default(uuid())
   firstName      String
   lastName       String
   dob            DateTime
@@ -75,72 +64,67 @@ model Admission {
   imgUrl         String?
   objects        Json?
   homeAddress    String
-  Parent         Parent          @relation(fields: [parentId], references: [id])
+  Parent         Parent            @relation(fields: [parentId], references: [id])
   AdmissionStats AdmissionStatus[]
 }
 
-// Define the AdmissionStatus model
 model AdmissionStatus {
-  id         Int        @id @default(autoincrement())
-  admission  Admission  @relation(fields: [admissionId], references: [id])
+  id          Int       @id @default(autoincrement())
   admissionId String
-  school     School     @relation(fields: [schoolId], references: [id])
-  schoolId   Int
-  status     String     @default("Pending")
+  schoolId    Int
+  status      String    @default("Pending")
+  admission   Admission @relation(fields: [admissionId], references: [id])
+  school      School    @relation(fields: [schoolId], references: [id])
 }
 
 model Student {
-  id        Int       @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String    @unique
-  age       Int?
-  parent    Parent?   @relation(fields: [parentId], references: [id])
-  parentId  Int?
-  school      School?   @relation(fields: [schoolId], references: [id])
-  schoolId    Int?      // Foreign key referencing School model
-  class        Classes?     @relation(fields: [classId], references: [id])
-  classId      Int?
+  id                Int                @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  email             String             @unique
+  age               Int?
+  parentId          Int?
+  schoolId          Int?
+  classId           Int?
   courseEnrollments CourseEnrollment[]
+  class             Classes?           @relation(fields: [classId], references: [id])
+  parent            Parent?            @relation(fields: [parentId], references: [id])
+  school            School?            @relation(fields: [schoolId], references: [id])
 }
 
 model Teacher {
-  id        Int       @id @default(autoincrement())
-  firstName String
-  lastName  String
-  identifier String @unique @default(uuid())
-  email     String    @unique
-  courses   Course[]
-  school      School?   @relation(fields: [schoolId], references: [id])
-  schoolId    Int?      // Foreign key referencing School model
-  user      User?
+  id         Int      @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  identifier String   @unique @default(uuid())
+  email      String   @unique
+  schoolId   Int?
+  courses    Course[]
+  school     School?  @relation(fields: [schoolId], references: [id])
+  user       User?
 }
 
-
 model Course {
-  id          Int            @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   name        String
   description String?
-  teacher     Teacher?       @relation(fields: [teacherId], references: [id])
   teacherId   Int?
+  teacher     Teacher?           @relation(fields: [teacherId], references: [id])
   enrollments CourseEnrollment[]
 }
 
 model CourseEnrollment {
-  id        Int      @id @default(autoincrement())
-  student   Student  @relation(fields: [studentId], references: [id])
+  id        Int     @id @default(autoincrement())
   studentId Int
-  course    Course   @relation(fields: [courseId], references: [id])
   courseId  Int
-  score     Json?   // Score for the student in the course
+  score     Json?
+  course    Course  @relation(fields: [courseId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id])
 }
 
-enum UserRole{
-    Parent
-    Teacher
-    HeadTeacher
-    SysAdd
+enum UserRole {
+  Parent
+  Teacher
+  HeadTeacher
+  SysAdd
 }
-
-
-

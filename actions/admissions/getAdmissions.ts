@@ -5,7 +5,14 @@ import { getServerSession } from "next-auth";
 import { decryptData } from "../schools/crypto";
 
 
-export async function getAdmissionById(id: string, encryptedId: string): Promise<IStudentAdmission | { success: boolean; message: string }> {
+interface ErrorResponse {
+    success: false;
+    message: string;
+}
+
+type Response<T> = T | ErrorResponse;
+
+export async function getAdmissionById<T>(id: string, encryptedId: string): Promise<Response<T>> {
     const schoolId = parseInt(decryptData(encryptedId, "MySuperSecretKeyMySuperSecretKey"));
     try {
         const admission = await prisma.admission.findUnique({
@@ -15,16 +22,13 @@ export async function getAdmissionById(id: string, encryptedId: string): Promise
             include: { AdmissionStats: true }
         });
         if (admission) {
-            // If admission is found, check if it has AdmissionStats for the specified school
             const hasSchool = admission.AdmissionStats.some(stats => stats.schoolId === schoolId);
             if (hasSchool) {
-                return null;
+                return { success: false, message: "Admission not found" };
             } else {
-                // If admission does not have AdmissionStats for the specified school, return error
-                return admission;
+                return admission as T;
             }
         } else {
-            // If admission is null, return an error object
             return { success: false, message: "Admission not found" };
         }
     } catch (error) {
@@ -34,7 +38,7 @@ export async function getAdmissionById(id: string, encryptedId: string): Promise
 }
 
 
-export async function getAllAdmissionsForParent(){
+export async function getAllAdmissionsForParent <T> () : Promise<Response<T>>{
     let parentId
     const session= await getServerSession(authOptions)
     if(session)
@@ -51,7 +55,7 @@ export async function getAllAdmissionsForParent(){
         }
       
         const admissionsWithSchools = admissions.filter(a => a.AdmissionStats.length > 0);
-        return admissionsWithSchools.length > 0 ? admissionsWithSchools : { success: false, message: "No admissions connected to schools" };
+        return admissionsWithSchools.length > 0 ? admissionsWithSchools as T : { success: false, message: "No admissions connected to schools" };
         
     } catch (error) {
         return {success:false, message:"No admissions found"}

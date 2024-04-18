@@ -6,8 +6,9 @@ import { getAllAdmissionsForParent } from '@/actions/admissions/getAdmissions';
 
 export default  async function Admissions() {
   const activeAdmissions = await getActiveAdmissions();
-  const validatedAdmissions = await getAllAdmissionsForParent();
- console.log(validatedAdmissions[0])
+  const validatedAdmissions = await getAllAdmissionsForParent<any>();
+ 
+ 
   
   
   return (
