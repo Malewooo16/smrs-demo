@@ -22,12 +22,7 @@ export async function getAdmissionById<T>(id: string, encryptedId: string): Prom
             include: { AdmissionStats: true }
         });
         if (admission) {
-            const hasSchool = admission.AdmissionStats.some(stats => stats.schoolId === schoolId);
-            if (hasSchool) {
-                return { success: false, message: "Admission not found" };
-            } else {
-                return admission as T;
-            }
+           return admission as T
         } else {
             return { success: false, message: "Admission not found" };
         }

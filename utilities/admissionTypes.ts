@@ -1,3 +1,8 @@
+interface AdmissionStats{
+  id:number;
+  schoolId:number;
+  status:String;
+}
 export interface IStudentAdmission {
     id:string;
     firstName: string;
@@ -5,8 +10,10 @@ export interface IStudentAdmission {
     dob: Date;
     homeAddress: string;
     imgUrl:string | null;
+    AdmissionStats:AdmissionStats[]
     
   }
+
 
 export interface ISchoolAdmission{
     id: number;

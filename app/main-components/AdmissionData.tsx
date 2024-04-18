@@ -1,11 +1,25 @@
+"use client"
+import { decryptData } from "@/actions/schools/crypto";
 import { IStudentAdmission } from "@/utilities/admissionTypes";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import BeemPay from "./BeemPay";
 
 export default function ValidateAdmissionData({ school, admission }: { school: any; admission: any }) {
+  const searchParams = useSearchParams()
+  const schoolId = parseInt(decryptData(searchParams.get("escuela"), "MySuperSecretKeyMySuperSecretKey"))
   const validAdmission = admission as IStudentAdmission;
 
+  if(validAdmission.AdmissionStats.some(stats => stats.schoolId === schoolId )){
+    return (
+      <h2 className="text-lg">The admission for {validAdmission.firstName} {validAdmission.lastName} to {school.name} already exists </h2>
+    )
+  }
+
   return (
-    <div className="flex flex-col flex-1 mx-2 lg:w-auto justify-center items-start gap-10 ">
+   <div className="flex h-full">
+     <div className="flex flex-col flex-1 mx-2 lg:w-auto justify-center items-start gap-10 ">
+      {/* Should Be Refactored as a Separate Component */}
       {/* Student Data */}
       <div className="min-w-md w-full p-6 border rounded-lg shadow-md">
         <h1 className="text-xl font-semibold mb-4">Student Data</h1>
@@ -30,5 +44,7 @@ export default function ValidateAdmissionData({ school, admission }: { school: a
         </div>
       </div>
     </div>
+    <BeemPay />
+   </div>
   );
 }
