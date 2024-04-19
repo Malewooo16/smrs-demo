@@ -16,8 +16,7 @@ import {
   WeekView,
   DayView
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { appointments } from '@/utilities/appointments';
-import fetchWorkflowTimelines from '../actions/testActions/fetchTimeLines';
+
 
 //import { appointments } from '../../../demo-data/month-appointments';
 

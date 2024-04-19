@@ -14,7 +14,7 @@ export default function SignOut() {
     
     <button className={` btn hover:btn-error hover:outline-0 pt-4 ps-0 `} onClick={() => signOut({
         redirect:true,
-        callbackUrl:`${window.location.origin}/`
+        callbackUrl:`${window.location.origin}/login`
     })}>
       <span className="text-lg">
         <RxExit />

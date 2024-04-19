@@ -17,7 +17,7 @@ export default function AutoLoginHandler() {
         const login = async () => {
             
             try {
-                const signInData = await signIn('token', { token , callbackUrl:`http://localhost:3000/admissions?escuela=${escuela}&newUser=true` });
+                const signInData = await signIn('token', { token , callbackUrl:`http://localhost:3000/padmissions?newUser=true` });
                 if (signInData?.error) {
                     throw new Error(`Sign in failed ${signInData.error}` );
                     

@@ -66,7 +66,7 @@ export const authOptions:NextAuthOptions={
            if(!credentials?.token  ){
             return null
            }
-           console.log(credentials.token)
+           //console.log(credentials.token)
             const existingParent=await prisma.parent.findFirst({
                 where:{identifier:credentials.token}
             })
@@ -83,6 +83,15 @@ export const authOptions:NextAuthOptions={
                 parent:{connect:{id:existingParent.id}}
               }
               
+            })
+
+            await prisma.parent.update({
+              where:{
+                id:existingParent.id
+              },
+              data:{
+                identifier:"haujui/hauna"
+              }
             })
            
           

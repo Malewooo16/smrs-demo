@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 export default function AdmissionMain({admissions}:{admissions:any}) {
     const searchParams = useSearchParams();
     const escuela = searchParams.get("escuela") as string;
-    
+    const [newAdmission, setnewAdmission] = useState(false)
     const [step, setStep] = useState(1);
     const [modal, setModal] = useState(false);
 
@@ -26,7 +26,10 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
             setStep((prev) => prev-1)
         }
     }
-
+  const handleNewAdmissions = ()=>{
+    setModal(false)
+    setnewAdmission(true)
+  }
     useEffect(() => {
         if(admissions.length > 0) {
             setModal(true);
@@ -37,7 +40,8 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
         <div>
             {admissions.length > 0 && (
                 <FileUploadModal isOpen={modal} onClose={() => setModal(false)} header="Saved Admissions">
-                    <div className="flex justify-center w-full"> <button className="btn btn-success my-4"> Add a New Admission</button> </div>
+                    <div className="flex justify-center w-full"> <button className="btn btn-success my-4" onClick={handleNewAdmissions}> Add a New Admission</button> </div>
+                    <p className="text-lg mb-4">You can use your previously saved admissions</p>
                     <ul className="grid grid-rows-1 gap-4 ">
                         {admissions.map((e:IStudentAdmission) => (
                             <li key={e.id} className="border rounded-lg p-4 shadow-md">
@@ -56,7 +60,7 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
                     </ul>
                 </FileUploadModal>
             )}
-            {admissions.length === 0 && (
+            {admissions.length === 0 || newAdmission ? (
                 <div>
                     <h1 className="text-lg">Student Admission</h1>
                     {step === 1 && <AdmissionForm setNextStep={setNextStep} />}
@@ -64,7 +68,7 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
                     {step === 3 && <ObjectsUplaod setNextStep={setNextStep} />}
                     {step === 4 && <SuccessItem />}
                 </div>
-            )}
+            ) : null}
         </div>
     );
 }

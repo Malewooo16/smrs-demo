@@ -4,9 +4,9 @@ export const getStatusColor = (status:string) => {
       case 'Pending':
         return 'text-orange-500';
       case 'denied':
-        return 'red-500';
+        return 'text-red-500';
       case 'accepted':
-        return 'teal-500';
+        return 'text-teal-500';
       default:
         return '';
     }

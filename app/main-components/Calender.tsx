@@ -16,8 +16,7 @@ import {
   WeekView,
   DayView
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { appointments } from '@/utilities/appointments';
-import fetchWorkflowTimelines from '../actions/testActions/fetchTimeLines';
+
 
 //import { appointments } from '../../../demo-data/month-appointments';
 
@@ -32,14 +31,11 @@ export default function CalenderDemo(props:{timeLines:any}) {
     setCurrentViewName(newViewName);
   };
 
-  if (!props.timeLines || props.timeLines.length === 0) {
-    // If there are no timelines, you can render a message or return null
-    return <div>No timelines available.</div>;
-  }
+
   
   return (
     <Paper>
-      <Scheduler data={props.timeLines}  height={660}>
+      <Scheduler  height={660}>
         <ViewState
           defaultCurrentDate="2024-02-25"
           currentViewName={currentViewName}
