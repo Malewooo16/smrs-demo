@@ -11,10 +11,10 @@ export default async function ParentPage() {
   if(session?.user.parent)
     parentId = parseInt(session.user.parent)
 
-  console.log(session)
+ 
 
   const admissions = await getAdmissionsParents(parentId)
-  console.log(admissions)
+  //console.log(admissions)
   return (
     <AdmissionMain admissions={admissions} />
   )
