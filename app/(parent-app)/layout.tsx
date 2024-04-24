@@ -72,6 +72,9 @@ export default async function AppLayout({
       </section>
     );
   } else {
+      if(session?.user && session.user.role === "Teacher" || session?.user.role === "HeadTeacher" ){
+        redirect(`/tadmissions`)
+      }
       redirect(`/`)
   }
 }

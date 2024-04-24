@@ -31,6 +31,7 @@ export default function LoginForm() {
     }
     else{
       router.push('/pdashboard', {scroll:false})
+      
     }
   }
   return (

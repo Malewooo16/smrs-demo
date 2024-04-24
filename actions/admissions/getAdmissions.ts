@@ -62,12 +62,21 @@ export async function getAdmissionsForSchool(schoolId:number){
     try{
         const admissions = await prisma.admissionStatus.findMany({
             where:{
-                sch
-            }
-        })
-    }
-    catch{
+                schoolId 
+            },
+            include:{admission:true}
 
+        })
+
+        if(!admissions || admissions===null){
+            return{success:false, message:"No admissions found"}
+        }
+
+        return admissions
+    }
+    catch(e){
+        console.log(e)
+        return{success:false, message:"Error when fetching data"}
     }
 
 }
