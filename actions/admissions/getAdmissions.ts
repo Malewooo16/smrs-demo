@@ -57,3 +57,17 @@ export async function getAllAdmissionsForParent <T> () : Promise<Response<T>>{
     }
 
 }
+
+export async function getAdmissionsForSchool(schoolId:number){
+    try{
+        const admissions = await prisma.admissionStatus.findMany({
+            where:{
+                sch
+            }
+        })
+    }
+    catch{
+
+    }
+
+}
