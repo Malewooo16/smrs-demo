@@ -58,7 +58,7 @@ export async function getAllAdmissionsForParent <T> () : Promise<Response<T>>{
 
 }
 
-export async function getAdmissionsForSchool(schoolId:number){
+export async function getAdmissionsForSchool(schoolId:any){ //acc the id is number I was bored to use types
     try{
         const admissions = await prisma.admissionStatus.findMany({
             where:{

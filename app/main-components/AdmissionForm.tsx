@@ -46,7 +46,7 @@ export default function AdmissionForm ( props : CompProps) {
         resolver: yupResolver(validationSchema),
       });
 
-      const uploadUser = async (formData:IStudentAdmission)=>{
+      const uploadUser = async (formData:any)=>{
         setloading(true)
         if(data?.user.parent)
         try{
