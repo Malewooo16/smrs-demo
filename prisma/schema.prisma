@@ -49,6 +49,7 @@ model School {
   emailAddress     String            @default("")
   phoneNumber      String            @default("")
   website          String            @default("")
+  activeAdmissionClasses String[] @default([])
   admissions       AdmissionStatus[]
   classes          Classes[]
   students         Student[]
@@ -73,6 +74,7 @@ model AdmissionStatus {
   admissionId String
   schoolId    Int
   status      String    @default("Pending")
+  selectedClass String @default("")
   admission   Admission @relation(fields: [admissionId], references: [id])
   school      School    @relation(fields: [schoolId], references: [id])
 }
