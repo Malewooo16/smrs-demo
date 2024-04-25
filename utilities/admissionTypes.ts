@@ -31,6 +31,7 @@ export interface ISchoolAdmission {
   id: number;
   name: string;
   address: string;
+  emailAddress:string;
   admissionStatus: boolean | null;
   admissionDates: { to: string; from: string };
 }

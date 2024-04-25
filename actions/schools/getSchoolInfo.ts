@@ -7,6 +7,7 @@ export async function schoolInfoFromTeacherId(id:number){
     try{
         const schoolInfo = await prisma.teacher.findUnique({
             where:{id},
+            include:{school:true}
             
         })
 
@@ -14,6 +15,7 @@ export async function schoolInfoFromTeacherId(id:number){
     }
     catch (e){
         console.log(e)
+        
     }
     
 }
