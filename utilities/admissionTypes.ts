@@ -18,6 +18,8 @@ export interface IStudentAdmission {
   AdmissionStats: AdmissionStats[];
 }
 
+
+
 export interface AdmissionData {
   id: number;
   admissionId:string;
@@ -31,6 +33,10 @@ export interface AdmissionData {
     parentId:number;
     homeAddress: string;
     imgUrl: string | null;
+    objects:{
+      birthCert:string;
+      transcripts:string;
+    }
   };
 }
 

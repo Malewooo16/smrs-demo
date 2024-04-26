@@ -71,7 +71,7 @@ model Admission {
 
 model AdmissionStatus {
   id          Int       @id @default(autoincrement())
-  admissionId String
+  admissionId String  @unique
   schoolId    Int
   status      String    @default("Pending")
   selectedClass String @default("")

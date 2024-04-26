@@ -1,6 +1,6 @@
-import { getAdmissionById } from "@/actions/admissions/getAdmissions";
+import { getAdmissionById, getSpecifcAdmissionById } from "@/actions/admissions/getAdmissions";
 import { UpdateAdmissionStatus } from "@/app/main-components/AdmissionInfoAndActions";
-import { IStudentAdmission } from "@/utilities/admissionTypes";
+import { AdmissionData, IStudentAdmission } from "@/utilities/admissionTypes";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,41 +9,41 @@ export default async function page({
 }: {
   params: { admissionId: string };
 }) {
-  const admissionData = await getAdmissionById(params.admissionId);
-  const admission = admissionData as IStudentAdmission;
-  //console.log(admission)
+  const admissionData = await getSpecifcAdmissionById(params.admissionId);
+  const admissionStats = admissionData as AdmissionData;
+  console.log(admissionStats)
   return (
-    <div className=" rounded-lg shadow-md p-6 mb-4">
+    <div className=" rounded-lg shadow-md p-6 mb-4 w-[54rem]">
       <Image
-        src={admission.imgUrl as string}
+        src={admissionStats.admission.imgUrl as string}
         width={150}
         height={150}
-        alt={admission.firstName}
+        alt={admissionStats.admission.firstName}
       />
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold">
-          {admission.firstName} {admission.lastName}
+      <div className="flex items-center justify-between my-2">
+      <h2 className="text-lg font-bold">
+          {admissionStats.admission.firstName} {admissionStats.admission.lastName}
         </h2>
-        <span className="text-sm text-gray-500">
-          DOB: {new Date(admission.dob).toLocaleDateString()}
+        <span className="text-md text-gray-500">
+          DOB: {new Date(admissionStats.admission.dob).toLocaleDateString()}
         </span>
       </div>
       <p className="text-gray-600 mb-2">
-        Home Address: {admission.homeAddress}
+        Home Address: {admissionStats.admission.homeAddress}
       </p>
-     <div className="flex justify-between w-[40rem]">
-         <div className="grid grid-cols-2 gap-2">
+     <div className="flex justify-between">
+         <div className="">
         <div>
           <h3 className="text-lg font-semibold ">Documents</h3>
           <Link
-            href={admission.objects.birthCert}
+            href={admissionStats.admission.objects.birthCert}
             target="_blank"
             rel="noopener noreferrer"
           >
             <p className="text-blue-500 hover:underline">Link to Transcripts</p>
           </Link>
           <Link
-            href={admission.objects.transcripts}
+            href={admissionStats.admission.objects.transcripts}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -54,18 +54,12 @@ export default async function page({
       </div>
     <div>
     <h3 className="text-lg font-semibold mb-2">Admission Status</h3>
-        <ul>
-          {admission.AdmissionStats.map((stats) => (
-            <li key={stats.id}>
-              <p>Status: {stats.status}</p>
-              <p>Selected Class: {stats.selectedClass}</p>
-            </li>
-          ))}
-        </ul>
+      <p>Admission Status:{admissionStats.status}</p>
+      <p>Selected Class</p>
     </div>
    
      </div>
-    <UpdateAdmissionStatus admissionId={params.admissionId} />
+    {admissionStats.status === "Approved" ? null : <UpdateAdmissionStatus admissionId={params.admissionId} />}
     </div>
   );
 }

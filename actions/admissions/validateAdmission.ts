@@ -19,3 +19,23 @@ export async function validateAdmission(encrpytedId:any, admissionId:string | un
         return {success:false, message:"Error While admiting student"}
     }
 }
+
+export async function updateAdmissionStatusString(admissionId:string, status:string){
+  try{
+    const updatedAdmission = await prisma.admissionStatus.update({
+      where:{
+        admissionId
+      },
+      data:{
+        status
+      }
+    })
+    return {success:true, message:"Status Updated Successfully"}
+  }
+  catch(e){
+    console.log(e);
+    return {success:false, message:"Error Occured"}
+
+  }
+
+}

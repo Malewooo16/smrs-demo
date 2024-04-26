@@ -32,7 +32,24 @@ export async function getAdmissionById<T>(id: string): Promise<Response<T>> {
     }
 }
 
-
+export async function getSpecifcAdmissionById<T>(admissionId:string): Promise<Response<T>> {
+    try {
+        const admission = await prisma.admissionStatus.findUnique({
+            where: {
+                admissionId
+            },
+            include: { admission: true }
+        });
+        if (admission) {
+           return admission as T
+        } else {
+            return { success: false, message: "Admission not found" };
+        }
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: "Failed to fetch admissions" };
+    }
+}
 export async function getAllAdmissionsForParent <T> () : Promise<Response<T>>{
     let parentId
     const session= await getServerSession(authOptions)

@@ -4,6 +4,8 @@ import { AdmissionData, ISchoolAdmission } from "@/utilities/admissionTypes"
 import { FormEvent, useEffect, useState } from "react"
 import SearchInput from "./SearchInput"
 import Link from "next/link"
+import { updateAdmissionStatusString } from "@/actions/admissions/validateAdmission"
+import { useRouter } from "next/navigation"
 
 
 export function AdmissionInfo ({schoolData}:{schoolData:any}){
@@ -55,8 +57,51 @@ export function PendingAdmissions({admissionData}:{admissionData:any}){
   )
 
 }
+export function ApprovedAdmissions({admissionData}:{admissionData:any}){
+  const admissions = admissionData as AdmissionData[]
+  const [search, setSearch] = useState(" ")
+  const searchHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSearch(e.target.value)
+}
+  return(
+    <div>
+      <div className="my-4"> <SearchInput searchHandler={searchHandler}/> </div>
+      <p className="text-lg font-semibold">Approved Admissions</p>
+      <div>
+        <h2 className="text-md mb-2">The admissions Below await the following actions</h2>
+        <div className="flex w-[30rem] justify-between">
+         <Link href={{
+          pathname:`/tadmissions/actions`,
+          query:{action:"SendJoining"}
+         }}>
+           <button className="btn btn-warning "> Sending Joining  <br/> Instructions </button>
+         </Link>
+          <button className="btn btn-warning">Connection to Classes</button>
+        </div>
+      </div>
+      <ul className="my-4">
+        {admissions.filter((a)=>{
+          return a.status === "Approved"
+        }).filter((item)=>{
+          return search.toLowerCase() === " " ? item : item.admission.firstName.toLowerCase().includes(search);
+        }).map((a)=>(
+          <li key={a.admissionId}>
+            <Link href={`/tadmissions/${a.admissionId}`}>
+            <div className="rounded-lg shadow-md p-6 mb-4">
+              <h1 className="text-xl"> {a.admission.firstName} {a.admission.lastName} </h1>
+              <p> {a.admission.homeAddress} </p>
+              <p> {a.admission.dob.toLocaleDateString()} </p>
+            </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 
+}
 export function UpdateAdmissionStatus ({admissionId}:{admissionId:string}){
+  const router = useRouter();
   const [showForm, setshowForm] = useState(false);
   const [selected, setSelected] = useState(" ");
   const [validationErr, setValidationErr] = useState("")
@@ -65,13 +110,25 @@ export function UpdateAdmissionStatus ({admissionId}:{admissionId:string}){
       setValidationErr("")
      }
   }, [selected])
-  const updateAdmissionStatus : React.FormEventHandler<HTMLFormElement> = (e)=>{
+  const updateAdmissionStatus : React.FormEventHandler<HTMLFormElement> = async(e)=>{
      e.preventDefault()
      if(selected !=="Approved" && selected !=="Rejected"){
       setValidationErr("Valid Status Required");
      }
-     console.log(selected)
-
+     
+     try{
+      const updateStatus = await updateAdmissionStatusString(admissionId, selected);
+      if(updateStatus.success === false){
+        alert("Error Occured")
+      }
+      else{
+        //TODO Please Add toasts
+        router.push(`/tadmissions`)
+      }
+     }
+     catch{
+      alert("Error Occured")
+     }
   }
 
   return(
