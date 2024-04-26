@@ -14,7 +14,7 @@ export default async function Admissions() {
     schoolInfo = await schoolInfoFromTeacherId(parseInt(session.user.teacher))
     admissions = await getAdmissionsForSchool(schoolInfo?.schoolId);
   }
- // console.log(schoolInfo)
+ //console.log(admissions)
 
   return (
     <div>

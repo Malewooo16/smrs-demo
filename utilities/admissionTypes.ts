@@ -2,6 +2,7 @@ interface AdmissionStats {
   id: number;
   schoolId: number;
   status: String;
+  selectedClass:string
 }
 export interface IStudentAdmission {
   id: string;
@@ -10,11 +11,16 @@ export interface IStudentAdmission {
   dob: Date;
   homeAddress: string;
   imgUrl: string | null;
+  objects:{
+    birthCert:string;
+    transcripts:string;
+  };
   AdmissionStats: AdmissionStats[];
 }
 
 export interface AdmissionData {
   id: number;
+  admissionId:string;
   schoolId: number;
   status: String;
   admission: {
@@ -22,6 +28,7 @@ export interface AdmissionData {
     firstName: string;
     lastName: string;
     dob: Date;
+    parentId:number;
     homeAddress: string;
     imgUrl: string | null;
   };

@@ -49,7 +49,7 @@ export default async function admissionObjectsUpload(formData: FormData, emailAd
         Bucket: 'SMRS-Demo',
         Key: file.name,
         Body: buffer,
-        ContentType:'aplication/pdf'
+        ContentType:'application/pdf'
       };
 
       // Upload the file to S3-compatible storage

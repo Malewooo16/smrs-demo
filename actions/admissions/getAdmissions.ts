@@ -12,8 +12,8 @@ interface ErrorResponse {
 
 type Response<T> = T | ErrorResponse;
 
-export async function getAdmissionById<T>(id: string, encryptedId: string): Promise<Response<T>> {
-    const schoolId = parseInt(decryptData(encryptedId, "MySuperSecretKeyMySuperSecretKey"));
+export async function getAdmissionById<T>(id: string): Promise<Response<T>> {
+    
     try {
         const admission = await prisma.admission.findUnique({
             where: {
