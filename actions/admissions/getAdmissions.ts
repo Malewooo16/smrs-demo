@@ -38,7 +38,8 @@ export async function getSpecifcAdmissionById<T>(admissionId:string): Promise<Re
             where: {
                 admissionId
             },
-            include: { admission: true }
+            include: { admission:{include: {Parent:true}} },
+            
         });
         if (admission) {
            return admission as T
@@ -97,3 +98,4 @@ export async function getAdmissionsForSchool(schoolId:any){ //acc the id is numb
     }
 
 }
+

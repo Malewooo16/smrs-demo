@@ -2,8 +2,12 @@ import admissionStore from "@/store/admissionState";
 import {useState} from 'react'
  import ServerBtn from "./ServerBtn";
 import admissionObjectsUpload from "@/actions/admissions/admissionObjectsUpload";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ObjectsUplaod(props:{setNextStep:()=>void}) {
+  const searchParams = useSearchParams()
+  const escuela = searchParams.get("escuela");
+  const router = useRouter()
   const [objects, setObjects] = useState('');
   const uploadAdmissionFiles = async (formData:FormData) =>{
     const admissionId = admissionStore.getState().admissionId;
@@ -13,7 +17,7 @@ export default function ObjectsUplaod(props:{setNextStep:()=>void}) {
         alert(objectUploadresponse.message)
       }
       else{
-        props.setNextStep()
+        router.push(`/padmissions/validateAdmission?escuela=${escuela}&addyId=${admissionId}`)
       }
     }
     catch{

@@ -4,9 +4,11 @@ import { authOptions } from "@/utilities/authOptions"
 import { getServerSession } from "next-auth"
 import ClientWrapperTAdmissions from "./ClientWrapper";
 import { ISchoolAdmission } from "@/utilities/admissionTypes";
+import { revalidatePath } from "next/cache";
 
 
 export default async function Admissions() {
+  revalidatePath(`/tadmissions`);
   const session = await getServerSession(authOptions);
   let admissions;
   let schoolInfo

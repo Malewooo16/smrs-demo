@@ -12,9 +12,6 @@ import createAdmission from "@/actions/admissions/createAdmission";
 import admissionStore from "@/store/admissionState";
 
 
-
-
-
 interface CompProps{
   setNextStep: () => void;
 }
@@ -93,7 +90,7 @@ export default function AdmissionForm ( props : CompProps) {
         </label>
         <label className='form-control max-w-xl mt-4 mb-10 join-item'>
         <p className="my-2"> Date of Birth</p>
-        <input type="date"  max={"2007-12-31"} placeholder="Type here" className="input input-bordered w-full "  {...register("dob")}/>
+        <input type="date"  max={"2020-12-31"} placeholder="Type here" className="input input-bordered w-full "  {...register("dob")}/>
         <p className="text-error text-sm"> {errors.dob?.message} </p>
         </label>
         

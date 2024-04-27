@@ -1,6 +1,9 @@
 import { getAdmissionById, getSpecifcAdmissionById } from "@/actions/admissions/getAdmissions";
+import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
 import { UpdateAdmissionStatus } from "@/app/main-components/AdmissionInfoAndActions";
 import { AdmissionData, IStudentAdmission } from "@/utilities/admissionTypes";
+import { authOptions } from "@/utilities/authOptions";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,9 +12,20 @@ export default async function page({
 }: {
   params: { admissionId: string };
 }) {
+  const session = await getServerSession(authOptions);
   const admissionData = await getSpecifcAdmissionById(params.admissionId);
   const admissionStats = admissionData as AdmissionData;
-  console.log(admissionStats)
+  let schoolInfo
+  if(session?.user.teacher){
+    schoolInfo = await schoolInfoFromTeacherId(parseInt(session.user.teacher))
+    
+  }
+  const admissionInfo = {
+      parentEmail:admissionStats.admission.Parent.email,
+      studentName:`${admissionStats.admission.firstName} ${admissionStats.admission.lastName}`,
+      schoolName:schoolInfo?.school?.name
+  }
+ // console.log(admissionStats)
   return (
     <div className=" rounded-lg shadow-md p-6 mb-4 w-[54rem]">
       <Image
@@ -55,11 +69,11 @@ export default async function page({
     <div>
     <h3 className="text-lg font-semibold mb-2">Admission Status</h3>
       <p>Admission Status:{admissionStats.status}</p>
-      <p>Selected Class</p>
+      <p>Selected Class:{admissionStats.selectedClass}</p>
     </div>
    
      </div>
-    {admissionStats.status === "Approved" ? null : <UpdateAdmissionStatus admissionId={params.admissionId} />}
+    {admissionStats.status === "Approved" ? null : <UpdateAdmissionStatus admissionId={params.admissionId} admissionInfo={admissionInfo} />}
     </div>
   );
 }

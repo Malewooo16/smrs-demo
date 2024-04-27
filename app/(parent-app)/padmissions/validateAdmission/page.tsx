@@ -13,8 +13,9 @@ interface Error {
 
 export default async function ValidateAdmission({ searchParams }: { searchParams: { addyId: string, escuela: string } }) {
     try {
-        const admissionData = await getAdmissionById<IStudentAdmission | Error>(searchParams.addyId, searchParams.escuela);
+        const admissionData = await getAdmissionById<IStudentAdmission | Error>(searchParams.addyId);
         const school = await getSchoolByIdForAdmission(searchParams.escuela);
+        //console.log(school)
 
         if ('success' in admissionData) {
             // Handle error case
@@ -25,7 +26,7 @@ export default async function ValidateAdmission({ searchParams }: { searchParams
             // Handle success case
             return (
                 <div className=' h-full px-2'>
-                    <ValidateAdmissionData admission={admissionData} school={school} />
+                    <ValidateAdmissionData admission={admissionData} schoolData={school} />
                 </div>
             );
         }

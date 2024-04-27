@@ -1,12 +1,15 @@
 "use client"
 import { decryptData } from "@/actions/schools/crypto";
-import { IStudentAdmission } from "@/utilities/admissionTypes";
+import { ISchoolAdmission, IStudentAdmission } from "@/utilities/admissionTypes";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import BeemPay from "./BeemPay";
+import { useEffect, useState } from "react";
 
-export default function ValidateAdmissionData({ school, admission }: { school: any; admission: any }) {
+export default function ValidateAdmissionData({ schoolData, admission }: { schoolData: any; admission: any }) {
+  const school = schoolData as ISchoolAdmission
   const searchParams = useSearchParams()
+  const [selectedClass, setselectedClass] = useState("");
   const schoolId = parseInt(decryptData(searchParams.get("escuela"), "MySuperSecretKeyMySuperSecretKey"))
   const validAdmission = admission as IStudentAdmission;
 
@@ -42,9 +45,15 @@ export default function ValidateAdmissionData({ school, admission }: { school: a
           <h2 className="text-lg font-semibold">{school.name}</h2>
           <p className="text-sm mb-2">Address: {school.address}</p>
         </div>
+        <p> Select the Class to be Admitted </p>
+        <select className="select select-bordered w-full max-w-xs">
+        {school.admissionClasses.map((a, index)=> (
+          <option key={index}> {a} </option>
+        ))}
+</select>
       </div>
     </div>
-    <BeemPay />
+    <BeemPay selectedClass={selectedClass==="" ? school.admissionClasses[0] : selectedClass} />
    </div>
   );
 }

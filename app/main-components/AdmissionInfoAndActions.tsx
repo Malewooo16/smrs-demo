@@ -5,7 +5,8 @@ import { FormEvent, useEffect, useState } from "react"
 import SearchInput from "./SearchInput"
 import Link from "next/link"
 import { updateAdmissionStatusString } from "@/actions/admissions/validateAdmission"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { sendSuccessAdmissionToParent } from "@/actions/parents/sendValidationEmailToParent"
 
 
 export function AdmissionInfo ({schoolData}:{schoolData:any}){
@@ -58,6 +59,7 @@ export function PendingAdmissions({admissionData}:{admissionData:any}){
 
 }
 export function ApprovedAdmissions({admissionData}:{admissionData:any}){
+  const pathname = usePathname()
   const admissions = admissionData as AdmissionData[]
   const [search, setSearch] = useState(" ")
   const searchHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -67,7 +69,7 @@ export function ApprovedAdmissions({admissionData}:{admissionData:any}){
     <div>
       <div className="my-4"> <SearchInput searchHandler={searchHandler}/> </div>
       <p className="text-lg font-semibold">Approved Admissions</p>
-      <div>
+      {pathname !== '/tadmissions/actions' ? <div>
         <h2 className="text-md mb-2">The admissions Below await the following actions</h2>
         <div className="flex w-[30rem] justify-between">
          <Link href={{
@@ -78,7 +80,7 @@ export function ApprovedAdmissions({admissionData}:{admissionData:any}){
          </Link>
           <button className="btn btn-warning">Connection to Classes</button>
         </div>
-      </div>
+      </div> : null}
       <ul className="my-4">
         {admissions.filter((a)=>{
           return a.status === "Approved"
@@ -100,9 +102,11 @@ export function ApprovedAdmissions({admissionData}:{admissionData:any}){
   )
 
 }
-export function UpdateAdmissionStatus ({admissionId}:{admissionId:string}){
+export function UpdateAdmissionStatus ({admissionId, admissionInfo}:{admissionId:string, admissionInfo:any}){
+  const {parentEmail, studentName, schoolName} = admissionInfo
   const router = useRouter();
   const [showForm, setshowForm] = useState(false);
+  const [loading, setloading] = useState(false)
   const [selected, setSelected] = useState(" ");
   const [validationErr, setValidationErr] = useState("")
   useEffect(()=>{
@@ -111,7 +115,9 @@ export function UpdateAdmissionStatus ({admissionId}:{admissionId:string}){
      }
   }, [selected])
   const updateAdmissionStatus : React.FormEventHandler<HTMLFormElement> = async(e)=>{
-     e.preventDefault()
+
+     e.preventDefault();
+    setloading(true)
      if(selected !=="Approved" && selected !=="Rejected"){
       setValidationErr("Valid Status Required");
      }
@@ -120,13 +126,25 @@ export function UpdateAdmissionStatus ({admissionId}:{admissionId:string}){
       const updateStatus = await updateAdmissionStatusString(admissionId, selected);
       if(updateStatus.success === false){
         alert("Error Occured")
+        setloading(false)
       }
       else{
         //TODO Please Add toasts
-        router.push(`/tadmissions`)
+       
+        const emailResult = await sendSuccessAdmissionToParent(parentEmail, studentName, schoolName);
+        if(emailResult.success===true){
+          router.push(`/tadmissions`)
+        }
+        else{
+          alert("Error Ocured")
+          setloading(false)
+        }
+
+        
       }
      }
      catch{
+      setloading(false)
       alert("Error Occured")
      }
   }
@@ -140,7 +158,7 @@ export function UpdateAdmissionStatus ({admissionId}:{admissionId:string}){
   <option className="text-success text-lg">Approved</option>
   <option className="text-error text-lg"> Rejected</option>
 </select>
-<button className="btn btn-success mx-4" type="submit"> Update </button>
+<button className="btn btn-success mx-4" disabled={loading} type="submit"> Update </button>
 <div> <p className="text-md text-error">{validationErr}</p> </div>
   </form>}
 </div>

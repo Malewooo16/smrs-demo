@@ -24,7 +24,8 @@ export interface AdmissionData {
   id: number;
   admissionId:string;
   schoolId: number;
-  status: String;
+  status: string;
+  selectedClass:string;
   admission: {
     id: string;
     firstName: string;
@@ -37,6 +38,9 @@ export interface AdmissionData {
       birthCert:string;
       transcripts:string;
     }
+    Parent:{
+      email:string;
+    }
   };
 }
 
@@ -47,4 +51,5 @@ export interface ISchoolAdmission {
   emailAddress:string;
   admissionStatus: boolean | null;
   admissionDates: { to: string; from: string };
+  admissionClasses : string[]
 }

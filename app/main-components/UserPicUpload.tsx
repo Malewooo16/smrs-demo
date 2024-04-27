@@ -58,7 +58,7 @@ toFinalStep
         <h2 className="text-lg my-4">Upload User Pic</h2>
         <form action={picUpload} className="max-w-lg">
         {/* <p> {userId} </p> */}
-        <input type="file" className="file-input file-input-bordered w-full" name="userPic" onChange={handleFileChange} required />
+        <input type="file" className="file-input file-input-bordered w-full" accept="image/*" name="userPic" onChange={handleFileChange} required />
         <p>Preview:</p>
         {base64String && <Image className="my-4" src={base64String} alt="preview" width={250} height={250} /> }
         <ServerBtn/>
