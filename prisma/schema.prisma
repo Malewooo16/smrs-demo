@@ -27,33 +27,36 @@ model Parent {
   identifier  String      @unique @default(uuid())
   phoneNumber String      @default("")
   admissions  Admission[]
-  students    Student[]
+  testStudent Student[]
   user        User?
+  StudentT    StudentT[]
 }
 
 model Classes {
-  id       Int       @id @default(autoincrement())
+  id       Int        @id @default(autoincrement())
   name     String
   schoolId Int?
-  school   School?   @relation(fields: [schoolId], references: [id])
+  school   School?    @relation(fields: [schoolId], references: [id])
   students Student[]
+  StudentT StudentT[]
 }
 
 model School {
-  id               Int               @id @default(autoincrement())
-  name             String
-  address          String
-  admissionDates   Json?
-  admissionStatus  Boolean?          @default(false)
-  admissionClasses String[]          @default([])
-  emailAddress     String            @default("")
-  phoneNumber      String            @default("")
-  website          String            @default("")
-  activeAdmissionClasses String[] @default([])
-  admissions       AdmissionStatus[]
-  classes          Classes[]
-  students         Student[]
-  teachers         Teacher[]
+  id                     Int               @id @default(autoincrement())
+  name                   String
+  address                String
+  admissionDates         Json?
+  admissionStatus        Boolean?          @default(false)
+  admissionClasses       String[]          @default([])
+  emailAddress           String            @default("")
+  phoneNumber            String            @default("")
+  website                String            @default("")
+  activeAdmissionClasses Json[]            @default([])
+  admissions             AdmissionStatus[]
+  classes                Classes[]
+  students               Student[]
+  teachers               Teacher[]
+  StudentT               StudentT[]
 }
 
 model Admission {
@@ -67,16 +70,31 @@ model Admission {
   homeAddress    String
   Parent         Parent            @relation(fields: [parentId], references: [id])
   AdmissionStats AdmissionStatus[]
+  StudentT       StudentT[]
+}
+
+model StudentT {
+  id                Int            @id  @default(autoincrement())
+  name              String
+  schoolId          Int
+  classId           Int?
+  studentData       Admission          @relation(fields: [admissionId], references: [id])
+  admissionId       String
+  parentId          Int?
+  courseEnrollments CourseEnrollment[]
+  class             Classes?           @relation(fields: [classId], references: [id])
+  parent            Parent?            @relation(fields: [parentId], references: [id])
+  school            School?            @relation(fields: [schoolId], references: [id])
 }
 
 model AdmissionStatus {
-  id          Int       @id @default(autoincrement())
-  admissionId String  @unique
-  schoolId    Int
-  status      String    @default("Pending")
-  selectedClass String @default("")
-  admission   Admission @relation(fields: [admissionId], references: [id])
-  school      School    @relation(fields: [schoolId], references: [id])
+  id            Int       @id @default(autoincrement())
+  admissionId   String    @unique
+  schoolId      Int
+  status        String    @default("Pending")
+  selectedClass String    @default("")
+  admission     Admission @relation(fields: [admissionId], references: [id])
+  school        School    @relation(fields: [schoolId], references: [id])
 }
 
 model Student {
@@ -116,12 +134,14 @@ model Course {
 }
 
 model CourseEnrollment {
-  id        Int     @id @default(autoincrement())
-  studentId Int
-  courseId  Int
-  score     Json?
-  course    Course  @relation(fields: [courseId], references: [id])
-  student   Student @relation(fields: [studentId], references: [id])
+  id         Int       @id @default(autoincrement())
+  studentId  Int
+  courseId   Int
+  score      Json?
+  course     Course    @relation(fields: [courseId], references: [id])
+  student    Student   @relation(fields: [studentId], references: [id])
+  StudentT   StudentT? @relation(fields: [studentTId], references: [id])
+  studentTId Int?
 }
 
 enum UserRole {

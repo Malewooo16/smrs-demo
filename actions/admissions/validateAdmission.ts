@@ -22,23 +22,47 @@ export async function validateAdmission(encrpytedId:any, admissionId:string | un
     }
 }
 
-export async function updateAdmissionStatusString(admissionId:string, status:string){
-  try{
+export async function updateAdmissionStatusString(admissionId: string, status: string, schoolId:number,admissionClass:number) {
+  try {
     const updatedAdmission = await prisma.admissionStatus.update({
-      where:{
+      where: {
         admissionId
       },
-      data:{
+      data: {
         status
       }
-    })
-    revalidatePath('/')
-    return {success:true, message:"Status Updated Successfully"}
-  }
-  catch(e){
+    });
+
+    if (status === "Accepted") {
+      const admission = await prisma.admission.findUnique({
+        where: {
+          id:admissionId
+        },
+        include:{AdmissionStats:true}
+       
+      });
+
+      
+      
+
+      // Connect admission to student model
+      const student = await prisma.studentT.create({
+        data:{
+          name:`${admission?.firstName} ${admission?.lastName}`,
+          studentData:{connect:{id:admissionId}},
+          parent:{connect:{id:admission?.parentId}},
+          school:{connect:{id:schoolId}},
+          class:{connect:{id:admissionClass}}
+          
+        }
+       
+      });
+    }
+
+    revalidatePath('/');
+    return { success: true, message: "Status Updated Successfully" };
+  } catch (e) {
     console.log(e);
-    return {success:false, message:"Error Occured"}
-
+    return { success: false, message: "Error Occurred" };
   }
-
 }

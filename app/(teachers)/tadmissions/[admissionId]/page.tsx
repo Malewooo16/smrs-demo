@@ -1,4 +1,5 @@
 import { getAdmissionById, getSpecifcAdmissionById } from "@/actions/admissions/getAdmissions";
+import { getClasses } from "@/actions/schools/getClassesData";
 import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
 import { UpdateAdmissionStatus } from "@/app/main-components/AdmissionInfoAndActions";
 import { AdmissionData, IStudentAdmission } from "@/utilities/admissionTypes";
@@ -16,16 +17,20 @@ export default async function page({
   const admissionData = await getSpecifcAdmissionById(params.admissionId);
   const admissionStats = admissionData as AdmissionData;
   let schoolInfo
+  let classes
   if(session?.user.teacher){
     schoolInfo = await schoolInfoFromTeacherId(parseInt(session.user.teacher))
+    classes= await getClasses(schoolInfo?.schoolId as number, parseInt(admissionStats.selectedClass))
     
   }
   const admissionInfo = {
       parentEmail:admissionStats.admission.Parent.email,
       studentName:`${admissionStats.admission.firstName} ${admissionStats.admission.lastName}`,
-      schoolName:schoolInfo?.school?.name
+      schoolName:schoolInfo?.school?.name,
+      schoolId:schoolInfo?.schoolId,
+      classId:parseInt(admissionStats.selectedClass),
   }
- // console.log(admissionStats)
+ console.log(classes)
   return (
     <div className=" rounded-lg shadow-md p-6 mb-4 w-[54rem]">
       <Image
@@ -69,7 +74,7 @@ export default async function page({
     <div>
     <h3 className="text-lg font-semibold mb-2">Admission Status</h3>
       <p>Admission Status:{admissionStats.status}</p>
-      <p>Selected Class:{admissionStats.selectedClass}</p>
+      <p>Selected Class:{classes.name}</p>
     </div>
    
      </div>

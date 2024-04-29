@@ -46,14 +46,14 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
           <p className="text-sm mb-2">Address: {school.address}</p>
         </div>
         <p> Select the Class to be Admitted </p>
-        <select className="select select-bordered w-full max-w-xs">
-        {school.admissionClasses.map((a, index)=> (
-          <option key={index}> {a} </option>
+        <select className="select select-bordered w-full max-w-xs" onChange={(e)=>setselectedClass(e.target.value)}>
+        {school.activeAdmissionClasses.map((a, index)=> (
+          <option key={index} value={a.id.toString()}> {a.name} </option>
         ))}
 </select>
       </div>
     </div>
-    <BeemPay selectedClass={selectedClass==="" ? school.admissionClasses[0] : selectedClass} />
+    <BeemPay selectedClass={selectedClass==="" ? school.activeAdmissionClasses[0].id.toString() : selectedClass} />
    </div>
   );
 }

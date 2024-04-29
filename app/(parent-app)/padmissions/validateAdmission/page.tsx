@@ -15,7 +15,7 @@ export default async function ValidateAdmission({ searchParams }: { searchParams
     try {
         const admissionData = await getAdmissionById<IStudentAdmission | Error>(searchParams.addyId);
         const school = await getSchoolByIdForAdmission(searchParams.escuela);
-        //console.log(school)
+        console.log(school)
 
         if ('success' in admissionData) {
             // Handle error case
