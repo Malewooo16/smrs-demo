@@ -133,7 +133,7 @@ export const sendPassedAdmissionToParent = async (
   if (response.ok) {
     const failedAdmission = await updateAdmissionStatusString(
       admissionId,
-      "Rejected",
+      "Accepted",
       schoolId,
       classId
     );

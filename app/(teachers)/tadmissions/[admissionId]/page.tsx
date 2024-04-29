@@ -30,7 +30,7 @@ export default async function page({
       schoolId:schoolInfo?.schoolId,
       classId:parseInt(admissionStats.selectedClass),
   }
- console.log(classes)
+ //console.log(classes)
   return (
     <div className=" rounded-lg shadow-md p-6 mb-4 w-[54rem]">
       <Image

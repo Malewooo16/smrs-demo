@@ -18,13 +18,10 @@ export function AdmissionInfo({ schoolData }: { schoolData: any }) {
       <h2 className="text-xl font-semibold mb-2">{school.name}</h2>
       <p className="text-gray-600 mb-2">{school.address}</p>
       <p className="text-gray-600 mb-2">Email: {school.emailAddress}</p>
+      <p className="text-gray-600 mb-2"> Admission Status: {school.admissionStatus ? "Active" : "Not Active"} </p>
       <p className="text-gray-600 mb-2">
-        Admission Status: {school.admissionStatus ? "Active" : "Not Active"}
-      </p>
-      <p className="text-gray-600 mb-2">
-        Admission Dates:{" "}
-        {new Date(school.admissionDates.from).toLocaleDateString()} -{" "}
-        {new Date(school.admissionDates.to).toLocaleDateString()}
+        {new Date(school.admissionDates.from).toLocaleDateString()} -
+         {new Date(school.admissionDates.to).toLocaleDateString()}
       </p>
     </div>
   );
@@ -148,7 +145,7 @@ export function UpdateAdmissionStatus({
   const [selected, setSelected] = useState(" ");
   const [validationErr, setValidationErr] = useState("");
   useEffect(() => {
-    if (selected === "Approved" || selected === "Rejected") {
+    if (selected === "Accepted" || selected === "Rejected") {
       setValidationErr("");
     }
   }, [selected]);
@@ -156,7 +153,7 @@ export function UpdateAdmissionStatus({
     setloading(true);
     try {
       const sendFunction =
-        selected === "Approved"
+        selected === "Accepted"
           ? sendPassedAdmissionToParent
           : sendFailedAdmissionToParent;
       const results = await sendFunction(
@@ -179,7 +176,7 @@ export function UpdateAdmissionStatus({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (selected !== "Approved" && selected !== "Rejected") {
+    if (selected !== "Accepted" && selected !== "Rejected") {
       setValidationErr("Valid Status Required");
       return;
     }
@@ -207,7 +204,7 @@ export function UpdateAdmissionStatus({
             <option disabled selected>
               Select admission Status
             </option>
-            <option className="text-success text-lg">Approved</option>
+            <option className="text-success text-lg">Accepted</option>
             <option className="text-error text-lg"> Rejected</option>
           </select>
           <button
