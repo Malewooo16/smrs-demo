@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import BeemPay from "./BeemPay";
 import { useEffect, useState } from "react";
+import calculateAge from "@/utilities/ageCalculator";
 
 export default function ValidateAdmissionData({ schoolData, admission }: { schoolData: any; admission: any }) {
   const school = schoolData as ISchoolAdmission
@@ -18,7 +19,7 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
       <h2 className="text-lg">The admission for {validAdmission.firstName} {validAdmission.lastName} to {school.name} already exists </h2>
     )
   }
-
+  console.log(school)
   return (
    <div className="flex h-full">
      <div className="flex flex-col flex-1 mx-2 lg:w-auto justify-center items-start gap-10 ">
@@ -33,6 +34,7 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
           </div>
           <h2 className="text-lg font-semibold">{validAdmission.firstName} {validAdmission.lastName}</h2>
           <p className="text-sm mb-2">Date of Birth: {new Date(validAdmission.dob).toLocaleDateString()}</p>
+          <p>Age: {calculateAge(validAdmission.dob)} </p>
           <p className="text-sm mb-2">Address: {validAdmission.homeAddress}</p>
         </div>
       </div>
@@ -47,13 +49,11 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
         </div>
         <p> Select the Class to be Admitted </p>
         <select className="select select-bordered w-full max-w-xs" onChange={(e)=>setselectedClass(e.target.value)}>
-        {school.activeAdmissionClasses.map((a, index)=> (
-          <option key={index} value={a.id.toString()}> {a.name} </option>
-        ))}
+        
 </select>
       </div>
     </div>
-    <BeemPay selectedClass={selectedClass==="" ? school.activeAdmissionClasses[0].id.toString() : selectedClass} />
+    
    </div>
   );
 }

@@ -74,7 +74,7 @@ model Admission {
 }
 
 model StudentT {
-  id                Int            @id  @default(autoincrement())
+  id                Int                @id @default(autoincrement())
   name              String
   schoolId          Int
   classId           Int?
@@ -85,6 +85,7 @@ model StudentT {
   class             Classes?           @relation(fields: [classId], references: [id])
   parent            Parent?            @relation(fields: [parentId], references: [id])
   school            School?            @relation(fields: [schoolId], references: [id])
+  remarks           StudentRemarks[]
 }
 
 model AdmissionStatus {
@@ -122,6 +123,17 @@ model Teacher {
   courses    Course[]
   school     School?  @relation(fields: [schoolId], references: [id])
   user       User?
+  canAccessAdmissions  Boolean @default(false)
+  canAccessAcademics   Boolean @default(false)
+  canAccessDiscpline   Boolean @default(false)
+}
+
+model StudentRemarks {
+  id      String @id @default(uuid())
+  name    String
+  remarks String
+  StudentT   StudentT? @relation(fields: [studentTId], references: [id])
+  studentTId Int?
 }
 
 model Course {

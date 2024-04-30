@@ -52,8 +52,7 @@ export async function updateAdmissionStatusString(admissionId: string, status: s
           studentData:{connect:{id:admissionId}},
           parent:{connect:{id:admission?.parentId}},
           school:{connect:{id:schoolId}},
-          class:{connect:{id:admissionClass}}
-          
+          class:{connect:{id:admissionClass}}   
         }
        
       });

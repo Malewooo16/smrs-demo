@@ -19,9 +19,7 @@ export function AdmissionInfo({ schoolData }: { schoolData: any }) {
       <p className="text-gray-600 mb-2">{school.address}</p>
       <p className="text-gray-600 mb-2">Email: {school.emailAddress}</p>
       <p className="text-gray-600 mb-2"> Admission Status: {school.admissionStatus ? "Active" : "Not Active"} </p>
-      <p className="text-gray-600 mb-2">
-        {new Date(school.admissionDates.from).toLocaleDateString()} -
-         {new Date(school.admissionDates.to).toLocaleDateString()}
+      <p className="text-gray-600 mb-2"> Admission Dates: {new Date(school.admissionDates.from).toLocaleDateString()} - {new Date(school.admissionDates.to).toLocaleDateString()}
       </p>
     </div>
   );
@@ -82,36 +80,16 @@ export function ApprovedAdmissions({ admissionData }: { admissionData: any }) {
         <SearchInput searchHandler={searchHandler} />{" "}
       </div>
       <p className="text-lg font-semibold">Approved Admissions</p>
-      {pathname !== "/tadmissions/actions" ? (
-        <div>
-          <h2 className="text-md mb-2">
-            The admissions Below await the following actions
-          </h2>
-          <div className="flex w-[30rem] justify-between">
-            <Link
-              href={{
-                pathname: `/tadmissions/actions`,
-                query: { action: "SendJoining" },
-              }}
-            >
-              <button className="btn btn-warning ">
-                {" "}
-                Sending Joining <br /> Instructions{" "}
-              </button>
-            </Link>
-            <button className="btn btn-warning">Connection to Classes</button>
-          </div>
-        </div>
-      ) : null}
+      
       <ul className="my-4">
         {admissions
           .filter((a) => {
-            return a.status === "Approved";
+            return a.status === "Accepted";
           })
           .filter((item) => {
             return search.toLowerCase() === " "
               ? item
-              : item.admission.firstName.toLowerCase().includes(search);
+              : item.admission.firstName.toLowerCase().includes(search.toLowerCase());
           })
           .map((a) => (
             <li key={a.admissionId}>
