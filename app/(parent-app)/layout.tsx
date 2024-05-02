@@ -2,8 +2,6 @@ import Link from "next/link";
 import Navbar from "../main-components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from 'next/navigation'
-import RedirectToLogin from "../main-components/RedirectToLogin";
-import ThemeProvider from "../main-components/ThemeProvider";
 import LoginForm from "../main-components/LoginForm";
 import { authOptions } from "@/utilities/authOptions";
 
@@ -73,7 +71,7 @@ export default async function AppLayout({
     );
   } else {
       if(session?.user && session.user.role === "Teacher" || session?.user.role === "HeadTeacher" ){
-        redirect(`/tadmissions`)
+        redirect(`/tdashboard`)
       }
       redirect(`/`)
   }

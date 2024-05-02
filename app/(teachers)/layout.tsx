@@ -3,6 +3,7 @@ import Navbar from "../main-components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from 'next/navigation';
 import { authOptions } from "@/utilities/authOptions";
+import { getTeacherInfo } from "@/actions/teachers/getTeacherInfo";
 
 export default async function AppLayout({
   children,
@@ -10,6 +11,7 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  const teacher = await getTeacherInfo(parseInt(session?.user.teacher as string))
   //console.log(session?.user)
 
 
@@ -30,17 +32,17 @@ export default async function AppLayout({
                 </Link>{" "}
               </li>
               <li>
-                <Link href={`/pcalender`} className="mb-3">
+                <Link href={`/tsubjects`} className="mb-3">
                   {" "}
-                  Calender{" "}
+                  Subjects{" "}
                 </Link>{" "}
               </li>
-              <li>
+              {teacher && teacher.canAccessAdmissions ? <li>
                 <Link href={`/tadmissions`} className="mb-3">
                   {" "}
                   Admissions{" "}
-                </Link>{" "}
-              </li>
+                </Link>
+              </li> : null}
               <li>
                 <Link href={`/calender`} className="mb-3">
                   {" "}
