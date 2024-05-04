@@ -15,7 +15,7 @@ export default async function AppLayout({
   //console.log(session?.user)
 
 
-  if (session?.user && session.user.role==="Teacher") {
+  if (session?.user && session.user.role==="Teacher" || session?.user.role === "HeadTeacher") {
     return (
       <section className=" mt-2">
         <div className="sticky top-0 z-20">
@@ -23,7 +23,7 @@ export default async function AppLayout({
         </div>
         <div className="flex ">
           <div>
-            <ul className="hidden lg:flex menu  w-48 rounded-box sticky top-14 ms-1 ">
+            <ul className="hidden lg:flex menu  w-[16rem] rounded-box sticky top-14 ms-1 ">
               <li>
                 {" "}
                 <Link href={`/tdashboard`} className="mb-3">
@@ -43,6 +43,24 @@ export default async function AppLayout({
                   Admissions{" "}
                 </Link>
               </li> : null}
+              
+                <li>
+                <details open>
+      <summary>HeadMaster Actions</summary>
+      <ul>
+        <li><a>Admissions</a></li>
+        <li><a>Classes and Subjects</a></li>
+        <li><a>Teachers</a></li>
+        <li><a>Reports</a></li>
+        <li><a>Annoucements</a></li>
+        <li><a>FeedBack to Devs</a></li>
+
+      </ul>
+    </details>
+                  
+                </li>
+                
+          
               <li>
                 <Link href={`/calender`} className="mb-3">
                   {" "}
