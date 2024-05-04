@@ -3,7 +3,6 @@ import React from 'react';
 import { getAdmissionById } from '@/actions/admissions/getAdmissions';
 import { getSchoolByIdForAdmission } from '@/actions/schools/findSchools';
 import ValidateAdmissionData from '@/app/main-components/AdmissionData';
-import BeemPay from '@/app/main-components/BeemPay';
 import { IStudentAdmission } from '@/utilities/admissionTypes';
 
 interface Error {
@@ -15,7 +14,7 @@ export default async function ValidateAdmission({ searchParams }: { searchParams
     try {
         const admissionData = await getAdmissionById<IStudentAdmission | Error>(searchParams.addyId);
         const school = await getSchoolByIdForAdmission(searchParams.escuela);
-        console.log(school)
+       // console.log(school)
 
         if ('success' in admissionData) {
             // Handle error case

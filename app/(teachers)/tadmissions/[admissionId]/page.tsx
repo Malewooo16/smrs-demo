@@ -20,14 +20,14 @@ export default async function page({
   let classes
   if(session?.user.teacher){
     schoolInfo = await schoolInfoFromTeacherId(parseInt(session.user.teacher))
-    classes= await getClasses(schoolInfo?.schoolId as number, parseInt(admissionStats.selectedClass))
+    classes= await getClasses(schoolInfo?.id as number, parseInt(admissionStats.selectedClass))
     
   }
   const admissionInfo = {
       parentEmail:admissionStats.admission.Parent.email,
       studentName:`${admissionStats.admission.firstName} ${admissionStats.admission.lastName}`,
-      schoolName:schoolInfo?.school?.name,
-      schoolId:schoolInfo?.schoolId,
+      schoolName:schoolInfo?.name,
+      schoolId:schoolInfo?.id,
       classId:parseInt(admissionStats.selectedClass),
   }
  //console.log(classes)

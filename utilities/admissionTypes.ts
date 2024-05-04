@@ -56,7 +56,6 @@ export interface ISchoolAdmission {
   emailAddress:string;
   admissionStatus: boolean | null;
   admissionDates: { to: string; from: string };
-  admissionClasses : string[]
   activeAdmissionClasses:{
     id:number,
     name:string

@@ -13,7 +13,7 @@ export async function schoolInfoFromTeacherId(id:number){
             
         })
 
-        return schoolInfo  // TODO rember to return only the school information
+        return schoolInfo?.school  // TODO rember to return only the school information
     }
     catch (e){
         console.log(e)

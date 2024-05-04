@@ -1,12 +1,25 @@
+import { SiGoogleclassroom } from "react-icons/si";
+import { GiBlackBook } from "react-icons/gi";
+import Image from "next/image";
+import Link from "next/link";
+
+
 export default function ClassesAndSubjects() {
   return (
-    <div>
-      <h1 className="text-xl">Manage Classes and Subjects in your School</h1>
+    <div className="flex flex-col items-center">
+      <h1 className="text-xl mb-4">Manage Classes and Subjects in your School</h1>
       <div className="flex justify-center ">
-        <div className="flex justify-between w-[34rem]">
-          <div className="card w-20 h-24 bg-white"></div>
-          <div className="card w-20 h-24 bg-white"></div>
-          <div></div>
+        <div className="grid grid-cols-2 gap-10 ">
+          <Link href={`/classes`}><div className="card w-96 h-60 bg-base-200 flex justify-center items-center hover:outline-info hover:outline">
+          <SiGoogleclassroom size={"3em"} />
+          <p className="text-lg my-4 ">Classes</p>
+
+          </div></Link>
+          <div className="card w-96 h-60 bg-base-200 flex justify-center items-center hover:outline-info hover:outline">
+          <GiBlackBook size={"3em"} />
+          <p className="text-lg my-4 ">Subjects</p>
+          </div>
+          <div></div> 
         </div>
       </div>
     </div>

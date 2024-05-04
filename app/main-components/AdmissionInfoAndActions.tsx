@@ -145,7 +145,7 @@ export function UpdateAdmissionStatus({
       if (!results.success) {
         alert(results.message);
       }
-      router.push(`/tadmissions`);
+      router.push(`/tadmissions?T=2`);
     } catch {
       setloading(false);
       alert("Error Occurred");
@@ -174,7 +174,7 @@ export function UpdateAdmissionStatus({
       </div>
       {showForm && (
         <form onSubmit={handleSubmit}>
-          <select
+          <select title="Update Admission Status"
             className="select select-bordered w-full max-w-xl"
             required
             onChange={(e) => setSelected(e.target.value)}

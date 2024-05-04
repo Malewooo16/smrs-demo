@@ -11,7 +11,7 @@ export default function ClientWrapperTAdmissions({admissions, school}:{admission
     const T = searchParams.get("T") as string;
     const step = parseInt(T)
     const [component, setComponent] = useState(1)
-
+    console.log(school)
     useEffect(()=>{
         setComponent(step);
     }, [step])

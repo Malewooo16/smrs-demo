@@ -33,7 +33,7 @@ export default  async function Admissions() {
     <div className="container mx-auto">
   <h1 className="text-4xl text-center font-bold mb-4">Admissions</h1>
   <div className='flex justify-center'>
-    <button className='btn btn-success mb-4 '> <Link href={`/padmissions/activeSchools`}>Find Active schools</Link> </button>
+    <Link href={`/padmissions/activeSchools`}> <button className='btn btn-success mb-4 '> Find Active schools </button> </Link> 
   </div>
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {validatedAdmissions.length>0 ? validatedAdmissions.map((a:any) => (

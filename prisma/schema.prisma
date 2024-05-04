@@ -33,12 +33,15 @@ model Parent {
 }
 
 model Classes {
-  id       Int        @id @default(autoincrement())
-  name     String
-  schoolId Int?
-  school   School?    @relation(fields: [schoolId], references: [id])
-  students Student[]
-  StudentT StudentT[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  schoolId    Int?
+  school      School?       @relation(fields: [schoolId], references: [id])
+  teacher     Teacher?       @relation(fields: [teacherId], references: [id])
+  teacherId   Int?
+  students    Student[]
+  StudentT    StudentT[]
+  ClassCourse ClassCourse[]
 }
 
 model School {
@@ -114,24 +117,27 @@ model Student {
 }
 
 model Teacher {
-  id         Int      @id @default(autoincrement())
-  firstName  String
-  lastName   String
-  identifier String   @unique @default(uuid())
-  email      String   @unique
-  schoolId   Int?
-  courses    Course[]
-  school     School?  @relation(fields: [schoolId], references: [id])
-  user       User?
-  canAccessAdmissions  Boolean @default(false)
-  canAccessAcademics   Boolean @default(false)
-  canAccessDiscpline   Boolean @default(false)
+  id                  Int           @id @default(autoincrement())
+  firstName           String
+  lastName            String
+  identifier          String        @unique @default(uuid())
+  email               String        @unique
+  phoneNumber         String
+  schoolId            Int?
+  courses             Course[]
+  school              School?       @relation(fields: [schoolId], references: [id])
+  user                User?
+  canAccessAdmissions Boolean       @default(false)
+  canAccessAcademics  Boolean       @default(false)
+  canAccessDiscpline  Boolean       @default(false)
+  classCourses        ClassCourse[]
+  Classes             Classes[]
 }
 
 model StudentRemarks {
-  id      String @id @default(uuid())
-  name    String
-  remarks String
+  id         String    @id @default(uuid())
+  name       String
+  remarks    String
   StudentT   StudentT? @relation(fields: [studentTId], references: [id])
   studentTId Int?
 }
@@ -140,20 +146,37 @@ model Course {
   id          Int                @id @default(autoincrement())
   name        String
   description String?
+  schoolId    Int                @default(0)
   teacherId   Int?
   teacher     Teacher?           @relation(fields: [teacherId], references: [id])
   enrollments CourseEnrollment[]
+
+  ClassCourse ClassCourse[]
 }
 
 model CourseEnrollment {
   id         Int       @id @default(autoincrement())
   studentId  Int
   courseId   Int
-  score      Json?
+  score      Json? // Adding scores field
   course     Course    @relation(fields: [courseId], references: [id])
   student    Student   @relation(fields: [studentId], references: [id])
-  StudentT   StudentT? @relation(fields: [studentTId], references: [id])
+  studentT   StudentT? @relation(fields: [studentTId], references: [id])
   studentTId Int?
+
+  @@unique([studentId, courseId]) // Ensure uniqueness of student-course combination
+}
+
+model ClassCourse {
+  id        Int     @id @default(autoincrement())
+  classId   Int
+  courseId  Int
+  teacherId Int // Reference to the teacher accessing the data for the class
+  class     Classes @relation(fields: [classId], references: [id])
+  course    Course  @relation(fields: [courseId], references: [id])
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+
+  @@unique([classId, courseId])
 }
 
 enum UserRole {

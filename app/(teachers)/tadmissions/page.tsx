@@ -14,14 +14,14 @@ export default async function Admissions() {
   let schoolInfo
   if(session?.user.teacher){
     schoolInfo = await schoolInfoFromTeacherId(parseInt(session.user.teacher))
-    admissions = await getAdmissionsForSchool(schoolInfo?.schoolId);
+    admissions = await getAdmissionsForSchool(schoolInfo?.id);
   }
- //console.log(admissions)
+ //console.log(schoolInfo)
 
   return (
     <div>
       <h1 className="text-2xl">Admissions</h1>
-      <ClientWrapperTAdmissions admissions={admissions} school={schoolInfo?.school} />
+      <ClientWrapperTAdmissions admissions={admissions} school={schoolInfo} />
     </div>
   )
 }

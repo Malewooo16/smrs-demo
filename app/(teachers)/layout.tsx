@@ -38,18 +38,18 @@ export default async function AppLayout({
                 </Link>{" "}
               </li>
               {teacher && teacher.canAccessAdmissions ? <li>
-                <Link href={`/tadmissions`} className="mb-3">
+                <Link href={`/tadmissions?T=1`} className="mb-3">
                   {" "}
                   Admissions{" "}
                 </Link>
               </li> : null}
               
-                <li>
-                <details open>
+              {session && session.user.role === "HeadTeacher" ?   <li className="mb-3">
+                <details>
       <summary>HeadMaster Actions</summary>
       <ul>
         <li><a>Admissions</a></li>
-        <li><a>Classes and Subjects</a></li>
+        <li><Link href={`/classesAndSubjects`}>Classes and Subjects</Link></li>
         <li><a>Teachers</a></li>
         <li><a>Reports</a></li>
         <li><a>Annoucements</a></li>
@@ -58,7 +58,7 @@ export default async function AppLayout({
       </ul>
     </details>
                   
-                </li>
+                </li> : null}
                 
           
               <li>
