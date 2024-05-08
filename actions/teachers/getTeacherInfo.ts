@@ -15,3 +15,17 @@ export async function getTeacherInfo(id:number){
     }
 
 }
+
+export async function getAllTeachers(schoolId:number){
+    try{
+        const teachers = await prisma.teacher.findMany({
+            where:{schoolId},
+        })
+
+        return teachers;
+    }
+    catch(e){
+        console.log(e);
+    }
+
+}

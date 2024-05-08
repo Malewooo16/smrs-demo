@@ -15,10 +15,10 @@ export default function ClassesAndSubjects() {
           <p className="text-lg my-4 ">Classes</p>
 
           </div></Link>
-          <div className="card w-96 h-60 bg-base-200 flex justify-center items-center hover:outline-info hover:outline">
+          <Link href={`/subjects`}><div className="card w-96 h-60 bg-base-200 flex justify-center items-center hover:outline-info hover:outline">
           <GiBlackBook size={"3em"} />
           <p className="text-lg my-4 ">Subjects</p>
-          </div>
+          </div></Link>
           <div></div> 
         </div>
       </div>

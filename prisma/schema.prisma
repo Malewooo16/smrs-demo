@@ -146,6 +146,7 @@ model Course {
   id          Int                @id @default(autoincrement())
   name        String
   description String?
+  tagFor      String?
   schoolId    Int                @default(0)
   teacherId   Int?
   teacher     Teacher?           @relation(fields: [teacherId], references: [id])
