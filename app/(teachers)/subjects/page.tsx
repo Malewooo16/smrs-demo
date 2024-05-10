@@ -18,18 +18,33 @@ export default async function Subjects() {
   return (
     <div>
       <h1 className="text-lg">Subjects</h1>
-      {subjects && subjects.length > 0 ? (
-        subjects.map((s) => (
-          <div className="card w-96" key={s.id}>
-            <p> {s.name} </p>
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">
+        {subjects && subjects.length > 0 ? (
+          subjects.map((c, index) => (
+            <Link href={`/students/${c.id}`} key={c.id}>
+              {" "}
+              <div key={index} className="card bg-base-200 ">
+                <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
+                  {c.name}
+                </p>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p>Classes Data Not Available</p>
+        )}
+        <Link href={`/subjects/newSubject`}>
+          {" "}
+          <div className="card bg-white ">
+            {" "}
+            <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
+              {" "}
+              Add New Subject +{" "}
+            </p>{" "}
           </div>
-        ))
-      ) : (
-        <div>
-          <p>No Subjects Available</p>
-          <Link href={`/subjects/newSubject`}>Add a New Subject</Link>
-        </div>
-      )}
+        </Link>
+      </div>
     </div>
+    
   );
 }
