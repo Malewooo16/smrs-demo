@@ -1,7 +1,13 @@
 "use client"
 import { classTypeObject } from "@/utilities/classesInfo";
+import { useEffect, useState } from "react";
 
-export default function AddNewClassForm() {
+export default function AddNewClassForm({schoolId}:{schoolId:any}) {
+  const [className, setClassName] = useState("")
+  const [nameOfClass, setNameOfClass] = useState("");
+  useEffect(()=>{
+    setNameOfClass(className + " " + new Date().getFullYear().toString());
+  }, [className])
   return (
     <div>
       <form>
@@ -10,7 +16,8 @@ export default function AddNewClassForm() {
           <p>Select Class Type</p>
           <select
             title="select Class"
-            className="select select-bordered w-full max-w-lg"
+            className="select select-bordered w-full max-w-lg my-4"
+            onChange={(e)=>setClassName(e.target.value)}
           >
              <option disabled selected>
                   Select Class Type
@@ -24,16 +31,13 @@ export default function AddNewClassForm() {
           </select>
         </label>
         <label>
-         <select title="select Class"
-            className="select select-bordered w-full max-w-lg">
-              <option disabled selected>
-                  Select Subjects
-                </option> 
-                
-
-         </select>
+       <div className="my-4"> 
+        <p className="text-xl font-semibold">Auto Generated Class Name</p>
+        <p className="font-semibold"> {nameOfClass} </p>
+       </div>
 
         </label>
+        <button className="btn btn-success my-4">Add Class</button>
       </form>
     </div>
   );

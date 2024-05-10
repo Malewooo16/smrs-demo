@@ -27,7 +27,7 @@ export default async function Classes() {
           classes.map((c, index) => (
             <Link href={`/students/${c.id}`} key={c.id}>
               {" "}
-              <div key={index} className="card bg-base-200 w-96">
+              <div key={index} className="card bg-base-200 ">
                 <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
                   {c.name}
                 </p>
@@ -39,7 +39,7 @@ export default async function Classes() {
         )}
         <Link href={`/classes/newClass`}>
           {" "}
-          <div className="card bg-white w-96 ">
+          <div className="card bg-white">
             {" "}
             <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
               {" "}

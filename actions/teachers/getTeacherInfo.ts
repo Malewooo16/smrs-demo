@@ -29,3 +29,25 @@ export async function getAllTeachers(schoolId:number){
     }
 
 }
+
+
+export async function getTeachersCourseEnrollment(teacherId:number){
+    try{
+        const teachers = await prisma.classCourse.findMany({
+            where:{
+                teacherId
+            },
+            include:{
+                course:true,
+                class:true
+            },
+            
+        })
+
+        return teachers;
+    }
+    catch(e){
+        console.log(e);
+    }
+
+}

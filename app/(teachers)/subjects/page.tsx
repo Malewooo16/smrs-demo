@@ -21,7 +21,7 @@ export default async function Subjects() {
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">
         {subjects && subjects.length > 0 ? (
           subjects.map((c, index) => (
-            <Link href={`/students/${c.id}`} key={c.id}>
+            <Link href={`/subjects/${c.id}`} key={c.id}>
               {" "}
               <div key={index} className="card bg-base-200 ">
                 <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
