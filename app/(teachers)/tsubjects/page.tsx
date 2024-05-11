@@ -1,4 +1,5 @@
 import { getTeachersCourseEnrollment } from "@/actions/teachers/getTeacherInfo";
+import ClientFetching from "@/app/main-components/ClientFetching";
 import { authOptions } from "@/utilities/authOptions";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -24,6 +25,7 @@ export default async function tsubjects() {
                 ))
             ) : null}
           </div>
+          <ClientFetching />
       </div>
     )
   }

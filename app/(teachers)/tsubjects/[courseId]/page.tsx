@@ -1,4 +1,5 @@
 import { getStudentScores } from "@/actions/subjects/getStudentScores"
+import ScoreUpdateForm from "@/app/main-components/UpdateStudentScores"
 
 
 export default async function StudentSubjectsScores({searchParams, params}: {searchParams:{class:string, access:string}, params:{courseId:string}}) {
@@ -7,6 +8,8 @@ export default async function StudentSubjectsScores({searchParams, params}: {sea
 
    console.log(studentSubjects)
   return (
-    <div>page</div>
+    <div>
+      <ScoreUpdateForm courseId={parseInt(params.courseId)}  studentsData={studentSubjects}/>
+    </div>
   )
 }
