@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import bridg from "bridg";
 
 // Define interfaces
 interface StudentT {
@@ -21,18 +20,27 @@ function ScoreUpdateForm({
   const teacherId = parseInt(searchParams.get("access") as string);
   const classId = parseInt(searchParams.get("classId") as string);
   const [students, setStudents] = useState<StudentT[]>(studentsData);
-
   const [newScorePropertyName, setNewScorePropertyName] = useState("");
   const [newScorePropertyValue, setNewScorePropertyValue] = useState("");
 
-  console.log(students[0].scores);
-  const handleScoreUpdate = async (
+  // Function to calculate the average score for a student
+  function calculateAverageScore(student: StudentT): number {
+    const scores = Object.values(student.scores).map((score) =>
+      typeof score === "string" ? parseInt(score, 10) : score,
+    ) as number[];
+    const numericScores = scores.filter((score) => !isNaN(score)); // Filter out non-numeric scores
+    const sum = numericScores.reduce((total, score) => total + score, 0);
+    const average = sum / numericScores.length;
+    return isNaN(average) ? 0 : average; // Return 0 if there are no numeric scores
+  }
+
+  const handleScoreUpdate = (
     studentId: number,
     propertyName: string,
     propertyValue: string | number,
   ) => {
     try {
-      // Update the score for the specified student
+      // Update the score for the specified student in the local state
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
           student.id === studentId
@@ -46,6 +54,20 @@ function ScoreUpdateForm({
             : student,
         ),
       );
+      console.log(students[0].scores);
+    } catch (error) {
+      console.error("Error updating scores:", error);
+    }
+  };
+
+  const handleSaveScores = async () => {
+    try {
+      const studentsScores = students.map((student) => ({
+        studentId: student.id,
+        newScores: student.scores,
+      }));
+      console.log(classId, courseId, teacherId, studentsScores);
+      console.log("Scores updated successfully!");
     } catch (error) {
       console.error("Error updating scores:", error);
     }
@@ -82,7 +104,7 @@ function ScoreUpdateForm({
           placeholder="Enter new score property value"
           value={newScorePropertyValue}
           onChange={(e) => setNewScorePropertyValue(e.target.value)}
-          className="border border-gray-300 rounded-md px-4 py-2 mr-2"
+          className="border border-gray-300 rounded-md px-4 py-2 mr-2 hidden"
         />
         <button
           onClick={handleAddScoreProperty}
@@ -98,6 +120,7 @@ function ScoreUpdateForm({
             {Object.keys(students[0].scores).map((propertyName) => (
               <th key={propertyName}>{propertyName}</th>
             ))}
+            <th>Average</th>
           </tr>
         </thead>
         <tbody>
@@ -122,10 +145,19 @@ function ScoreUpdateForm({
                   </td>
                 ),
               )}
+              <td>{calculateAverageScore(student)}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div className="mt-4">
+        <button
+          onClick={handleSaveScores}
+          className="bg-green-500 text-white rounded-md px-4 py-2"
+        >
+          Save Scores
+        </button>
+      </div>
     </div>
   );
 }

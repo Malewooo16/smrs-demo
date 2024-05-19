@@ -85,11 +85,13 @@ model StudentT {
   name              String
   schoolId          Int
   classId           Int?
-  admissionId       String
+  admissionId       String?
   parentId          Int?
   courseEnrollments CourseEnrollment[]
+  results            Json[]
   remarks           StudentRemarks[]
-  studentData       Admission          @relation(fields: [admissionId], references: [id])
+  showRecords       Boolean  @default(false)
+  studentData       Admission?          @relation(fields: [admissionId], references: [id])
   class             Classes?           @relation(fields: [classId], references: [id])
   parent            Parent?            @relation(fields: [parentId], references: [id])
   school            School             @relation(fields: [schoolId], references: [id])

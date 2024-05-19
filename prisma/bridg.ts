@@ -19,13 +19,13 @@ export const rules: DbRules = {
     delete: (uid) => false,
   },
   classes: {
-    find: (uid) => false,
+    find: (uid) => true,
     update: (uid, data) => false,
     create: (uid, data) => false,
     delete: (uid) => false,
   },
   school: {
-    find: (uid) => false,
+    find: (uid) => true,
     update: (uid, data) => false,
     create: (uid, data) => false,
     delete: (uid) => false,
@@ -49,7 +49,7 @@ export const rules: DbRules = {
     delete: (uid) => false,
   },
   student: {
-    find: (uid) => false,
+    find: (uid) => true,
     update: (uid, data) => false,
     create: (uid, data) => false,
     delete: (uid) => false,
@@ -67,7 +67,7 @@ export const rules: DbRules = {
     delete: (uid) => false,
   },
   course: {
-    find: (uid) => false,
+    find: (uid) => true,
     update: (uid, data) => false,
     create: (uid, data) => false,
     delete: (uid) => false,
@@ -79,7 +79,7 @@ export const rules: DbRules = {
     delete: (uid) => false,
   },
   classCourse: {
-    find: (uid) => false,
+    find: (uid) => true,
     update: (uid, data) => false,
     create: (uid, data) => false,
     delete: (uid) => false,

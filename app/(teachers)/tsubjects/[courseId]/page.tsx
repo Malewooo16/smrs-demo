@@ -6,7 +6,7 @@ export default async function StudentSubjectsScores({searchParams, params}: {sea
     
    const studentSubjects = await getStudentScores(parseInt(searchParams.class as string), parseInt(params.courseId as string), parseInt(searchParams.access as string))
 
-   console.log(studentSubjects)
+   //console.log(studentSubjects)
   return (
     <div>
       <ScoreUpdateForm courseId={parseInt(params.courseId)}  studentsData={studentSubjects}/>
