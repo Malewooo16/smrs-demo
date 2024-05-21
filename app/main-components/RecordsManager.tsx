@@ -46,7 +46,7 @@ function ScoresManagementUI({ classId }: { classId: number }) {
         }, {}),
         avgScore: 0, // Initialize average score
         rank: 0, // Initialize rank
-        courseName: "Semester 1 2024",
+        courseName: "Semester 2 2024",
       }));
 
       setStudentScores(initialScores);

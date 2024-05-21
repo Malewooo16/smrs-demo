@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${inter.className} h-screen`}>
         <SessionProviders>
           {children}
-          <Toaster postion="top-right" />
+          <Toaster position="top-right" />
         </SessionProviders>
       </body>
     </html>

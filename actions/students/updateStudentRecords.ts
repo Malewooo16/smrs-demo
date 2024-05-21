@@ -18,10 +18,10 @@ export async function updateStudentResults(
 
         if (existingStudent.results) {
           updatedResults = existingStudent.results.map((result) => {
-            if (result.name === studentData.courseName) {
+            if (result?.name === studentData.courseName) {
               return {
                 name: studentData.courseName,
-                scores: studentData.newScores,
+                scores: studentData.scores,
                 rank: studentData.rank,
                 avg: studentData.avg,
               };
@@ -35,7 +35,7 @@ export async function updateStudentResults(
           if (!courseExists) {
             updatedResults.push({
               name: studentData.courseName,
-              scores: studentData.newScores,
+              scores: studentData.scores,
               rank: studentData.rank,
               avg: studentData.avg,
             });
@@ -43,7 +43,7 @@ export async function updateStudentResults(
         } else {
           updatedResults.push({
             name: studentData.courseName,
-            scores: studentData.newScores,
+            scores: studentData.scores,
             rank: studentData.rank,
             avg: studentData.avg,
           });
