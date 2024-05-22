@@ -23,7 +23,7 @@ export async function updateStudentResults(
                 name: studentData.courseName,
                 scores: studentData.scores,
                 rank: studentData.rank,
-                avg: studentData.avg,
+                avg: studentData.avgScore,
               };
             }
             return result;
@@ -65,5 +65,22 @@ export async function updateStudentResults(
     return { success: false, message: `Error updating student results` };
   } finally {
     await prisma.$disconnect();
+  }
+}
+
+export async function showStudentResults(id: number) {
+  try {
+    await prisma.studentT.update({
+      where: {
+        id,
+      },
+      data: {
+        showRecords: true,
+      },
+    });
+    return { success: true, message: "Updated Succesfully" };
+  } catch (e) {
+    console.log(e);
+    return { success: false, message: "Update Error" };
   }
 }

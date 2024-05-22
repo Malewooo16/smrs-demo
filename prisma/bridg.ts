@@ -13,7 +13,7 @@ export const rules: DbRules = {
     delete: (uid) => false,
   },
   parent: {
-    find: (uid) => false,
+    find: (uid) => true,
     update: (uid, data) => false,
     create: (uid, data) => false,
     delete: (uid) => false,

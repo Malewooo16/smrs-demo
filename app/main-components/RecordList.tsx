@@ -13,9 +13,9 @@ const RecordList = ({ records }: { records: { name: string }[] }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-xl">
       <h1 className="text-2xl font-bold mb-4">Records</h1>
-      <ul className="list-disc pl-5">
+      <ul className="flex pl-5 space-x-6 max-w-xl">
         {records.map((record) => (
           <li
             key={record.name}

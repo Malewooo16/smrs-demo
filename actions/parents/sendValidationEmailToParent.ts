@@ -1,5 +1,6 @@
 import emailjs from "@emailjs/browser";
 import { updateAdmissionStatusString } from "../admissions/validateAdmission";
+import { showStudentResults } from "../students/updateStudentRecords";
 
 export const sendValidationEmailToParent = async (
   emailAddress: string,
@@ -65,8 +66,8 @@ export const sendFailedAdmissionToParent = async (
   emailAddress: string,
   studentName: string,
   schoolName: string,
-  schoolId:number,
-  classId:number,
+  schoolId: number,
+  classId: number,
 ) => {
   const requestData = {
     api_key: "api-43198ADE6E384945996AFCE71A0AFA06",
@@ -91,8 +92,7 @@ export const sendFailedAdmissionToParent = async (
       admissionId,
       "Rejected",
       schoolId,
-      classId
-      
+      classId,
     );
     if (failedAdmission.success === false) {
       return { success: false, message: "Error While Updating Admissions" };
@@ -108,9 +108,8 @@ export const sendPassedAdmissionToParent = async (
   emailAddress: string,
   studentName: string,
   schoolName: string,
-  schoolId:number,
-  classId:number,
-
+  schoolId: number,
+  classId: number,
 ) => {
   const requestData = {
     api_key: "api-43198ADE6E384945996AFCE71A0AFA06",
@@ -135,7 +134,7 @@ export const sendPassedAdmissionToParent = async (
       admissionId,
       "Accepted",
       schoolId,
-      classId
+      classId,
     );
     if (failedAdmission.success === false) {
       return { success: false, message: "Error While Updating Admissions" };
@@ -154,3 +153,36 @@ export const sendPassedAdmissionToParent = async (
 
 //     switch(sa)
 // }
+
+export const sendResults = async (
+  studentId: number,
+  emailAddress: string,
+  semesterName: string,
+) => {
+  const requestData = {
+    api_key: process.env.NEXT_PUBLIC_SMTP_KEY,
+    to: [`<${emailAddress}>`],
+    sender: "MalewooDev <test@jaadvocates.co.tz>",
+    template_id: "5088723",
+    template_data: {
+      semester_name: semesterName,
+    },
+  };
+  const response = await fetch("https://api.smtp2go.com/v3/email/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  });
+
+  if (response.ok) {
+    const updateStudent = await showStudentResults(studentId);
+    if (updateStudent.success === false) {
+      return { success: false, message: "Error While Updating Admissions" };
+    }
+    return { success: true, message: "Admission Updated Succesfully" };
+  } else {
+    return { success: false, message: "Error While Updating Admissions" };
+  }
+};
