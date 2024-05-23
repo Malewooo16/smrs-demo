@@ -27,7 +27,7 @@ export async function POST(req:Request){
     }
 
     catch(err){
-        console.error('Error creating customer:', err);
+        console.error('Error creating customrer:', err);
         return NextResponse.json({message:"Fatal Error"}, {status:500})
     }
 }
