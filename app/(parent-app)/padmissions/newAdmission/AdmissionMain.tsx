@@ -9,6 +9,7 @@ import FileUploadModal from "@/app/main-components/FileUploadModal";
 import { IStudentAdmission } from "@/utilities/admissionTypes";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function AdmissionMain({admissions}:{admissions:any}) {
     const searchParams = useSearchParams();
@@ -16,7 +17,7 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
     const [newAdmission, setnewAdmission] = useState(false)
     const [step, setStep] = useState(1);
     const [modal, setModal] = useState(false);
-
+    const router = useRouter()
     const setNextStep = () =>{
         setStep((prev)=>prev+1)
     }
@@ -30,6 +31,11 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
     setModal(false)
     setnewAdmission(true)
   }
+  const closeModal = ()=>{
+    setModal(false);
+    router.back()
+    
+  }
     useEffect(() => {
         if(admissions.length > 0) {
             setModal(true);
@@ -39,7 +45,7 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
     return (
         <div>
             {admissions.length > 0 && (
-                <FileUploadModal isOpen={modal} onClose={() => setModal(false)} header="Saved Admissions">
+                <FileUploadModal isOpen={modal} onClose={closeModal} header="Saved Admissions">
                     <div className="flex justify-center w-full"> <button className="btn btn-success my-4" onClick={handleNewAdmissions}> Add a New Admission</button> </div>
                     <p className="text-lg mb-4">You can use your previously saved admissions</p>
                     <ul className="grid grid-rows-1 gap-4 ">

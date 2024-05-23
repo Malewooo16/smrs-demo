@@ -98,6 +98,40 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
+    CredentialsProvider({
+      // The name to display on the sign in form (e.g. 'Sign in with...')
+      id: "dev",
+      name: "dev",
+
+      credentials: {
+        passwords: { label: "password", type: "text" },
+      },
+
+      async authorize(credentials) {
+        if (!credentials?.passwords) {
+          return null;
+        }
+       // console.log(credentials.passwords)
+        const existingParent = await prisma.dev.findFirst({
+          where: { access: credentials.passwords },
+        });
+        
+       // console.log(existingParent)
+        if (!existingParent) {
+          return null;
+        }
+
+       
+
+        return {
+          id: `dev`,
+          email: `dev@loper.org`,
+          role: `dev`,
+          parent: null,
+          teacher: null,
+        };
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {

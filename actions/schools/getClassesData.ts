@@ -15,7 +15,7 @@ export const getClasses = async (schoolId:number, classId:number)=>{
     }
   catch(e){
     console.log(e);
-    return{success:false, message:"Error While Fetching Classes"}
+   
 
   }
 }

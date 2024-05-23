@@ -76,7 +76,7 @@ model Admission {
   objects        Json?
   homeAddress    String
   Parent         Parent           @relation(fields: [parentId], references: [id])
-  AdmissionStats AdmissionStatus?
+  AdmissionStats AdmissionStatus[]
   StudentT       StudentT[]
 }
 
@@ -172,7 +172,9 @@ model CourseEnrollment {
 
   @@unique([studentId, courseId])
 }
-
+model Dev{
+  access String @id @default("1738679")
+}
 model ClassCourse {
   id        Int     @id @default(autoincrement())
   classId   Int

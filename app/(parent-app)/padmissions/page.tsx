@@ -12,6 +12,7 @@ import AgeComponent from '@/app/main-components/AgeCalculator';
 export default  async function Admissions() {
   const activeAdmissions = await getActiveAdmissions();
   const validatedAdmissions = await getAllAdmissionsForParent<any>();
+  console.log(validatedAdmissions)
  
   const getStatusColor = (status:string) => {
     switch (status) {
@@ -40,7 +41,7 @@ export default  async function Admissions() {
       <div key={a.id} className="rounded-lg shadow-md border border-gray-200 p-6">
         <h2 className="text-xl font-bold mb-2">{a.firstName} {a.lastName}</h2>
         <p className="text-gray-600 mb-4">{new Date(a.dob).toLocaleDateString()}</p>
-        <AgeComponent dob={a.dob} />
+        <p className='flex text-grey-500 font-semibold'> Age: <AgeComponent dob={a.dob} /> </p>
         <h3 className="text-lg font-semibold underline">Schools</h3>
         <ul>
           {a.AdmissionStats.map((s:any) => (

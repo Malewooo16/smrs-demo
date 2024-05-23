@@ -60,14 +60,14 @@ export async function updateAdmissionStatusString(
           class: { connect: { id: admissionClass } },
         },
       });
-      const parent = await prisma.parent.update({
-        where: {
-          id: admission?.parentId,
-        },
-        data: {
-          StudentT: { connect: { id: student.id } },
-        },
-      });
+      // const parent = await prisma.parent.update({
+      //   where: {
+      //     id: admission?.parentId,
+      //   },
+      //   data: {
+      //     StudentT: { connect: { id: student.id } },
+      //   },
+      // });
     }
 
     revalidatePath("/");

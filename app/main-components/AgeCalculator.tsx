@@ -5,6 +5,6 @@ import calculateAge from "@/utilities/ageCalculator"
 
 export default function AgeComponent({dob}:{dob:Date}) {
   return (
-    <p className="text-grey-500 font-semibold mb-2">  {calculateAge(dob)}  </p>
+    <span className="text-grey-500 font-semibold mb-2">  {calculateAge(dob)}  </span>
   )
 }

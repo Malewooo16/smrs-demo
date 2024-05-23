@@ -13,7 +13,7 @@ export default async function AppLayout({
   const session = await getServerSession(authOptions);
   //console.log(session?.user)
 
-  if (session?.user && session.user.role==="Parent") {
+  if (session?.user && session.user.role==="dev") {
     return (
       <section className=" mt-2">
         <div className="sticky top-0 z-20">
@@ -24,23 +24,12 @@ export default async function AppLayout({
             <ul className="hidden lg:flex menu  w-48 rounded-box sticky top-14 ms-1 ">
               <li>
                 {" "}
-                <Link href={`/pdashboard`} className="mb-3">
+                <Link href={`/devDash`} className="mb-3">
                   {" "}
                   Dashboard{" "}
                 </Link>{" "}
               </li>
-              <li>
-                <Link href={`/studentsP`} className="mb-3">
-                  {" "}
-                  Students{" "}
-                </Link>{" "}
-              </li>
-              <li>
-                <Link href={`/padmissions`} className="mb-3">
-                  {" "}
-                  Admissions{" "}
-                </Link>{" "}
-              </li>
+              
               
 
               
@@ -60,9 +49,7 @@ export default async function AppLayout({
       </section>
     );
   } else {
-      if(session?.user && session.user.role === "Teacher" || session?.user.role === "HeadTeacher" ){
-        redirect(`/tdashboard`)
-      }
+    
       redirect(`/`)
   }
 }

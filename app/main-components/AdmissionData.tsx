@@ -13,13 +13,14 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
   const [selectedClass, setselectedClass] = useState("");
   const schoolId = parseInt(decryptData(searchParams.get("escuela"), "MySuperSecretKeyMySuperSecretKey"))
   const validAdmission = admission as IStudentAdmission;
+  console.log(validAdmission)
 
-  if(validAdmission.AdmissionStats.some(stats => stats.schoolId === schoolId )){
+  if(validAdmission.AdmissionStats && validAdmission.AdmissionStats.some(stats => stats.schoolId === schoolId )){
     return (
       <h2 className="text-lg">The admission for {validAdmission.firstName} {validAdmission.lastName} to {school.name} already exists </h2>
     )
   }
-  console.log(school)
+  //console.log(school)
   return (
    <div className="flex h-full">
      <div className="flex flex-col flex-1 mx-2 lg:w-auto justify-center items-start gap-10 ">
@@ -34,7 +35,7 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
           </div>
           <h2 className="text-lg font-semibold">{validAdmission.firstName} {validAdmission.lastName}</h2>
           <p className="text-sm mb-2">Date of Birth: {new Date(validAdmission.dob).toLocaleDateString()}</p>
-          <p>Age: {calculateAge(validAdmission.dob)} </p>
+          <p> Age: {calculateAge(validAdmission.dob)} </p>
           <p className="text-sm mb-2">Address: {validAdmission.homeAddress}</p>
         </div>
       </div>
@@ -50,7 +51,7 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
         <p> Select the Class to be Admitted </p>
         <select className="select select-bordered w-full max-w-xs" title="class selection" onChange={(e)=>setselectedClass(e.target.value.toString())}>
         {school.activeAdmissionClasses.map((ac)=>(
-          <option value={ac.id}> {ac.name}  </option>
+          <option key={ac.id} value={ac.id}> {ac.name}  </option>
         ))}
        </select>
       </div>

@@ -74,7 +74,7 @@ export default async function page({
     <div>
     <h3 className="text-lg font-semibold mb-2">Admission Status</h3>
       <p>Admission Status:{admissionStats.status}</p>
-      <p>Selected Class:{classes.name}</p>
+      <p>Selected Class:{classes?.name}</p>
     </div>
    
      </div>
