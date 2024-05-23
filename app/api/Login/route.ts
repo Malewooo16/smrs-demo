@@ -1,6 +1,7 @@
-import prisma from "@/app/db/prismadb"
+
 import { NextResponse } from "next/server"
 import { hash, compare} from 'bcrypt'
+import prisma from "@/db/prisma"
 
 export async function POST(req:Request){
     const requestBody= await req.json()
@@ -9,15 +10,15 @@ export async function POST(req:Request){
         return
     }
     try{
-        const existingUser= await prisma.users.findUnique({
-            where:{emailAddress:userName}
+        const existingUser= await prisma.user.findUnique({
+            where:{username:userName}
         })
     
         if(!existingUser){
             return NextResponse.json({user:null, message:"User Doesn't exist"}, {status:408})
         }
     
-       const comparePassword= await compare(password, existingUser.hashedPassword)
+       const comparePassword= await compare(password, existingUser.password)
        if(!comparePassword){
         return NextResponse.json({user:null, message:"Invalid Password"}, {status:409})
     }
