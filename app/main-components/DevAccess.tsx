@@ -28,7 +28,7 @@ export default function DevAccess() {
   };
   return (
     <div className="flex items-center justify-center h-screen">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+      <form className="bg-base-200 shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
         <div className="mb-4">
         <label className="block text-gray-700 text-xl font-bold mb-2">
             Dev Access
