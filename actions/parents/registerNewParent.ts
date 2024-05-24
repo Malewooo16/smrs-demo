@@ -53,7 +53,7 @@ export default async function registerNewParent(formData:UserData)  {
         return{success:true, message:"Parent added successfully", identifier:newParent.identifier, name:newParent.firstName}
     }
     catch(e){
-        console.log()
+        console.log(e)
         return{error:true, message:"Failed to add parent"}
     }
 
