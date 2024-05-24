@@ -12,7 +12,7 @@ export default async function page({searchParams}:{searchParams:any}) {
   let schoolInfo
   if(session?.user.teacher){
     schoolInfo = await schoolInfoFromTeacherId(parseInt(session.user.teacher))
-    admissions = await getAdmissionsForSchool(schoolInfo?.schoolId);
+    admissions = await getAdmissionsForSchool(schoolInfo?.id);
   }
     //console.log(searchParams)
  if(action === "SendJoining"){

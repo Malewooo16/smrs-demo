@@ -35,10 +35,10 @@ export default async function StudentsPerClass({params, searchParams}:{params: {
       {students && students.length >0 ? students.map((student) => (
         <tr key={student.id} className="hover:bg-gray-100">
           <td className="px-6 py-4 whitespace-nowrap">{student.id}</td>
-          <td className="px-6 py-4 whitespace-nowrap">{student.studentData.firstName}</td>
-          <td className="px-6 py-4 whitespace-nowrap">{student.studentData.lastName}</td>
-          <td className="px-6 py-4 whitespace-nowrap"> <AgeComponent dob={student.studentData.dob} /> </td>
-          <td className="px-6 py-4 whitespace-nowrap">{student.studentData.homeAddress}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{student.studentData?.firstName}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{student.studentData?.lastName}</td>
+          <td className="px-6 py-4 whitespace-nowrap"> <AgeComponent dob={student.studentData?.dob as Date} /> </td>
+          <td className="px-6 py-4 whitespace-nowrap">{student.studentData?.homeAddress}</td>
         </tr>
       )) : (<p>No Students Available</p>)}
       {/* End JavaScript code */}

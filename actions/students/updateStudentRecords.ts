@@ -1,11 +1,11 @@
 "use server";
 import prisma from "@/db/prisma";
 export async function updateStudentResults(
-  students,
+  students :any,
 ): Promise<{ success: boolean; message: string }> {
   try {
     await prisma.$transaction(async (tx) => {
-      const updates = students.map(async (studentData) => {
+      const updates = students.map(async (studentData:any) => {
         const existingStudent = await tx.studentT.findUnique({
           where: { id: studentData.studentId },
         });
@@ -18,6 +18,7 @@ export async function updateStudentResults(
 
         if (existingStudent.results) {
           updatedResults = existingStudent.results.map((result) => {
+            //@ts-ignore
             if (result?.name === studentData.courseName) {
               return {
                 name: studentData.courseName,
@@ -30,6 +31,7 @@ export async function updateStudentResults(
           });
 
           const courseExists = updatedResults.some(
+            //@ts-ignore
             (result) => result.name === studentData.courseName,
           );
           if (!courseExists) {
@@ -51,6 +53,7 @@ export async function updateStudentResults(
 
         return tx.studentT.update({
           where: { id: studentData.studentId },
+          //@ts-ignore
           data: { results: updatedResults },
         });
       });

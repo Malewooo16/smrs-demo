@@ -28,6 +28,7 @@ interface StudentData {
   scores: any;
   rank: any;
   avg: string;
+  showRecords:boolean;
 }
 
 const RecordDetail = () => {
@@ -69,6 +70,7 @@ const RecordDetail = () => {
               scores: semesterResult.scores,
               rank: semesterResult.rank,
               avg: semesterResult.avg,
+              showRecords:student.showRecords
             }
           : null;
       }).filter((student) => student !== null) as StudentData[];
@@ -87,7 +89,7 @@ const RecordDetail = () => {
     }
   }, [recordName]);
 
-  if (!recordName) {
+  if (!recordData) {
     return <div>No record selected.</div>;
   }
 
@@ -154,6 +156,8 @@ const RecordDetail = () => {
               <td className="px-6 py-4 whitespace-nowrap">
                 {Object.entries(student.scores).map(([subject, score]) => (
                   <div key={subject}>
+                    {/* 
+                    //@ts-ignore */}
                     {subject}: {score}
                   </div>
                 ))}
@@ -164,7 +168,8 @@ const RecordDetail = () => {
                 <SendToParent
                   studentId={student.id}
                   email={student.parentEmail as string}
-                  semesterName={recordName}
+                  semesterName={recordName as string}
+                  showRecords={student.showRecords}
                 />
               </td>
             </tr>

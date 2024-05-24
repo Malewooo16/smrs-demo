@@ -17,6 +17,7 @@ export default async function Classes() {
     schoolId = school?.id || 0;
   }
 
+ if(session && session.user.role === "HeadTeacher"){
   const classes = await getAllClasses(schoolId as number);
 
   return (
@@ -40,4 +41,5 @@ export default async function Classes() {
       </div>
     </div>
   );
+ }
 }

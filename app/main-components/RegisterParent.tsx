@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import registerNewParent from "@/actions/parents/registerNewParent";
-import sendValidationEmailToParent from "@/actions/parents/sendValidationEmailToParent";
+import {sendValidationEmailToParent} from "@/actions/parents/sendValidationEmailToParent";
 
 
 

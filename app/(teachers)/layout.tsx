@@ -43,6 +43,12 @@ export default async function AppLayout({
                   Admissions{" "}
                 </Link>
               </li> : null}
+              {teacher && teacher.canAccessAcademics ? <li>
+                <Link href={`/trecords`} className="mb-3">
+                  {" "}
+                  Academic Records{" "}
+                </Link>
+              </li> : null}
               
               {session && session.user.role === "HeadTeacher" ?   <li className="mb-3">
                 <details>

@@ -1,16 +1,13 @@
 import prisma from "@/db/prisma";
-import { JsonObject } from "@prisma/client/runtime/library";
 
 interface CourseScores {
-  [test: string]: string | number | boolean | null; // Adjusted type to include null
+  [test: string]: string | number;
 }
-  
+
 interface FormattedStudent {
   id: number;
   name: string;
-  scores: {
-    [courseName: string]: CourseScores;
-  };
+  scores: { [courseName: string]: CourseScores };
 }
 
 export async function getStudentScores(classId: number, courseId: number, teacherId: number): Promise<FormattedStudent[] | undefined> {
@@ -38,18 +35,17 @@ export async function getStudentScores(classId: number, courseId: number, teache
       },
     });
 
-    const formattedStudents = students.map((student) => {
+    const formattedStudents: FormattedStudent[] = students.map((student) => {
       const scores: { [courseName: string]: CourseScores } = {};
 
       student.courseEnrollments.forEach((enrollment) => {
         const courseName = enrollment.course.name;
 
-        // Check if score is null or not
-        if (enrollment.score !== null) {
-          scores[courseName] = enrollment.score as CourseScores; // Type assertion
-        } else {
-          scores[courseName] = {}; // Assign empty object if score is null
-        }
+        // Ensure the score is of type CourseScores
+        const score = enrollment.score 
+
+        // If score is not null, assign it to the courseName key, otherwise assign an empty object
+        scores[courseName] = score ? (score as CourseScores) : {};
       });
 
       return {
@@ -61,6 +57,7 @@ export async function getStudentScores(classId: number, courseId: number, teache
 
     return formattedStudents;
   } catch (e) {
-    console.log(e);
+    console.error(e);
+    return undefined;
   }
 }

@@ -20,9 +20,7 @@ interface StudentData {
 import prisma from "@/db/prisma";
 import { authOptions } from "@/utilities/authOptions";
 import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react"
-
-import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default  async function StudentsInformation() {
  

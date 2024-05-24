@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 // Define interfaces
-interface StudentT {
+interface CourseScores {
+  [test: string]: string | number;
+}
+
+interface FormattedStudent {
   id: number;
   name: string;
-  scores: { [property: string]: number | string };
+  scores: { [courseName: string]: CourseScores };
 }
 
 function ScoreUpdateForm({
@@ -14,19 +18,21 @@ function ScoreUpdateForm({
   studentsData,
 }: {
   courseId: number;
-  studentsData: StudentT[];
+  studentsData: FormattedStudent[];
 }) {
   const searchParams = useSearchParams();
   const teacherId = parseInt(searchParams.get("access") as string);
   const classId = parseInt(searchParams.get("classId") as string);
-  const [students, setStudents] = useState<StudentT[]>(studentsData);
+  const [students, setStudents] = useState<FormattedStudent[]>(studentsData);
   const [newScorePropertyName, setNewScorePropertyName] = useState("");
   const [newScorePropertyValue, setNewScorePropertyValue] = useState("");
 
   // Function to calculate the average score for a student
-  function calculateAverageScore(student: StudentT): number {
-    const scores = Object.values(student.scores).map((score) =>
-      typeof score === "string" ? parseInt(score, 10) : score,
+  function calculateAverageScore(student: FormattedStudent): number {
+    const scores = Object.values(student.scores).flatMap((courseScores) =>
+      Object.values(courseScores).map((score) =>
+        typeof score === "string" ? parseInt(score, 10) : score
+      )
     ) as number[];
     const numericScores = scores.filter((score) => !isNaN(score)); // Filter out non-numeric scores
     const sum = numericScores.reduce((total, score) => total + score, 0);
@@ -36,8 +42,9 @@ function ScoreUpdateForm({
 
   const handleScoreUpdate = (
     studentId: number,
-    propertyName: string,
-    propertyValue: string | number,
+    courseName: string,
+    testName: string,
+    propertyValue: string | number
   ) => {
     try {
       // Update the score for the specified student in the local state
@@ -48,11 +55,14 @@ function ScoreUpdateForm({
                 ...student,
                 scores: {
                   ...student.scores,
-                  [propertyName]: propertyValue,
+                  [courseName]: {
+                    ...student.scores[courseName],
+                    [testName]: propertyValue,
+                  },
                 },
               }
-            : student,
-        ),
+            : student
+        )
       );
       console.log(students[0].scores);
     } catch (error) {
@@ -80,9 +90,11 @@ function ScoreUpdateForm({
         ...student,
         scores: {
           ...student.scores,
-          [newScorePropertyName]: newScorePropertyValue, // Initialize with empty value
+          [newScorePropertyName]: {
+            new: newScorePropertyValue, // Initialize with new property
+          },
         },
-      })),
+      }))
     );
     // Reset input fields
     setNewScorePropertyName("");
@@ -117,8 +129,8 @@ function ScoreUpdateForm({
         <thead>
           <tr>
             <th>Name</th>
-            {Object.keys(students[0].scores).map((propertyName) => (
-              <th key={propertyName}>{propertyName}</th>
+            {students.length > 0 && Object.keys(students[0].scores).map((courseName) => (
+              <th key={courseName}>{courseName}</th>
             ))}
             <th>Average</th>
           </tr>
@@ -128,22 +140,27 @@ function ScoreUpdateForm({
             <tr key={student.id}>
               <td>{student.name}</td>
               {Object.entries(student.scores).map(
-                ([propertyName, propertyValue]) => (
-                  <td key={propertyName}>
-                    <input
-                      type="text"
-                      value={propertyValue}
-                      onChange={(e) => {
-                        handleScoreUpdate(
-                          student.id,
-                          propertyName,
-                          e.target.value,
-                        );
-                      }}
-                      className="border border-gray-300 rounded-md px-4 py-2 w-full"
-                    />
+                ([courseName, courseScores]) => (
+                  <td key={courseName}>
+                    {Object.entries(courseScores).map(([testName, testValue]) => (
+                      <div key={testName}>
+                        <input
+                          type="text"
+                          value={testValue}
+                          onChange={(e) => {
+                            handleScoreUpdate(
+                              student.id,
+                              courseName,
+                              testName,
+                              e.target.value
+                            );
+                          }}
+                          className="border border-gray-300 rounded-md px-4 py-2 w-full"
+                        />
+                      </div>
+                    ))}
                   </td>
-                ),
+                )
               )}
               <td>{calculateAverageScore(student)}</td>
             </tr>

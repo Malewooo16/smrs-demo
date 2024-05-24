@@ -1,15 +1,41 @@
-import { getStudentScores } from "@/actions/subjects/getStudentScores"
-import ScoreUpdateForm from "@/app/main-components/UpdateStudentScores"
-
+import { getStudentScores } from "@/actions/subjects/getStudentScores";
+import ScoreUpdateForm from "@/app/main-components/UpdateStudentScores";
 
 export default async function StudentSubjectsScores({searchParams, params}: {searchParams:{class:string, access:string}, params:{courseId:string}}) {
     
-   const studentSubjects = await getStudentScores(parseInt(searchParams.class as string), parseInt(params.courseId as string), parseInt(searchParams.access as string))
+   // Parse the parameters and validate them
+   const classId = parseInt(searchParams.class as string);
+   const courseId = parseInt(params.courseId as string);
+   const accessId = parseInt(searchParams.access as string);
+   
+   // Check if parsing was successful and all parameters are valid
+   if (isNaN(classId) || isNaN(courseId) || isNaN(accessId)) {
+       // Handle the case where one or more parameters are invalid
+       console.error("Invalid parameters passed");
+       return (
+         <div>
+           <p>Error: Invalid parameters provided.</p>
+         </div>
+       );
+   }
 
-   //console.log(studentSubjects)
-  return (
-    <div>
-      <ScoreUpdateForm courseId={parseInt(params.courseId)}  studentsData={studentSubjects}/>
-    </div>
-  )
+   // Fetch student scores
+   const studentSubjects = await getStudentScores(classId, courseId, accessId);
+
+   // Check if studentSubjects is valid
+   if (!studentSubjects) {
+       // Handle the case where studentSubjects is undefined or null
+       console.error("Failed to fetch student scores");
+       return (
+         <div>
+           <p>Error: Failed to load student scores.</p>
+         </div>
+       );
+   }
+
+   return (
+     <div>
+       <ScoreUpdateForm courseId={courseId} studentsData={studentSubjects}/>
+     </div>
+   );
 }

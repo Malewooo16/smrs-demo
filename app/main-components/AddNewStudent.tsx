@@ -24,7 +24,7 @@ export default function RegisterNewStudent() {
 
        {step === 1 && <AddNewUser nextStep={step} setNextStep={setNextStep} />}
 
-       {step === 2 && <UserPicUpload nextStep={step}  setNextStep={setNextStep}/>}
+       {step === 2 && <UserPicUpload   setNextStep={setNextStep}/>}
 
        {step === 3 && <ValidateUser finalStep={step} backToStart={backToStart}/> }
     </div>

@@ -1,3 +1,5 @@
+
+//@ts-nocheck
 import prisma from "@/db/prisma"
 import Image from "next/image";
 
@@ -27,7 +29,7 @@ export default async function StudentData({params}:{params:{studentId:string}}) 
                     <h2 className="text-lg font-bold">Results:</h2>
                     {student.results.map((result, index) => (
                       <div key={index} className="mt-2">
-                        <h3 className="text-md font-bold">{result.name}</h3>
+                        <h3 className="text-md font-bold">{result?.name}</h3>
                         <p>Rank: {result.rank}</p>
                         <p>Scores:</p>
                         <ul className="list-disc pl-4">

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import bridg from "bridg";
 import { useSearchParams } from "next/navigation";
@@ -21,9 +22,9 @@ function UpdateScoresWithFetching({ courseId }: { courseId: number }) {
   const [newScoreColumnName, setNewScoreColumnName] = useState("");
 
   useEffect(() => {
-    function fetchStudentScores() {
+    async function fetchStudentScores() {
       try {
-        const studentsData = bridg.studentT.findMany({
+        const studentsData = await bridg.studentT.findMany({
           where: {
             classId,
           },
@@ -46,10 +47,10 @@ function UpdateScoresWithFetching({ courseId }: { courseId: number }) {
           },
         });
 
-        const formattedStudents = studentsData.map((student) => {
+        const formattedStudents: StudentT[] = studentsData.map((student: any) => {
           const scores: { [courseName: string]: CourseScores } = {};
 
-          student.courseEnrollments.forEach((enrollment) => {
+          student.courseEnrollments.forEach((enrollment: any) => {
             const courseName = enrollment.course.name;
 
             // Check if score is null or not
@@ -78,10 +79,11 @@ function UpdateScoresWithFetching({ courseId }: { courseId: number }) {
 
   const handleScoreUpdate = async (
     studentId: number,
-    newScores: { [courseName: string]: CourseScores },
+    newScores: { [courseName: string]: CourseScores }
   ) => {
     try {
       // Your update score logic here
+      console.log("Scores updated for student:", studentId, newScores);
     } catch (error) {
       console.error("Error updating scores:", error);
     }
@@ -96,7 +98,7 @@ function UpdateScoresWithFetching({ courseId }: { courseId: number }) {
           ...student.scores,
           [newScoreColumnName]: {}, // Initialize with empty object
         },
-      })),
+      }))
     );
   };
 
@@ -122,7 +124,7 @@ function UpdateScoresWithFetching({ courseId }: { courseId: number }) {
                   <input
                     key={test}
                     type="text"
-                    value={score}
+                    value={score as string}
                     onChange={(e) => {
                       const newScores = {
                         ...student.scores,

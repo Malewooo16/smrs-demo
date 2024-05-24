@@ -5,7 +5,7 @@ import RecordSuspense from "@/app/main-components/RecordDetails";
 
 const records = [
   { name: "Semester 1 2024" },
-  { name: "Record2" },
+  { name: "Semester 2 2024" },
   { name: "Record3" },
   // Add more records as needed
 ];

@@ -7,10 +7,12 @@ export default function SendToParent({
   studentId,
   email,
   semesterName,
+  showRecords
 }: {
   studentId: number;
   email: string;
   semesterName: string;
+  showRecords:boolean
 }) {
   const [disable, setDisable] = useState(false);
   const sendEmailToParent = async () => {
@@ -25,7 +27,7 @@ export default function SendToParent({
   return (
     <button
       className="btn btn-success"
-      disabled={disable}
+      disabled={!disable ? showRecords : disable}
       onClick={sendEmailToParent}
     >
       {" "}
