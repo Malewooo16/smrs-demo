@@ -3,7 +3,12 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { v4 as uuidv4 } from 'uuid';
 
+// Function to generate a random UUID
+function generateUUID(): string {
+  return uuidv4();
+}
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
@@ -85,7 +90,7 @@ export const authOptions: NextAuthOptions = {
             id: existingParent.id,
           },
           data: {
-            identifier: "haujui/hauna",
+            identifier: generateUUID(),
           },
         });
 

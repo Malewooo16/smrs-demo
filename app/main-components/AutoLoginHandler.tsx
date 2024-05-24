@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Audio, ColorRing, Vortex } from 'react-loader-spinner'
 
 export default function AutoLoginHandler() {
@@ -27,7 +28,7 @@ export default function AutoLoginHandler() {
                 }
             } catch (error) {
                 console.log(error)
-                alert('Sign in failed');
+                toast.error('Sign in failed');
             }
         };
         login();
