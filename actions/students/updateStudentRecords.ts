@@ -39,7 +39,7 @@ export async function updateStudentResults(
               name: studentData.courseName,
               scores: studentData.scores,
               rank: studentData.rank,
-              avg: studentData.avg,
+              avg: studentData.avgScore,
             });
           }
         } else {
@@ -47,7 +47,7 @@ export async function updateStudentResults(
             name: studentData.courseName,
             scores: studentData.scores,
             rank: studentData.rank,
-            avg: studentData.avg,
+            avg: studentData.avgScore,
           });
         }
 
