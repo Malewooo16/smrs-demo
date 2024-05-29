@@ -5,6 +5,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { v4 as uuidv4 } from 'uuid';
 
+
 // Function to generate a random UUID
 function generateUUID(): string {
   return uuidv4();
@@ -41,10 +42,12 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        if (credentials.password !== existingUser.password) {
-          console.log("validation error password error");
-          return null;
-        }
+        const passwordMatch = await compare(credentials.password, existingUser.password)
+             
+            if(!passwordMatch){
+                return null
+            }
+
         return {
           id: `${existingUser.id}`,
           email: existingUser.username,

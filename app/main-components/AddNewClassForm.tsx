@@ -11,12 +11,12 @@ export default function AddNewClassForm({ schoolId }: { schoolId: any }) {
     setNameOfClass(className + " " + new Date().getFullYear().toString());
   }, [className]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const results = await createNewClass(nameOfClass, schoolId);
     results.success
       ? toast.success(results.message)
-      : toast.error(results.error);
+      : toast.error(results.message);
   };
   return (
     <div>

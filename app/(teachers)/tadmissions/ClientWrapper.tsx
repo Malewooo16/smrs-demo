@@ -1,5 +1,6 @@
 "use client"
-import { AdmissionInfo, ApprovedAdmissions, EditAdmissionInfo } from "@/app/main-components/AdmissionInfoAndActions";
+import { AdmissionInfo, ApprovedAdmissions } from "@/app/main-components/AdmissionInfoAndActions";
+import { EditAdmissionInfo } from "@/app/main-components/EditAdmissionInfo";
 import SearchInput from "@/app/main-components/SearchInput"
 import { AdmissionData } from "@/utilities/admissionTypes"
 import { useEffect, useState } from "react"
