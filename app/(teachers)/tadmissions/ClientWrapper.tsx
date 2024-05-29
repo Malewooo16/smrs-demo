@@ -1,5 +1,5 @@
 "use client"
-import { AdmissionInfo, ApprovedAdmissions } from "@/app/main-components/AdmissionInfoAndActions";
+import { AdmissionInfo, ApprovedAdmissions, EditAdmissionInfo } from "@/app/main-components/AdmissionInfoAndActions";
 import SearchInput from "@/app/main-components/SearchInput"
 import { AdmissionData } from "@/utilities/admissionTypes"
 import { useEffect, useState } from "react"
@@ -11,7 +11,7 @@ export default function ClientWrapperTAdmissions({admissions, school}:{admission
     const T = searchParams.get("T") as string;
     const step = parseInt(T)
     const [component, setComponent] = useState(1)
-    console.log(school)
+    //console.log(school)
     useEffect(()=>{
         setComponent(step);
     }, [step])
@@ -31,9 +31,10 @@ export default function ClientWrapperTAdmissions({admissions, school}:{admission
                 </div>
             </div>
 
-            {component === 1 ? <AdmissionInfo schoolData={school} /> : null}
+            {component === 1 ? <AdmissionInfo schoolData={school} renderHandler={renderHandler} /> : null}
             {component === 2  ? <PendingAdmissions admissionData={admissions} /> : null}
             {component === 3 ? <ApprovedAdmissions admissionData={admissions} /> : null}
+            {component === 4 ? <EditAdmissionInfo schoolData={school}/> : null}
         </div>
     )
 }

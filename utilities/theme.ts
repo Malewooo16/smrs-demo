@@ -1,6 +1,6 @@
 const Themes = [
     'light',
-    'dark',
+    'black',
     // 'cupcake',
     // 'bumblebee',
     // 'emerald',

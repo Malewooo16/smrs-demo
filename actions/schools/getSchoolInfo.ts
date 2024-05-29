@@ -1,23 +1,22 @@
-"use server"
+"use server";
 
-import prisma from "@/db/prisma"
+import prisma from "@/db/prisma";
 
+export async function schoolInfoFromTeacherId(id: number) {
+  try {
+    const schoolInfo = await prisma.teacher.findUnique({
+      where: { id },
+      include: {
+        school: {
+          include: {
+            classes: true,
+          },
+        },
+      },
+    });
 
-export async function schoolInfoFromTeacherId(id:number){ 
-
-    try{
-        const schoolInfo = await prisma.teacher.findUnique({
-            where:{id},
-            include:{school:true},
-            
-            
-        })
-
-        return schoolInfo?.school  // TODO rember to return only the school information
-    }
-    catch (e){
-        console.log(e)
-        
-    }
-    
+    return schoolInfo?.school; // TODO rember to return only the school information
+  } catch (e) {
+    console.log(e);
+  }
 }
