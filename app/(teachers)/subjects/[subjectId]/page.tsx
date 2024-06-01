@@ -55,7 +55,7 @@ export default async function page({params}:{params:{subjectId:string}}) {
                         <p className="font-semibold"> Current Teacher  </p>
                         <ul>
                         {teacherNames?.map((name, index) => (
-          <li key={index} className="my-10" >{name}</li>
+          <li key={index} className="my-2" >{name}</li>
         ))}
                         </ul>
                         <form action={updateSubject}>
