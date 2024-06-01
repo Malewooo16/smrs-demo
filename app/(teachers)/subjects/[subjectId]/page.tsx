@@ -52,7 +52,7 @@ export default async function page({params}:{params:{subjectId:string}}) {
                 classes.map((c)=>(
                     <div key={c.id} className="card bg-base-200 my-2 p-4">
                         <p className="font-semibold"> {c.name} </p>
-                        <p className="font-semibold"> Current Teacher'(s)  </p>
+                        <p className="font-semibold"> Current Teacher  </p>
                         <ul>
                         {teacherNames?.map((name, index) => (
           <li key={index} className="my-10" >{name}</li>
