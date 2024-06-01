@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/db/prisma";
+import { revalidatePath } from "next/cache";
 interface OptionValue {
   classId: number;
   teacherId: number;
@@ -31,6 +32,7 @@ export async function updateTeacherSubject(
         teacherId: teacherId,
       },
     });
+    revalidatePath(`/`)
   } catch (e) {
     console.log(e);
   }

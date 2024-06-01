@@ -21,7 +21,11 @@ export default async function page({params}:{params:{subjectId:string}}) {
   const subject = await getSubjectData(schoolId as number, parseInt(params.subjectId))
   const teachers = await getAllTeachers(schoolId as number)
 
-  // console.log(classes)
+   //console.log(classes?.map((item) => item.ClassCourse.filter( (item) => item.course.id === parseInt(params.subjectId))).map((item) => item[0].teacher.firstName))
+
+
+
+
 
   const updateSubject = async (formData:FormData) =>{
    "use server"
@@ -40,6 +44,7 @@ export default async function page({params}:{params:{subjectId:string}}) {
                 classes.map((c)=>(
                     <div key={c.id} className="card bg-base-200 my-2 p-4">
                         <p className="font-semibold"> {c.name} </p>
+                        <p className="font-semibold"> Current Teacher {} </p>
                         <form action={updateSubject}>
                             <label>
                                 <p> Select Teacher to Teach the Class </p>

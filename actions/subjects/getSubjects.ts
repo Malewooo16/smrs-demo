@@ -20,6 +20,7 @@ export async function getSubjectData(schoolId: number, id: number) {
         id,
         schoolId,
       },
+    
     });
     return subject;
   } catch (error) {

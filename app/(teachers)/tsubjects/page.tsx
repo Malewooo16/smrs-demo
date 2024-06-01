@@ -25,7 +25,7 @@ export default async function tsubjects() {
                 ))
             ) : null}
           </div>
-          <ClientFetching />
+        
       </div>
     )
   }

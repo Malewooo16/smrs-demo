@@ -6,6 +6,25 @@ export async function getAllClasses(schoolId: number) {
       where: {
         schoolId,
       },
+      select: {
+        id: true,
+        name: true,
+        ClassCourse: {
+          select: {
+            course:{
+              select: {
+                id:true
+              }
+            },
+            teacher: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return classes;
