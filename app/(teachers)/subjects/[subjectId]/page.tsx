@@ -21,8 +21,16 @@ export default async function page({params}:{params:{subjectId:string}}) {
   const subject = await getSubjectData(schoolId as number, parseInt(params.subjectId))
   const teachers = await getAllTeachers(schoolId as number)
 
-   //console.log(classes?.map((item) => item.ClassCourse.filter( (item) => item.course.id === parseInt(params.subjectId))).map((item) => item[0].teacher.firstName))
+   //console.log(classes?.map((item) => item.ClassCourse.filter( (item) => item.course.id === parseInt(params.subjectId)).map((item) => item.teacher.firstName)))
 
+   const teacherNames = classes
+   ?.map((item) => item.ClassCourse
+     .filter((courseItem) => courseItem.course.id === parseInt(params.subjectId))
+     .map((courseItem) => `${courseItem.teacher.firstName} ${courseItem.teacher.lastName}`)
+   )
+   .flat();
+
+   //console.log(teacherNames)
 
 
 
@@ -44,10 +52,15 @@ export default async function page({params}:{params:{subjectId:string}}) {
                 classes.map((c)=>(
                     <div key={c.id} className="card bg-base-200 my-2 p-4">
                         <p className="font-semibold"> {c.name} </p>
-                        <p className="font-semibold"> Current Teacher {} </p>
+                        <p className="font-semibold"> Current Teacher'(s)  </p>
+                        <ul>
+                        {teacherNames?.map((name, index) => (
+          <li key={index} className="my-10" >{name}</li>
+        ))}
+                        </ul>
                         <form action={updateSubject}>
                             <label>
-                                <p> Select Teacher to Teach the Class </p>
+                                <p> Update Teacher to Teach the Class </p>
                                 <select className="select select-bordered w-full max-w-xs" required name="teacherId" >
                                     {teachers && teachers.length > 0 ? (
                                         teachers.map((t)=>(
