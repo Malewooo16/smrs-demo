@@ -13,6 +13,7 @@ import {
 
 import { FaEdit } from "react-icons/fa";
 
+
 export function AdmissionInfo({
   schoolData,
   renderHandler,

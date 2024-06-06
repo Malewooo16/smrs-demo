@@ -33,14 +33,21 @@ export async function updateAdmissionStatusString(
   admissionClass: number,
 ) {
   try {
-    const updatedAdmission = await prisma.admissionStatus.update({
+    const admissionStatus = await prisma.admissionStatus.findFirst({
       where: {
         admissionId,
-      },
-      data: {
-        status,
+        schoolId
       },
     });
+    
+    await prisma.admissionStatus.update({
+      where:{
+        id:admissionStatus?.id
+      },
+      data:{
+        status
+      }
+    })
 
     if (status === "Accepted") {
       const admission = await prisma.admission.findUnique({

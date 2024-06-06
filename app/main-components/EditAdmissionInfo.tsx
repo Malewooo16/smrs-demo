@@ -4,6 +4,7 @@ import { updateSchoolInfo } from "@/actions/schools/updateSchool";
 import toast from "react-hot-toast";
 
 
+
 interface ISchoolData {
   id:number;
   name: string;
