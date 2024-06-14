@@ -17,11 +17,10 @@ export default function Drawer (){
     <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
       {/* Sidebar content here */}
       <h1 className="text-lg my-2"> Elegance </h1>
-      <li> <Link href={`/dashboard`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Dashboard</Link> </li>
-      <li> <Link href={`/workflows`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Workflows</Link> </li>
-      <li> <Link href={`/analytics`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Analytics</Link> </li>
-      <li> <Link href={`/calender`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Calender</Link> </li>
-      <li> <Link href={`/teams`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Teams</Link> </li>
+      <li> <Link href={`/pdashboard`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Dashboard</Link> </li>
+      <li> <Link href={`/studentsP`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Students</Link> </li>
+      <li> <Link href={`/padmissions`} onClick={() => {document.getElementById("my-drawer")?.click()}}>Admissions</Link> </li>
+ 
       
     </ul>
   </div>
