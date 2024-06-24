@@ -35,7 +35,7 @@ export default function ClientWrapperTAdmissions({admissions, school}:{admission
             {component === 1 ? <AdmissionInfo schoolData={school} renderHandler={renderHandler} /> : null}
             {component === 2  ? <PendingAdmissions admissionData={admissions} /> : null}
             {component === 3 ? <ApprovedAdmissions admissionData={admissions} /> : null}
-            {component === 4 ? <EditAdmissionInfo schoolData={school}/> : null}
+            {component === 4 ? <EditAdmissionInfo schoolData={school} renderHandler={renderHandler}/> : null}
         </div>
     )
 }

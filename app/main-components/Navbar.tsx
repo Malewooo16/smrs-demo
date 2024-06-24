@@ -12,7 +12,7 @@ export default async function Navbar() {
   //const userInfo = await getServerSession(authOptions)
   //const id = userInfo?.user.id
   return (
-    <div className="navbar bg-base-100 ">
+    <div className="navbar bg-base-100">
   <div className="flex-1">
     <a className="btn btn-ghost normal-case text-xl hidden lg:flex">Elegance  </a>
     <Drawer />

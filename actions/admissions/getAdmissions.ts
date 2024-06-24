@@ -32,11 +32,12 @@ export async function getAdmissionById<T>(id: string): Promise<Response<T>> {
     }
 }
 
-export async function getSpecifcAdmissionById<T>(admissionId:string): Promise<Response<T>> {
+export async function getSpecifcAdmissionById<T>(admissionId:string, schoolId:number): Promise<Response<T>> {
     try {
-        const admission = await prisma.admissionStatus.findUnique({
+        const admission = await prisma.admissionStatus.findFirst({
             where: {
-                admissionId
+                admissionId,
+                schoolId
             },
             include: { admission:{include: {Parent:true}} },
             

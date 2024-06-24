@@ -3,9 +3,8 @@ import { useState } from "react";
 import { updateSchoolInfo } from "@/actions/schools/updateSchool";
 import toast from "react-hot-toast";
 
-
 interface ISchoolData {
-  id:number;
+  id: number;
   name: string;
   address: string;
   emailAddress: string;
@@ -22,9 +21,15 @@ interface IAdmissionClass {
   name: string;
 }
 
-export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) {
+export function EditAdmissionInfo({
+  schoolData,
+  renderHandler,
+}: {
+  schoolData: ISchoolData;
+  renderHandler: (i: number) => void;
+}) {
   const [admissionStatus, setAdmissionStatus] = useState<boolean>(
-    schoolData.admissionStatus
+    schoolData.admissionStatus,
   );
   const [admissionDates, setAdmissionDates] = useState<{
     from: string;
@@ -54,7 +59,8 @@ export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) 
         { id: selectedId, name },
       ]);
     } else {
-      setActiveAdmissionClasses((prevSelected) => prevSelected.filter((ac) => ac.id !== selectedId)
+      setActiveAdmissionClasses((prevSelected) =>
+        prevSelected.filter((ac) => ac.id !== selectedId),
       );
     }
     console.log(activeAdmissionClasses);
@@ -65,7 +71,9 @@ export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) 
     const obj = { activeAdmissionClasses, admissionDates, admissionStatus };
     // console.log(schoolData.id, obj)
     const result = await updateSchoolInfo(schoolData.id, obj);
-    result.success ? toast.success(result.message) : toast.error(result.message)
+    result.success
+      ? toast.success(result.message)
+      : toast.error(result.message);
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -80,7 +88,8 @@ export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) 
               type="checkbox"
               checked={admissionStatus}
               onChange={handleStatusChange}
-              className="ml-2" />
+              className="ml-2"
+            />
           </label>
         </div>
         <div className="text-gray-600 mb-2">
@@ -92,7 +101,8 @@ export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) 
               name="from"
               value={new Date(admissionDates.from).toISOString().split("T")[0]}
               onChange={handleDateChange}
-              className="ml-2 input input-bordered" />
+              className="ml-2 input input-bordered"
+            />
           </label>
           <label className="ml-2">
             To:
@@ -101,7 +111,8 @@ export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) 
               name="to"
               value={new Date(admissionDates.to).toISOString().split("T")[0]}
               onChange={handleDateChange}
-              className="ml-2 input input-bordered" />
+              className="ml-2 input input-bordered"
+            />
           </label>
         </div>
         <div className="text-gray-600 mb-2">
@@ -112,12 +123,15 @@ export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) 
                 type="checkbox"
                 id={ac.id}
                 data-name={ac.name}
-                checked={activeAdmissionClasses &&
+                checked={
+                  activeAdmissionClasses &&
                   activeAdmissionClasses.some(
-                    (selected) => selected.id == ac.id
-                  )}
+                    (selected) => selected.id == ac.id,
+                  )
+                }
                 onChange={handleClassChange}
-                className="mr-1" />
+                className="mr-1"
+              />
               {ac.name}
             </label>
           ))}
