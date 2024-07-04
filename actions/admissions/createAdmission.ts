@@ -3,7 +3,7 @@ import prisma from "@/db/prisma";
 import { IStudentAdmission } from "../../utilities/admissionTypes";
 
 
-export default async function createAdmission(admissionData:any, parentId:number){
+export async function createAdmission(admissionData:any, parentId:number){
 
     try{
         const newAdmission = await prisma.admission.create({
@@ -16,4 +16,20 @@ export default async function createAdmission(admissionData:any, parentId:number
         return {success:false, message:"An error occured when adding admissions"}
     }
     
+}
+
+export async function addParentInfo(admissionData:any, admissionId:string){
+    try {
+        await prisma.admission.update({
+            where:{id:admissionId},
+            data:{
+                parentsInfo:{...admissionData}
+            }
+        })
+
+        return{success:true, message:"Success", }
+    } catch (error) {
+        console.log(error)
+        return{success:false, message:"Error", }
+    }
 }

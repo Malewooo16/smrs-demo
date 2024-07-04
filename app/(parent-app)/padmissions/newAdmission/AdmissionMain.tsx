@@ -10,6 +10,7 @@ import { IStudentAdmission } from "@/utilities/admissionTypes";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import ParentInfo from "@/app/main-components/ParentInfo";
 
 export default function AdmissionMain({admissions}:{admissions:any}) {
     const searchParams = useSearchParams();
@@ -68,11 +69,12 @@ export default function AdmissionMain({admissions}:{admissions:any}) {
             )}
             {admissions.length === 0 || newAdmission ? (
                 <div>
-                    <h1 className="text-lg">Student Admission</h1>
+                    
                     {step === 1 && <AdmissionForm setNextStep={setNextStep} />}
                     {step === 2 && <UserPicUpload setNextStep={setNextStep} />}
                     {step === 3 && <ObjectsUplaod setNextStep={setNextStep} />}
-                    {step === 4 && <SuccessItem />}
+                    {step === 4 && <ParentInfo setNextStep={setNextStep} />}
+                    {step === 5 && <SuccessItem />}
                 </div>
             ) : null}
         </div>

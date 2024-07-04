@@ -52,28 +52,29 @@ export function EditAdmissionInfo({
     const { id, checked } = event.target;
     const name = event.target.getAttribute("data-name")!;
     const selectedId = id;
+    
+    setActiveAdmissionClasses((prevSelected) => {
+        const newSelected = checked 
+            ? [...prevSelected.filter((ac) => ac.id !== selectedId), { id: selectedId, name }]
+            : prevSelected.filter((ac) => ac.id !== selectedId);
 
-    if (checked) {
-      setActiveAdmissionClasses((prevSelected) => [
-        ...prevSelected.filter((ac) => ac.id !== selectedId),
-        { id: selectedId, name },
-      ]);
-    } else {
-      setActiveAdmissionClasses((prevSelected) =>
-        prevSelected.filter((ac) => ac.id !== selectedId),
-      );
-    }
-    console.log(activeAdmissionClasses);
-    console.log(schoolData.classes[0].id);
-  };
+        console.log(newSelected);
+        console.log(schoolData.classes[0].id);
+
+        return newSelected;
+    });
+};
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const obj = { activeAdmissionClasses, admissionDates, admissionStatus };
     // console.log(schoolData.id, obj)
     const result = await updateSchoolInfo(schoolData.id, obj);
-    result.success
-      ? toast.success(result.message)
-      : toast.error(result.message);
+    if(result.success){
+      renderHandler(4)
+      toast.success(result.message)
+    } else{
+      toast.error(result.message)
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -138,7 +139,7 @@ export function EditAdmissionInfo({
         </div>
         <div className="flex max-w-xl justify-between mt-4">
           {" "}
-          <button className="btn btn-error"> Cancel </button>{" "}
+          <button className="btn btn-error" type="button" onClick={()=>renderHandler(4)}> Cancel </button>{" "}
           <button className="btn btn-success" type="submit">
             {" "}
             Update{" "}

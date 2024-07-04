@@ -9,6 +9,6 @@ export default async function Dashboard() {
   
   return (
     
-    <h1 className="text-3xl text-center mt-5 ms-5"> Welcome To Your Dashboard {session?.user.role}  </h1>
+    <div className="h-[120vh]"><h1 className="text-3xl text-center mt-5 ms-5"> Welcome To Your Dashboard {session?.user.role}  </h1></div>
   )
 }

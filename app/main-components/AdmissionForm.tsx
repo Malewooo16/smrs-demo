@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import FileUploadModal from "./FileUploadModal";
 import { useSession } from "next-auth/react";
 import { IStudentAdmission } from "@/utilities/admissionTypes";
-import createAdmission from "@/actions/admissions/createAdmission";
+import {createAdmission} from "@/actions/admissions/createAdmission";
 import admissionStore from "@/store/admissionState";
 
 

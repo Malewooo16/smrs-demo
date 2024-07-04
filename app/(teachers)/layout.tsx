@@ -21,7 +21,7 @@ export default async function AppLayout({
         <div className="sticky top-0 z-20">
           <Navbar />
         </div>
-        <div className="flex ">
+        <div className="flex">
           <div>
             <ul className="hidden lg:flex menu  w-[16rem] rounded-box sticky top-14 ms-1 ">
               <li>

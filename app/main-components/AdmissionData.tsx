@@ -13,7 +13,7 @@ export default function ValidateAdmissionData({ schoolData, admission }: { schoo
   const [selectedClass, setselectedClass] = useState("");
   const schoolId = parseInt(decryptData(searchParams.get("escuela"), "MySuperSecretKeyMySuperSecretKey"))
   const validAdmission = admission as IStudentAdmission;
-  console.log(validAdmission)
+  //console.log(validAdmission)
 
   if(validAdmission.AdmissionStats && validAdmission.AdmissionStats.some(stats => stats.schoolId === schoolId )){
     return (

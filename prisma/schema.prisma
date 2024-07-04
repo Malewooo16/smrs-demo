@@ -74,6 +74,7 @@ model Admission {
   parentId       Int
   imgUrl         String?
   objects        Json?
+  parentsInfo    Json?
   homeAddress    String
   Parent         Parent           @relation(fields: [parentId], references: [id])
   AdmissionStats AdmissionStatus[]

@@ -12,7 +12,7 @@ import AgeComponent from '@/app/main-components/AgeCalculator';
 export default  async function Admissions() {
   const activeAdmissions = await getActiveAdmissions();
   const validatedAdmissions = await getAllAdmissionsForParent<any>();
-  console.log(validatedAdmissions)
+  
  
   const getStatusColor = (status:string) => {
     switch (status) {

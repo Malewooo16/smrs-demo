@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from 'next/navigation'
 import LoginForm from "../main-components/LoginForm";
 import { authOptions } from "@/utilities/authOptions";
+import ParentSideBar from "../main-components/ParentSideBar";
 
 export default async function AppLayout({
   children,
@@ -15,39 +16,15 @@ export default async function AppLayout({
 
   if (session?.user && session.user.role==="Parent") {
     return (
-      <section className=" mt-2">
+      <div className="min-h-screen">
         <div className="sticky top-0 z-20">
           <Navbar />
         </div>
-        <div className="flex ">
-          <div>
-            <ul className="hidden lg:flex menu  w-48 rounded-box sticky top-14 ms-1 ">
-              <li>
-                {" "}
-                <Link href={`/pdashboard`} className="mb-3">
-                  {" "}
-                  Dashboard{" "}
-                </Link>{" "}
-              </li>
-              <li>
-                <Link href={`/studentsP`} className="mb-3">
-                  {" "}
-                  Students{" "}
-                </Link>{" "}
-              </li>
-              <li>
-                <Link href={`/padmissions`} className="mb-3">
-                  {" "}
-                  Admissions{" "}
-                </Link>{" "}
-              </li>
-              
+        <div className="flex items-start">
+        
+         <ParentSideBar />
 
-              
-             
-              
-            </ul>
-          </div>
+         
           <div className="flex-1 mx-4">{children}</div>
           {/* <div>
             {" "}
@@ -57,7 +34,7 @@ export default async function AppLayout({
             </div>
           </div> */}
         </div>
-      </section>
+      </div>
     );
   } else {
       if(session?.user && session.user.role === "Teacher" || session?.user.role === "HeadTeacher" ){
