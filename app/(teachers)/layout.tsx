@@ -1,101 +1,33 @@
-import Link from "next/link";
 import Navbar from "../main-components/Navbar";
 import { getServerSession } from "next-auth";
 import { redirect } from 'next/navigation';
 import { authOptions } from "@/utilities/authOptions";
 import { getTeacherInfo } from "@/actions/teachers/getTeacherInfo";
+import TeacherSideBar from "../main-components/TeachersSideBar";
 
-export default async function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
-  const teacher = await getTeacherInfo(parseInt(session?.user.teacher as string))
-  //console.log(session?.user)
+  const teacher = await getTeacherInfo(parseInt(session?.user.teacher as string));
 
-
-  if (session?.user && session.user.role==="Teacher" || session?.user.role === "HeadTeacher") {
+  if (session?.user && (session.user.role === "Teacher" || session.user.role === "HeadTeacher")) {
     return (
-      <section className=" mt-2">
+      <div className="min-h-screen flex flex-col">
         <div className="sticky top-0 z-20">
           <Navbar />
         </div>
-        <div className="flex">
-          <div>
-            <ul className="hidden lg:flex menu  w-[16rem] rounded-box sticky top-14 ms-1 ">
-              <li>
-                {" "}
-                <Link href={`/tdashboard`} className="mb-3">
-                  {" "}
-                  Dashboard{" "}
-                </Link>{" "}
-              </li>
-              <li>
-                <Link href={`/tsubjects`} className="mb-3">
-                  {" "}
-                  Subjects{" "}
-                </Link>{" "}
-              </li>
-              {teacher && teacher.canAccessAdmissions ? <li>
-                <Link href={`/tadmissions?T=1`} className="mb-3">
-                  {" "}
-                  Admissions{" "}
-                </Link>
-              </li> : null}
-              {teacher && teacher.canAccessAcademics ? <li>
-                <Link href={`/trecords`} className="mb-3">
-                  {" "}
-                  Academic Records{" "}
-                </Link>
-              </li> : null}
-              
-              {session && session.user.role === "HeadTeacher" ?   <li className="mb-3">
-                <details>
-      <summary>HeadMaster Actions</summary>
-      <ul>
-        <li><Link href={`/tadmissions?T=1`}>Admissions</Link></li>
-        <li><Link href={`/classesAndSubjects`}>Classes and Subjects</Link></li>
-        <li><a>Teachers</a></li>
-        <li><Link href={`/hmRecords`}>Reports</Link></li>
-        <li><a>Annoucements</a></li>
-        <li><a>FeedBack to Devs</a></li>
-
-      </ul>
-    </details>
-                  
-                </li> : null}
-                
-          
-              <li>
-                <Link href={`/calender`} className="mb-3">
-                  {" "}
-                  Error{" "}
-                </Link>{" "}
-              </li>
-
-              
-              <li>
-                <Link href={`/teams`} className="mb-3">
-                  {" "}
-                  Error{" "}
-                </Link>{" "}
-              </li>
-              
-            </ul>
+        <div className="flex flex-1">
+          <div className="hidden lg:block sticky top-14 h-[calc(100vh-3.5rem)]">
+            <TeacherSideBar teacher={teacher} session={session} />
           </div>
-          <div className="flex-1 mx-4">{children}</div>
-          {/* <div>
-            {" "}
-            <div className="hidden sticky top-14 lg:flex flex-col p-4 me-4 w-52 hover:bg-neutral">
-              <p className="text-lg ">Right Sidebar</p>
-              <p> Another sidebar </p>
-            </div>
-          </div> */}
+          <div className="flex-1 my-2 ms-48 mx-4">
+            {children}
+            
+          </div>
         </div>
-      </section>
+      </div>
     );
   } else {
-      redirect(`/`)
+    redirect(`/`);
   }
 }
