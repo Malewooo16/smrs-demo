@@ -1,0 +1,17 @@
+/* AppLayout.module.css */
+.customlist li {
+    color: #FFFFFF;
+    background-color: #131F73;
+    margin: 3px 0;
+    padding:10px 10px;
+    cursor:pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 139, 0.5); /* Dark blue box shadow */
+  }
+  .customlist li:hover{
+    width:95%;
+    
+  }
+  .customList li:first-child {
+    margin-top: 0;
+  }
+  

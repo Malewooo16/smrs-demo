@@ -12,7 +12,7 @@ export default async function TDashboard() {
     if(teacher){
         return(
             <div>
-                <h1 className="text-2xl">Welcome {teacher.firstName}</h1>
+                <h1 className="text-2xl text-center">Welcome {teacher.firstName}</h1>
             </div>
         )
 

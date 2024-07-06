@@ -15,7 +15,7 @@ export default async function AppLayout({
 
   if (session?.user && session.user.role==="dev") {
     return (
-      <section className=" mt-2">
+      <section className="">
         <div className="sticky top-0 z-20">
           <Navbar />
         </div>

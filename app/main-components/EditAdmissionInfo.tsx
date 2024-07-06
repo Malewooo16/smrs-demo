@@ -23,7 +23,7 @@ interface IAdmissionClass {
   name: string;
 }
 
-export function EditAdmissionInfo({ schoolData }: { schoolData: ISchoolData; }) {
+export function EditAdmissionInfo({ schoolData, renderHandler }: { schoolData: ISchoolData; renderHandler:(i:number) => void }) {
   const [admissionStatus, setAdmissionStatus] = useState<boolean>(
     schoolData.admissionStatus
   );

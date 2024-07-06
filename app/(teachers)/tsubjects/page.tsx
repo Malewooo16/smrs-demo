@@ -13,13 +13,13 @@ export default async function tsubjects() {
    // console.log(session.user.teacher)
     return (
       <div>
-          <h1 className="text-xl"> Welcome to Subjects </h1>
-          <div className="grid grid-cols-1 w-[40rem]">
+          <h1 className="text-2xl my-2"> Welcome to Subjects </h1>
+          <div className="grid grid-cols-1 w-[40rem] gap-4">
             {teacherCourses && teacherCourses.length > 0 ? (
                 teacherCourses.map((t)=>(
                   <Link key={t.id} href={`/tsubjects/${t.courseId}?class=${t.classId}&access=${t.teacherId}`}>
                     <div className="card bg-base-200 px-4 py-10">
-                      <p className="font semibold"> {t.course.name} {t.class.name} </p>
+                      <p className="font-semibold"> {t.course.name} {t.class.name} </p>
                     </div>
                   </Link>
                 ))

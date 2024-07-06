@@ -21,7 +21,7 @@ export default async function AppLayout({
         </div>
         <div className="flex ">
           <div>
-            <ul className="hidden lg:flex menu  w-48 rounded-box sticky top-14 ms-1 ">
+            <ul className="hidden lg:flex menu bg-base-400  w-48 rounded-box sticky top-14 ms-1 ">
               <li>
                 {" "}
                 <Link href={`/pdashboard`} className="mb-3">
