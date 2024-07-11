@@ -15,16 +15,16 @@ const ParentSideBar: React.FC = () => {
           isActive("/pdashboard")
             ? "bg-[#051f4c] text-white border-l-4 border-yellow-400"
             : "text-white hover:bg-[#0a4fa0] hover:border-l-4 hover:border-white active:bg-[#051f4c] active:border-l-4 active:border-yellow-400"
-        } mb-3 rounded p-2 mt-2`}
+        } mb-3 rounded  mt-2`}
       >
-        <Link href="/pdashboard">Dashboard</Link>
+        <Link  href="/pdashboard">Dashboard</Link>
       </li>
       <li
         className={`${
           isActive("/studentsP")
             ? "bg-[#051f4c] text-white border-l-4 border-yellow-400"
             : "text-white hover:bg-[#0a4fa0] hover:border-l-4 hover:border-white active:bg-[#051f4c] active:border-l-4 active:border-yellow-400"
-        } mb-3 rounded p-2`}
+        } mb-3 rounded `}
       >
         <Link href="/studentsP">Students</Link>
       </li>
@@ -33,7 +33,7 @@ const ParentSideBar: React.FC = () => {
           isActive("/padmissions")
             ? "bg-[#051f4c] text-white border-l-4 border-yellow-400"
             : "text-white hover:bg-[#0a4fa0] hover:border-l-4 hover:border-white active:bg-[#051f4c] active:border-l-4 active:border-yellow-400"
-        } mb-3 rounded p-2`}
+        } mb-3 rounded `}
       >
         <Link href="/padmissions">Admissions</Link>
       </li>
