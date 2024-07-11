@@ -1,3 +1,5 @@
 "use server";
 
-export default asy;
+export function getTeachersDashboard() {
+  return 0;
+}
