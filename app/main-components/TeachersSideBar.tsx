@@ -15,7 +15,7 @@ const TeacherSideBar = ({
   const isActive = (path: string) => pathname === path;
 
   return (
-    <ul className="hidden lg:flex flex-col menu h-[90vh] w-53 sticky top-14 ms-1 bg-[#072f7c] shadow-lg p-4 rounded-box">
+    <ul className="hidden lg:flex flex-col menu h-[96vh] w-52 sticky top-14  bg-[#072f7c] shadow-lg p-4 ">
       <li
         className={`${
           isActive("/tdashboard")
