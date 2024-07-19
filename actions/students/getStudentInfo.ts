@@ -1,4 +1,6 @@
 import prisma from "@/db/prisma";
+import { authOptions } from "@/utilities/authOptions";
+import { getServerSession, Session } from "next-auth";
 
 export async function getAllStudentInfo(schoolId: number) {
   try {
@@ -64,4 +66,35 @@ export async function getAdvancedStudentData(classId: number) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export async function getStudentForParent(){
+  const session = await getServerSession(authOptions);
+  if(session?.user){
+    const students = await prisma.studentT.findMany({
+      where:{
+        parentId:parseInt(session.user.parent as string)
+      },
+      select:{
+        name:true,
+        id:true,
+        studentData:{
+          select:{
+            imgUrl:true
+          }
+          
+        },
+        class:{
+          select:{
+            name:true
+          }
+        }
+      }
+      },)
+      return students
+    }
+
+    return []
+
+    
 }
