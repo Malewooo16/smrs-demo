@@ -12,18 +12,21 @@ const b2Credentials = {
 const s3 = new AWS.S3(b2Credentials);
 
 // Upload function
-export  async function POST(req:Request) {
+export async function POST(req: Request) {
   const formData = await req.formData();
-  const files = formData.getAll('objects') as File[]
+  const files = formData.getAll("objects") as File[];
 
   if (!files || files.length === 0) {
     console.log("No files detected");
     return;
   }
 
-  if (files.some((file) => !file.name.toLowerCase().endsWith('.pdf'))) {
+  if (files.some((file) => !file.name.toLowerCase().endsWith(".pdf"))) {
     console.log("At least one file is not a PDF");
-    return NextResponse.json({success:false, message:"Files are of invalid type"}, {status:415})
+    return NextResponse.json(
+      { success: false, message: "Files are of invalid type" },
+      { status: 415 }
+    );
   }
 
   try {
@@ -40,7 +43,7 @@ export  async function POST(req:Request) {
 
       // Set the parameters for the S3 upload
       const params = {
-        Bucket: 'CORS-Test-WMA',
+        Bucket: "SMRS-Demo",
         Key: file.name,
         Body: buffer,
       };
@@ -54,10 +57,13 @@ export  async function POST(req:Request) {
     // Update database records if necessary
     // Example: Updating Prisma model
 
-    return NextResponse.json({success: true, message: "Success", locations: uploadResponses.map((response) => response.Location)})
+    return NextResponse.json({
+      success: true,
+      message: "Success",
+      locations: uploadResponses.map((response) => response.Location),
+    });
   } catch (error) {
-    console.error('Error uploading files to S3-compatible storage:', error);
-    return NextResponse.json({success: false,
-        message: "Upload Failed"})
+    console.error("Error uploading files to S3-compatible storage:", error);
+    return NextResponse.json({ success: false, message: "Upload Failed" });
   }
 }
