@@ -18,11 +18,11 @@ export default function SignOut() {
   };
   return (
     <button
-      className={` btn hover:btn-error hover:outline-0 pt-4 ps-0 `}
+      className={`flex items-center  hover:outline-0 py-auto hover:text-blue-700`}
       onClick={handleLogout}
       disabled={loading}
     >
-      <span className="text-lg">
+      <span className="mr-3">
         <RxExit />
       </span>
       Sign Out

@@ -1,6 +1,6 @@
 "use server"
 import prisma from "@/db/prisma";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 
 interface UserData{
     firstName:string;

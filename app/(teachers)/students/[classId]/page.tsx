@@ -4,6 +4,7 @@ import { getAllStudentInClass, getAllStudentInfo } from '@/actions/students/getS
 import AgeComponent from '@/app/main-components/AgeCalculator';
 import { authOptions } from '@/utilities/authOptions';
 import { getServerSession } from 'next-auth';
+import Link from 'next/link';
 import React from 'react'
 
 export default async function StudentsPerClass({params, searchParams}:{params: {classId:string}, searchParams:{className:string}}) {
@@ -15,11 +16,12 @@ export default async function StudentsPerClass({params, searchParams}:{params: {
     }
     const students = await getAllStudentInClass(schoolId as number, parseInt(params.classId))
 
-    const classData = await getSingleClass(schoolId as number, parseInt(params.classId));
+   // const classData = await getSingleClass(schoolId as number, parseInt(params.classId));
     //console.log(classData)
   return (
     <div className="container mx-auto">
-    <h1 className='text-2xl text-center'> {classData?.name} </h1>
+   {(students && students.length >0) &&  <h1 className='text-2xl text-center mt-4'> {students[0].class?.name} </h1>}
+    <div className='flex w-full justify-end'> <button className='btn btn-success my-2'> <Link href={`/students/newstudent/${params.classId}`}>Add New Student</Link>   </button> </div>
   <table className="min-w-full">
     <thead>
       <tr className="bg-gray-200">

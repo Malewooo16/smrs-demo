@@ -3,8 +3,8 @@ import AWS from "aws-sdk";
 import { NextResponse } from "next/server";
 
 const b2Credentials = {
-  accessKeyId: '005a22d462ac6d30000000008',
-  secretAccessKey: 'K005iBeLjL2ku4VvoZSO6Y1XfoKzVBE',
+  accessKeyId: '005a22d462ac6d3000000000c',
+  secretAccessKey: 'K005fVuytvFUUckkP/+00Siy79SbFLM',
   endpoint: 'https://s3.us-east-005.backblazeb2.com',
   s3ForcePathStyle: true,
 };
@@ -40,7 +40,7 @@ export  async function POST(req:Request) {
 
       // Set the parameters for the S3 upload
       const params = {
-        Bucket: 'SMRS-Demo',
+        Bucket: 'CORS-Test-WMA',
         Key: file.name,
         Body: buffer,
       };

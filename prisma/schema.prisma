@@ -2,10 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator bridg {
-  provider = "bridg"
-}
-
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
@@ -16,11 +12,15 @@ model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   password  String
+  name      String?
   role      UserRole
   parentId  Int?     @unique
   teacherId Int?     @unique
   parent    Parent?  @relation(fields: [parentId], references: [id])
   teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  CreatedByNotification Notification[] @relation(name: "createdByNotifications")
+  School School[]
+  NotificationUser NotificationUser[]
 }
 
 model Parent {
@@ -34,18 +34,6 @@ model Parent {
   testStudent Student[]
   StudentT    StudentT[]
   user        User?
-}
-
-model Classes {
-  id          Int           @id @default(autoincrement())
-  name        String
-  schoolId    Int?
-  teacherId   Int?
-  ClassCourse ClassCourse[]
-  school      School?       @relation(fields: [schoolId], references: [id])
-  teacher     Teacher?      @relation(fields: [teacherId], references: [id])
-  students    Student[]
-  StudentT    StudentT[]
 }
 
 model School {
@@ -64,10 +52,15 @@ model School {
   students               Student[]
   StudentT               StudentT[]
   teachers               Teacher[]
+  headMaster             User?             @relation(fields: [headMasterId], references: [id])
+  headMasterId           Int?
+  Event                  Event[]
+
+  Notification Notification[]
 }
 
 model Admission {
-  id             String           @id @default(uuid())
+  id             String            @id @default(uuid())
   firstName      String
   lastName       String
   dob            DateTime
@@ -76,7 +69,7 @@ model Admission {
   objects        Json?
   parentsInfo    Json?
   homeAddress    String
-  Parent         Parent           @relation(fields: [parentId], references: [id])
+  Parent         Parent            @relation(fields: [parentId], references: [id])
   AdmissionStats AdmissionStatus[]
   StudentT       StudentT[]
 }
@@ -89,10 +82,10 @@ model StudentT {
   admissionId       String?
   parentId          Int?
   courseEnrollments CourseEnrollment[]
-  results            Json[]
+  results           Json[]
   remarks           StudentRemarks[]
-  showRecords       Boolean  @default(false)
-  studentData       Admission?          @relation(fields: [admissionId], references: [id])
+  showRecords       Boolean            @default(false)
+  studentData       Admission?         @relation(fields: [admissionId], references: [id])
   class             Classes?           @relation(fields: [classId], references: [id])
   parent            Parent?            @relation(fields: [parentId], references: [id])
   school            School             @relation(fields: [schoolId], references: [id])
@@ -100,7 +93,7 @@ model StudentT {
 
 model AdmissionStatus {
   id            Int       @id @default(autoincrement())
-  admissionId   String   
+  admissionId   String
   schoolId      Int
   status        String    @default("Pending")
   selectedClass String    @default("")
@@ -149,43 +142,110 @@ model StudentRemarks {
   StudentT   StudentT? @relation(fields: [studentTId], references: [id])
 }
 
+model Classes {
+  id           Int           @id @default(autoincrement())
+  name         String
+  metadata     Json?
+  classType    String?
+  schoolId     Int?
+  teacherId    Int?
+  school       School?       @relation(fields: [schoolId], references: [id])
+  teacher      Teacher?      @relation(fields: [teacherId], references: [id])
+  students     Student[]
+  StudentT     StudentT[]
+  classCourses ClassCourse[] // Links to specific course assignments
+}
+
 model Course {
-  id          Int                @id @default(autoincrement())
-  name        String
-  description String?
-  teacherId   Int?
-  schoolId    Int                @default(0)
-  tagFor      String?
-  ClassCourse ClassCourse[]
-  teacher     Teacher?           @relation(fields: [teacherId], references: [id])
-  enrollments CourseEnrollment[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  teacherId        Int?
+  teacher          Teacher?           @relation(fields: [teacherId], references: [id])
+  classCourses     ClassCourse[] // Links courses to ClassCourse
+  tagFor           String?
+  schoolId         Int                @default(0)
+  CourseEnrollment CourseEnrollment[]
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  eventName   String // Name of the event (e.g., "Term 1", "Sports Day")
+  eventType   EventType // Enum to categorize the event type
+  startDate   DateTime // Start date of the event (e.g., the start of the term, event, holiday)
+  endDate     DateTime? // End date of the event (optional for single-day events)
+  description String? // Optional description of the event
+  schoolId    Int // Foreign key for the School
+  school      School    @relation(fields: [schoolId], references: [id])
+  createdBy   String // Reference to the user who created the event
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum EventType {
+  Term
+  Holiday
+  PublicHoliday
+  SchoolEvent
+  ParentMeeting
+  Exams
+  Admission
+}
+
+model ClassCourse {
+  id          Int     @id @default(autoincrement())
+  classId     Int
+  courseId    Int
+  teacherId   Int
+  courseLevel String  @default("Form One") // Level or version of the course in this class
+  description String? // Description specific to this class
+  class       Classes @relation(fields: [classId], references: [id])
+  course      Course  @relation(fields: [courseId], references: [id])
+  teacher     Teacher @relation(fields: [teacherId], references: [id])
+
+  @@unique([classId, courseId, teacherId]) // Ensures unique combination
 }
 
 model CourseEnrollment {
-  id         Int       @id @default(autoincrement())
-  studentId  Int
+  id         Int      @id @default(autoincrement())
+  studentId  Int?
   courseId   Int
   score      Json?
-  studentTId Int?
-  course     Course    @relation(fields: [courseId], references: [id])
-  student    Student   @relation(fields: [studentId], references: [id])
-  studentT   StudentT? @relation(fields: [studentTId], references: [id])
+  studentTId Int
+  course     Course   @relation(fields: [courseId], references: [id])
+  student    Student? @relation(fields: [studentId], references: [id])
+  studentT   StudentT @relation(fields: [studentTId], references: [id])
 
-  @@unique([studentId, courseId])
+  @@unique([studentTId, courseId])
 }
-model Dev{
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  title       String // Title of the notification
+  message     String // Main content of the notification
+  createdAt   DateTime @default(now()) // Timestamp of when it was created
+  schoolId    Int? // Notification associated with a school (optional)
+  school      School?  @relation(fields: [schoolId], references: [id])
+  createdById Int? // Notification associated with a created (optional)
+  createdBy   User?    @relation(fields: [createdById], references: [id], name: "createdByNotifications")
+  isDeleted   Boolean  @default(false) // Track whether the notification has been deleted
+  isRead      Boolean  @default(false) // Track whether the notification has been read
+
+  NotificationUser NotificationUser[]
+}
+
+model NotificationUser {
+  notificationId Int // Foreign key to Notification
+  userId         Int // Foreign key to User
+  isRead         Boolean @default(false) // Tracks if the user has read the notification
+
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([notificationId, userId]) // Composite primary key to ensure unique combinations
+}
+
+model Dev {
   access String @id @default("1738679")
-}
-model ClassCourse {
-  id        Int     @id @default(autoincrement())
-  classId   Int
-  courseId  Int
-  teacherId Int
-  class     Classes @relation(fields: [classId], references: [id])
-  course    Course  @relation(fields: [courseId], references: [id])
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
-
-  @@unique([classId, courseId])
 }
 
 enum UserRole {

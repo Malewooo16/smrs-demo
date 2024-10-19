@@ -1,14 +1,16 @@
-"use client"
+//@ts-nocheck
+"use client";
 import React, { useEffect, useState, useCallback } from "react";
-import bridg from "bridg";
-import { updateStudentResults } from "@/actions/students/updateStudentRecords";
 import toast from "react-hot-toast";
+import { updateStudentResults } from "@/actions/students/updateStudentRecords";
+import { getAdvancedStudentData } from "@/actions/students/getStudentInfo";
+import { useSearchParams } from "next/navigation";
 
 // Define interfaces for class and student data
 interface ClassData {
   id: number;
-  ClassCourse: { courseId: number; course: { id: number; name: string } }[];
-  StudentT: { id: number; name: string }[];
+  classCourses: { courseId: number; course: { id: number; name: string } }[];
+  StudentT: { id: number; name: string; results: { avg: string; name: string; scores: Record<string, string>; }[] }[];
 }
 
 interface StudentScore {
@@ -16,64 +18,54 @@ interface StudentScore {
   name: string;
   scores: Record<string, string>;
   avgScore: string;
-  rank: number;
-  courseName: string;
+  term: string;
 }
 
 function ScoresManagementUI({ classId }: { classId: number }) {
   const [classData, setClassData] = useState<ClassData | null>(null);
   const [studentScores, setStudentScores] = useState<StudentScore[] | null>(null);
+  const searchParams = useSearchParams();
+
+  const term = searchParams.get("term");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const localClassData = await bridg.classes.findUnique({
-          where: { id: classId },
-          include: {
-            StudentT: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            ClassCourse: {
-              select: {
-                courseId: true,
-                course: {
-                  select: {
-                    id: true,
-                    name: true,
-                  },
-                },
-              },
-            },
-          },
-        });
-        setClassData(localClassData);
+        const localClassData = await getAdvancedStudentData(classId);
+        if (localClassData) {
+          setClassData(localClassData);
 
-        const initialScores = localClassData?.StudentT.map((student) => ({
-          studentId: student.id,
-          name: `${student.name} `,
-          scores: localClassData.ClassCourse.reduce((acc, course) => {
-            acc[course.course.name] = ""; // Initialize scores with empty string
-            return acc;
-          }, {} as Record<string, string>),
-          avgScore: "0", // Initialize average score
-          rank: 0, // Initialize rank
-          courseName: "Semester 2 2024",
-        }));
+          // Get results for the specified term
+          const initialScores = localClassData.StudentT.map((student) => {
+            // Find the result for the current term
+            const studentResult = student.results.find((result) => result.name === term);
+            
+            // Initialize scores with either existing scores or empty strings
+            const scores = studentResult ? studentResult.scores : localClassData.classCourses.reduce((acc, course) => {
+              acc[course.course.name] = ""; // Initialize scores with empty string
+              return acc;
+            }, {} as Record<string, string>);
 
-        setStudentScores(initialScores || []);
+            return {
+              studentId: student.id,
+              name: `${student.name} `,
+              scores,
+              avgScore: studentResult ? studentResult.avg : "0", // Set average score if exists
+              term: term as string, // Initialize term
+            };
+          });
+
+          setStudentScores(initialScores);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [classId]);
+  }, [classId, term]); // Add term as a dependency
 
   const updateScoresAndRank = useCallback((updatedScores: StudentScore[]) => {
-    // Calculate average scores and update ranks
     const updatedScoresWithAvg = updatedScores.map((student) => {
       const scoresArray = Object.values(student.scores).map(parseFloat).filter((score) => !isNaN(score));
       const sum = scoresArray.reduce((acc, score) => acc + score, 0);
@@ -81,37 +73,36 @@ function ScoresManagementUI({ classId }: { classId: number }) {
       return { ...student, avgScore };
     });
 
-    const sortedScores = [...updatedScoresWithAvg].sort((a, b) => parseFloat(b.avgScore) - parseFloat(a.avgScore));
-    sortedScores.forEach((student, index) => {
-      student.rank = index + 1;
-    });
 
-    setStudentScores(sortedScores);
+    setStudentScores(updatedScoresWithAvg);
   }, []);
 
-  const handleScoreChange = useCallback((studentId: number, courseName: string, score: string) => {
-    if (!studentScores) return;
+  const handleScoreChange = useCallback(
+    (studentId: number, courseName: string, score: string) => {
+      if (!studentScores) return;
 
-    setStudentScores((prevScores) => {
-      if (!prevScores) return null; // Handle the case where prevScores is null
-    
-      const updatedScores = prevScores.map((student) => {
-        if (student.studentId === studentId) {
-          return {
-            ...student,
-            scores: {
-              ...student.scores,
-              [courseName]: score,
-            },
-          };
-        }
-        return student;
+      setStudentScores((prevScores) => {
+        if (!prevScores) return null;
+
+        const updatedScores = prevScores.map((student) => {
+          if (student.studentId === studentId) {
+            return {
+              ...student,
+              scores: {
+                ...student.scores,
+                [courseName]: score,
+              },
+            };
+          }
+          return student;
+        });
+
+        updateScoresAndRank(updatedScores);
+        return updatedScores;
       });
-    
-      updateScoresAndRank(updatedScores);
-      return updatedScores;
-    });
-  }, [updateScoresAndRank, studentScores]);
+    },
+    [updateScoresAndRank, studentScores]
+  );
 
   const submitScores = async () => {
     if (!studentScores) return;
@@ -128,44 +119,49 @@ function ScoresManagementUI({ classId }: { classId: number }) {
     }
   };
 
-  if (!classData || !studentScores) {
+  if (!classData) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      <table>
-        <thead>
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+        <thead className="bg-gray-200">
           <tr>
-            <th>Name</th>
-            {classData.ClassCourse.map((course) => (
-              <th key={course.course.id}>{course.course.name}</th>
+            <th className="py-3 px-4 text-left text-gray-700 font-semibold">Name</th>
+            {classData.classCourses.map((course) => (
+              <th key={course.course.id} className="py-3 px-4 text-left text-gray-700 font-semibold">
+                {course.course.name}
+              </th>
             ))}
-            <th>Average</th>
-            <th>Rank</th>
+            <th className="py-3 px-4 text-left text-gray-700 font-semibold">Average</th>
+            {/* Optionally remove the Rank column */}
+            {/* <th className="py-3 px-4 text-left text-gray-700 font-semibold">Rank</th> */}
           </tr>
         </thead>
         <tbody>
-          {studentScores.map((student) => (
-            <tr key={student.studentId}>
-              <td>{student.name}</td>
-              {classData.ClassCourse.map((course) => (
-                <td key={course.course.id}>
+          {studentScores?.map((student) => (
+            <tr key={student.studentId} className="border-b hover:bg-gray-100">
+              <td className="py-2 px-4 text-gray-800">{student.name}</td>
+              {classData.classCourses.map((course) => (
+                <td key={course.course.id} className="py-2 px-4">
                   <input
                     type="text"
                     value={student.scores[course.course.name]}
                     onChange={(e) => handleScoreChange(student.studentId, course.course.name, e.target.value)}
+                    className="border border-gray-300 rounded px-2 py-1 w-full"
                   />
                 </td>
               ))}
-              <td>{student.avgScore}</td>
-              <td>{student.rank}</td>
+              <td className="py-2 px-4 text-gray-800">{student.avgScore}</td>
+              {/* Optionally display the Rank */}
+              {/* <td className="py-2 px-4 text-gray-800">{student.rank}</td> */}
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="my-4">
-        <button className="btn btn-success" onClick={submitScores}>
+      <div className="my-4 flex justify-end">
+        <button className="btn btn-submit" onClick={submitScores}>
           Update Results
         </button>
       </div>

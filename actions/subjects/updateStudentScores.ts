@@ -1,52 +1,54 @@
 "use server";
 import prisma from "@/db/prisma";
-async function updateScores(
-  classId: number,
+export async function updateClassCourseScores(
+ 
   courseId: number,
   teacherId: number,
-  studentsScores: any,
+ 
+  studentsScores: any[],
 ) {
   try {
-    // Check if the teacher is associated with the specified class and course
+    // Find the ClassCourse entry
     const classCourse = await prisma.classCourse.findFirst({
       where: {
-        classId: classId,
+       
         courseId: courseId,
         teacherId: teacherId,
+       
       },
     });
 
     if (!classCourse) {
       throw new Error(
-        "Teacher does not have access to update scores for this class and course combination",
+        "Teacher does not have access to update scores for this class, course, and level combination"
       );
     }
 
     // Iterate over each student's new scores and update them
     for (const studentScore of studentsScores) {
-      const { studentId, newScores } = studentScore;
+      const { studentId, score } = studentScore;
 
       // Upsert scores for the student
       await prisma.courseEnrollment.upsert({
         where: {
-          studentId_courseId: {
-            studentId: studentId,
+          studentTId_courseId: {
+            studentTId: studentId,
             courseId: courseId,
           },
         },
         update: {
-          score: newScores,
+          score: score,
         },
         create: {
-          studentId: studentId,
+          studentTId: studentId,
           courseId: courseId,
-          score: newScores,
+          score: score,
         },
       });
     }
-    return { success: true, message: "Student Records added successfully" };
+    return { success: true, message: "Student records updated successfully" };
   } catch (e) {
     console.log(e);
-    return { success: false, message: "An Error has occured" };
+    return { success: false, message: "An error has occurred" };
   }
 }

@@ -2,7 +2,7 @@
 import {useFormStatus} from "react-dom"; //use in dev
 
 
-//import {experimental_useFormStatus} from "react-dom"; // use in prod
+//import {experimental_useFormStatus as FormStatus} from "react-dom"; // use in prod
 
 export default function ServerBtn() {
   

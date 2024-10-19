@@ -17,10 +17,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <Navbar />
         </div>
         <div className="flex flex-1">
-          <div className="hidden lg:block sticky top-20 h-[calc(100vh-3.5rem)]">
+          <div className="hidden lg:block sticky top-20 h-[calc(100vh-5rem)]">
             <TeacherSideBar teacher={teacher} session={session} />
           </div>
-          <div className="flex-1 my-2 ms-48 mx-4">
+          <div className="flex-1 my-2  mx-4 ">
             {children}
             
           </div>

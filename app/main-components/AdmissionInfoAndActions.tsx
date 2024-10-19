@@ -14,50 +14,59 @@ import {
 import { FaEdit } from "react-icons/fa";
 
 
-export function AdmissionInfo({
-  schoolData,
-  renderHandler,
-}: {
-  schoolData: any;
-  renderHandler: (i:number)=>void
-}) {
-  const school = schoolData as ISchoolAdmission;
+
+
+
+interface AdmissionInfoProps {
+  schoolData: ISchoolAdmission;
+  renderHandler: (i: number) => void;
+}
+
+export function AdmissionInfo({ schoolData, renderHandler }: AdmissionInfoProps) {
+  const school = schoolData;
+
+  // Default date to current date if not available
+  const defaultDate = new Date().toLocaleDateString();
+
+  // Ensure admissionDates is not null or undefined
+  const admissionDates = school.admissionDates || {};
+  
+  // Handle null or undefined dates
+  const fromDate = admissionDates.from ? new Date(admissionDates.from).toLocaleDateString() : defaultDate;
+  const toDate = admissionDates.to ? new Date(admissionDates.to).toLocaleDateString() : defaultDate;
+
   return (
-    <div className=" rounded-lg shadow-md p-6 mb-4">
+    <div className="rounded-lg shadow-md p-6 mb-4">
       <div className="flex justify-end w-full">
-        {" "}
         <button className="btn" onClick={() => renderHandler(4)}>
-          {" "}
-          <FaEdit />{" "}
-        </button>{" "}
+          <FaEdit />
+        </button>
       </div>
       <h2 className="text-xl font-semibold mb-2">{school.name}</h2>
       <p className="text-gray-600 mb-2">{school.address}</p>
       <p className="text-gray-600 mb-2">Email: {school.emailAddress}</p>
       <p className="text-gray-600 mb-2">
-        {" "}
-        Admission Status: {school.admissionStatus
-          ? "Active"
-          : "Not Active"}{" "}
+        Admission Status: {school.admissionStatus ? 'Active' : 'Not Active'}
       </p>
       <p className="text-gray-600 mb-2">
-        {" "}
-        Admission Dates:{" "}
-        {new Date(school.admissionDates.from).toLocaleDateString()} -{" "}
-        {new Date(school.admissionDates.to).toLocaleDateString()}
+        Admission Dates: {fromDate} - {toDate}
       </p>
       <p>
-        {" "}
-        Admission Classes:{" "}
-        {school.activeAdmissionClasses.map((ac) => (
-          <span key={ac.name} className="mx-2">
-            {ac.name}
-          </span>
-        ))}{" "}
+        Admission Classes:{' '}
+        {school.activeAdmissionClasses.length > 0 ? (
+          school.activeAdmissionClasses.map((ac) => (
+            <span key={ac.name} className="mx-2">
+              {ac.name}
+            </span>
+          ))
+        ) : (
+          <span>No classes available</span>
+        )}
       </p>
     </div>
   );
 }
+
 
 export function PendingAdmissions({ admissionData }: { admissionData: any }) {
   const admissions = admissionData as AdmissionData[];

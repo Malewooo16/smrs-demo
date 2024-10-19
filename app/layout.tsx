@@ -27,7 +27,7 @@ export default function RootLayout({
   const currentTheme = themeCookie ? themeCookie.value : Themes[0];
 
   return (
-    <html lang="en" data-theme={currentTheme}>
+    <html lang="en" data-theme={currentTheme} className="bg-[#efeff6]">
       <body className={`${inter.className} h-screen`}>
         <SessionProviders>
           {children}

@@ -25,14 +25,14 @@ export default async function Records() {
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">
         {classes && classes.length > 0 ? (
           classes.map((c, index) => (
-            <Link href={`/trecords/${c.id}`} key={c.id}>
-              {" "}
-              <div key={index} className="card bg-base-200 ">
-                <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
-                  {c.name}
-                </p>
-              </div>
-            </Link>
+            <div key={c.id} tabIndex={0} className="collapse collapse-arrow border-base-300 bg-white border">
+              <input type="checkbox" />
+  <div className="collapse-title text-xl font-medium">{c.name}</div>
+  <div className="collapse-content flex flex-col">
+    <Link className="hover:underline" href={`/trecords/${c.id}?term=Term+1+${new Date().getFullYear()}`}>{`Term 1 ${new Date().getFullYear()}`} </Link>
+    <Link className="hover:underline" href={`/trecords/${c.id}?term=Term+2+${new Date().getFullYear()}`}>{`Term 2 ${new Date().getFullYear()}`} </Link>
+  </div>
+</div>
           ))
         ) : (
           <p>Classes Data Not Available</p>

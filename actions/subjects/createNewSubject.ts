@@ -8,7 +8,6 @@ export async function createSubject(data: any) {
     const newSubject = await prisma.course.create({
       data: {
         name,
-        description,
         schoolId,
         tagFor,
       },
@@ -26,7 +25,6 @@ export async function createSubjectForClass(data: any) {
     const newSubject = await prisma.course.create({
       data: {
         name,
-        description,
         schoolId,
         tagFor,
       },

@@ -9,9 +9,9 @@ interface ISchoolData {
   address: string;
   emailAddress: string;
   admissionStatus: boolean;
-  admissionDates: {
-    from: string;
-    to: string;
+  admissionDates?: {
+    from?: string | null;
+    to?: string | null;
   };
   classes: IAdmissionClass[];
 }
@@ -29,12 +29,18 @@ export function EditAdmissionInfo({
   renderHandler: (i: number) => void;
 }) {
   const [admissionStatus, setAdmissionStatus] = useState<boolean>(
-    schoolData.admissionStatus,
+    schoolData.admissionStatus
   );
+
+  // Ensure admissionDates is not null or undefined
   const [admissionDates, setAdmissionDates] = useState<{
     from: string;
     to: string;
-  }>(schoolData.admissionDates);
+  }>({
+    from: schoolData.admissionDates?.from || '',
+    to: schoolData.admissionDates?.to || ''
+  });
+
   const [activeAdmissionClasses, setActiveAdmissionClasses] = useState<
     IAdmissionClass[]
   >([]);
@@ -45,7 +51,10 @@ export function EditAdmissionInfo({
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setAdmissionDates({ ...admissionDates, [name]: value });
+    setAdmissionDates((prevDates) => ({
+      ...prevDates,
+      [name]: value
+    }));
   };
 
   const handleClassChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,28 +63,26 @@ export function EditAdmissionInfo({
     const selectedId = id;
     
     setActiveAdmissionClasses((prevSelected) => {
-        const newSelected = checked 
-            ? [...prevSelected.filter((ac) => ac.id !== selectedId), { id: selectedId, name }]
-            : prevSelected.filter((ac) => ac.id !== selectedId);
+      const newSelected = checked 
+        ? [...prevSelected.filter((ac) => ac.id !== selectedId), { id: selectedId, name }]
+        : prevSelected.filter((ac) => ac.id !== selectedId);
 
-        console.log(newSelected);
-        console.log(schoolData.classes[0].id);
-
-        return newSelected;
+      return newSelected;
     });
-};
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const obj = { activeAdmissionClasses, admissionDates, admissionStatus };
-    // console.log(schoolData.id, obj)
     const result = await updateSchoolInfo(schoolData.id, obj);
     if(result.success){
-      renderHandler(4)
-      toast.success(result.message)
-    } else{
-      toast.error(result.message)
+      renderHandler(4);
+      toast.success(result.message);
+    } else {
+      toast.error(result.message);
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-lg shadow-md p-6 mb-4">
@@ -100,7 +107,7 @@ export function EditAdmissionInfo({
             <input
               type="date"
               name="from"
-              value={new Date(admissionDates.from).toISOString().split("T")[0]}
+              value={admissionDates.from}
               onChange={handleDateChange}
               className="ml-2 input input-bordered"
             />
@@ -110,7 +117,7 @@ export function EditAdmissionInfo({
             <input
               type="date"
               name="to"
-              value={new Date(admissionDates.to).toISOString().split("T")[0]}
+              value={admissionDates.to}
               onChange={handleDateChange}
               className="ml-2 input input-bordered"
             />
@@ -127,7 +134,7 @@ export function EditAdmissionInfo({
                 checked={
                   activeAdmissionClasses &&
                   activeAdmissionClasses.some(
-                    (selected) => selected.id == ac.id,
+                    (selected) => selected.id == ac.id
                   )
                 }
                 onChange={handleClassChange}
@@ -138,12 +145,12 @@ export function EditAdmissionInfo({
           ))}
         </div>
         <div className="flex max-w-xl justify-between mt-4">
-          {" "}
-          <button className="btn btn-error" type="button" onClick={()=>renderHandler(4)}> Cancel </button>{" "}
+          <button className="btn btn-error" type="button" onClick={() => renderHandler(4)}>
+            Cancel
+          </button>
           <button className="btn btn-success" type="submit">
-            {" "}
-            Update{" "}
-          </button>{" "}
+            Update
+          </button>
         </div>
       </div>
     </form>

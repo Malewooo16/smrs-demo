@@ -3,9 +3,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "base-400": "#072f7c",
+        landing: "#0f172a",
         logo: "#dc7374",
-        navbar: "#9db1f7",
+        outline:"#242849",
+        sidebar:{
+          300:"#242849",
+          500:"#0e0c28"},
+        
         burgundy: {
           DEFAULT: "#800020",
           50: "#fdf2f2",
@@ -27,7 +31,22 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), 
+    function ({ addComponents, addUtilities }) {
+    // Reusable component classes
+    addComponents({
+      '.input-base': {
+        '@apply mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500': {},
+      },
+      '.label-base': {
+        '@apply block text-gray-700 font-semibold': {},
+      },
+      '.btn-submit': {
+        '@apply btn w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-indigo-500': {},
+      },
+    });
+  }
+],
   daisyui: {
     themes:  ["light", "dark"],
   },

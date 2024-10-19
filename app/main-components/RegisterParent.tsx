@@ -9,6 +9,7 @@ import Link from "next/link";
 import registerNewParent from "@/actions/parents/registerNewParent";
 import { sendValidationEmailToParent } from "@/actions/parents/sendValidationEmailToParent";
 
+
 interface UserData {
   firstName: string;
   lastName: string;
