@@ -1,20 +1,19 @@
-import { getAdmissionById, getSpecifcAdmissionById } from "@/actions/admissions/getAdmissions";
-import { getClasses } from "@/actions/schools/getClassesData";
-import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
-import { UpdateAdmissionStatus } from "@/app/main-components/AdmissionInfoAndActions";
-import { AdmissionData, IStudentAdmission } from "@/utilities/admissionTypes";
-import { authOptions } from "@/utilities/authOptions";
-import { getServerSession } from "next-auth";
+import {
+  getAdmissionById,
+  getSpecifcAdmissionById,
+} from "@/actions/admissions/getAdmissions";
+import {getClasses} from "@/actions/schools/getClassesData";
+import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
+import {UpdateAdmissionStatus} from "@/main-components/AdmissionInfoAndActions";
+import {AdmissionData, IStudentAdmission} from "@/utilities/admissionTypes";
+import {authOptions} from "@/utilities/authOptions";
+import {getServerSession} from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function page({
-  params,
-}: {
-  params: { admissionId: string };
-}) {
+export default async function page({params}: {params: {admissionId: string}}) {
   const session = await getServerSession(authOptions);
-  
+
   let schoolInfo = null;
   let classes = null;
 
@@ -27,12 +26,18 @@ export default async function page({
     return <div>Error: Unable to retrieve school information.</div>;
   }
 
-  const admissionData = await getSpecifcAdmissionById(params.admissionId, schoolInfo.id);
+  const admissionData = await getSpecifcAdmissionById(
+    params.admissionId,
+    schoolInfo.id
+  );
   const admissionStats = admissionData as AdmissionData;
-  console.log(admissionData)
+  console.log(admissionData);
 
   if (schoolInfo && admissionStats) {
-    classes = await getClasses(schoolInfo.id, parseInt(admissionStats.selectedClass));
+    classes = await getClasses(
+      schoolInfo.id,
+      parseInt(admissionStats.selectedClass)
+    );
   }
 
   const admissionInfo = {
@@ -53,7 +58,8 @@ export default async function page({
       />
       <div className="flex items-center justify-between my-2">
         <h2 className="text-lg font-bold">
-          {admissionStats.admission.firstName} {admissionStats.admission.lastName}
+          {admissionStats.admission.firstName}{" "}
+          {admissionStats.admission.lastName}
         </h2>
         <span className="text-md text-gray-500">
           DOB: {new Date(admissionStats.admission.dob).toLocaleDateString()}
@@ -70,7 +76,9 @@ export default async function page({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <p className="text-blue-500 hover:underline">Link to Birth Certificate</p>
+            <p className="text-blue-500 hover:underline">
+              Link to Birth Certificate
+            </p>
           </Link>
           <Link
             href={admissionStats.admission.objects.transcripts}
@@ -87,7 +95,10 @@ export default async function page({
         </div>
       </div>
       {admissionStats.status === "Approved" ? null : (
-        <UpdateAdmissionStatus admissionId={params.admissionId} admissionInfo={admissionInfo} />
+        <UpdateAdmissionStatus
+          admissionId={params.admissionId}
+          admissionInfo={admissionInfo}
+        />
       )}
     </div>
   );

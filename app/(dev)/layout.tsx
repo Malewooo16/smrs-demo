@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Navbar from "../main-components/Navbar";
-import { getServerSession } from "next-auth";
-import { redirect } from 'next/navigation'
-import LoginForm from "../main-components/LoginForm";
-import { authOptions } from "@/utilities/authOptions";
+import Navbar from "../../main-components/Navbar";
+import {getServerSession} from "next-auth";
+import {redirect} from "next/navigation";
+import LoginForm from "../../main-components/LoginForm";
+import {authOptions} from "@/utilities/authOptions";
 
 export default async function AppLayout({
   children,
@@ -13,7 +13,7 @@ export default async function AppLayout({
   const session = await getServerSession(authOptions);
   //console.log(session?.user)
 
-  if (session?.user && session.user.role==="dev") {
+  if (session?.user && session.user.role === "dev") {
     return (
       <section className=" mt-2">
         <div className="sticky top-0 z-20">
@@ -29,12 +29,6 @@ export default async function AppLayout({
                   Dashboard{" "}
                 </Link>{" "}
               </li>
-              
-              
-
-              
-             
-              
             </ul>
           </div>
           <div className="flex-1 mx-4">{children}</div>
@@ -49,7 +43,6 @@ export default async function AppLayout({
       </section>
     );
   } else {
-    
-      redirect(`/`)
+    redirect(`/`);
   }
 }

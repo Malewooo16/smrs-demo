@@ -1,8 +1,7 @@
-import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
-import AddNewClassForm from "@/app/main-components/AddNewClassForm";
-import { authOptions } from "@/utilities/authOptions";
-import { getServerSession } from "next-auth";
-
+import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
+import AddNewClassForm from "@/main-components/AddNewClassForm";
+import {authOptions} from "@/utilities/authOptions";
+import {getServerSession} from "next-auth";
 
 export default async function AddClass() {
   const session = await getServerSession(authOptions);
@@ -15,7 +14,7 @@ export default async function AddClass() {
   }
   return (
     <div>
-        <AddNewClassForm schoolId={schoolId} />
+      <AddNewClassForm schoolId={schoolId} />
     </div>
-  )
+  );
 }

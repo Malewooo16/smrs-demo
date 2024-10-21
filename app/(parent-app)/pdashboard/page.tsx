@@ -1,8 +1,8 @@
-import PCalender from "@/app/main-components/PCalender";
-import SchoolInfo from "@/app/main-components/StdSchoolInfo";
-import StudentsCards from "@/app/main-components/StudentsCards";
-import { authOptions } from "@/utilities/authOptions";
-import { getServerSession } from "next-auth";
+import PCalender from "@/main-components/PCalender";
+import SchoolInfo from "@/main-components/StdSchoolInfo";
+import StudentsCards from "@/main-components/StudentsCards";
+import {authOptions} from "@/utilities/authOptions";
+import {getServerSession} from "next-auth";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -16,12 +16,15 @@ export default async function Dashboard() {
           Welcome To Your Dashboard {session?.user.role}{" "}
         </h1>
       </div>
-     <div className="flex justify-between">
-    
-     <div className="flex  flex-col ms-10"> <p className="text-2xl font-semi-bold">Your Students</p> <StudentsCards /></div>
-     <SchoolInfo />
-     <PCalender />
-     </div>
+      <div className="flex justify-between">
+        <div className="flex  flex-col ms-10">
+          {" "}
+          <p className="text-2xl font-semi-bold">Your Students</p>{" "}
+          <StudentsCards />
+        </div>
+        <SchoolInfo />
+        <PCalender />
+      </div>
     </div>
   );
 }

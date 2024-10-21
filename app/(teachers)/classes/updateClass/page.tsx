@@ -1,8 +1,5 @@
-import UpdateClasses from '@/app/main-components/Classes/UpdateClasses'
-
+import UpdateClasses from "@/main-components/Classes/UpdateClasses";
 
 export default function UpdateClass() {
-  return (
-    <UpdateClasses />
-  )
+  return <UpdateClasses />;
 }

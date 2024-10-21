@@ -203,6 +203,15 @@ model ClassCourse {
   teacher     Teacher @relation(fields: [teacherId], references: [id])
 
   @@unique([classId, courseId, teacherId]) // Ensures unique combination
+  ClassCourseWeeklyReport ClassCourseWeeklyReport[]
+}
+
+model ClassCourseWeeklyReport {
+  id          Int     @id @default(autoincrement())
+  classCourseId Int
+  report       String? // Weekly report for the class course
+  createdAt    DateTime @default(now())
+  classCourse  ClassCourse @relation(fields: [classCourseId], references: [id])
 }
 
 model CourseEnrollment {

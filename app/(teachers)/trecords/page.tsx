@@ -1,11 +1,10 @@
-import { getAllClasses } from "@/actions/classes/getClasses";
-import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
-import DaisyModal from "@/app/main-components/AgendaAdder";
-import { ISchoolAdmission } from "@/utilities/admissionTypes";
-import { authOptions } from "@/utilities/authOptions";
-import { getServerSession } from "next-auth";
+import {getAllClasses} from "@/actions/classes/getClasses";
+import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
+import DaisyModal from "@/main-components/AgendaAdder";
+import {ISchoolAdmission} from "@/utilities/admissionTypes";
+import {authOptions} from "@/utilities/authOptions";
+import {getServerSession} from "next-auth";
 import Link from "next/link";
-
 
 export default async function Records() {
   const session = await getServerSession(authOptions);
@@ -25,19 +24,36 @@ export default async function Records() {
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">
         {classes && classes.length > 0 ? (
           classes.map((c, index) => (
-            <div key={c.id} tabIndex={0} className="collapse collapse-arrow border-base-300 bg-white border">
+            <div
+              key={c.id}
+              tabIndex={0}
+              className="collapse collapse-arrow border-base-300 bg-white border"
+            >
               <input type="checkbox" />
-  <div className="collapse-title text-xl font-medium">{c.name}</div>
-  <div className="collapse-content flex flex-col">
-    <Link className="hover:underline" href={`/trecords/${c.id}?term=Term+1+${new Date().getFullYear()}`}>{`Term 1 ${new Date().getFullYear()}`} </Link>
-    <Link className="hover:underline" href={`/trecords/${c.id}?term=Term+2+${new Date().getFullYear()}`}>{`Term 2 ${new Date().getFullYear()}`} </Link>
-  </div>
-</div>
+              <div className="collapse-title text-xl font-medium">{c.name}</div>
+              <div className="collapse-content flex flex-col">
+                <Link
+                  className="hover:underline"
+                  href={`/trecords/${
+                    c.id
+                  }?term=Term+1+${new Date().getFullYear()}`}
+                >
+                  {`Term 1 ${new Date().getFullYear()}`}{" "}
+                </Link>
+                <Link
+                  className="hover:underline"
+                  href={`/trecords/${
+                    c.id
+                  }?term=Term+2+${new Date().getFullYear()}`}
+                >
+                  {`Term 2 ${new Date().getFullYear()}`}{" "}
+                </Link>
+              </div>
+            </div>
           ))
         ) : (
           <p>Classes Data Not Available</p>
         )}
-        
       </div>
     </div>
   );

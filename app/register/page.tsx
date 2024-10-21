@@ -1,10 +1,9 @@
-
-import RegisterNewParent from '../main-components/RegisterParent'
+import RegisterNewParent from "../../main-components/RegisterParent";
 
 export default function Register() {
   return (
     <div>
-    <RegisterNewParent />
+      <RegisterNewParent />
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 import {getAllClasses} from "@/actions/classes/getClasses";
 import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
-import DaisyModal from "@/app/main-components/AgendaAdder";
+import DaisyModal from "@/main-components/AgendaAdder";
 import {ISchoolAdmission} from "@/utilities/admissionTypes";
 import {authOptions} from "@/utilities/authOptions";
 import {getServerSession} from "next-auth";
@@ -24,8 +24,12 @@ export default async function Classes() {
       <h1 className="text-center text-3xl font-bold mt-5">My Classes</h1>
       <div className="flex w-full justify-center py-4">
         <div className="">
-          <button className="btn btn-success p-3"><Link href={`/classes/newClass`}>Add new class </Link></button>
-          <button className="btn btn-warning p-3 mx-4"><Link href={`/classes/updateClass`}>Update Classes</Link></button>
+          <button className="btn btn-success p-3">
+            <Link href={`/classes/newClass`}>Add new class </Link>
+          </button>
+          <button className="btn btn-warning p-3 mx-4">
+            <Link href={`/classes/updateClass`}>Update Classes</Link>
+          </button>
         </div>
       </div>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">

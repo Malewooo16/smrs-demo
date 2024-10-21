@@ -1,11 +1,14 @@
+import Navbar from "../../main-components/Navbar";
+import {getServerSession} from "next-auth";
+import {redirect} from "next/navigation";
+import {authOptions} from "@/utilities/authOptions";
+import ParentSideBar from "../../main-components/ParentSideBar";
 
-import Navbar from "../main-components/Navbar";
-import { getServerSession } from "next-auth";
-import { redirect } from 'next/navigation';
-import { authOptions } from "@/utilities/authOptions";
-import ParentSideBar from "../main-components/ParentSideBar";
-
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = await getServerSession(authOptions);
 
   if (session?.user && session.user.role === "Parent") {
@@ -18,15 +21,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <div className="hidden lg:block sticky  h-[calc(100vh-56px)] ">
             <ParentSideBar />
           </div>
-          <div className="flex-1  mx-4 ">
-            {children}
-            
-          </div>
+          <div className="flex-1  mx-4 ">{children}</div>
         </div>
       </div>
     );
   } else {
-    if (session?.user && (session.user.role === "Teacher" || session.user.role === "HeadTeacher")) {
+    if (
+      session?.user &&
+      (session.user.role === "Teacher" || session.user.role === "HeadTeacher")
+    ) {
       redirect(`/tdashboard`);
     } else {
       redirect(`/`);

@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { Inter } from "next/font/google";
+import type {Metadata} from "next";
+import {cookies} from "next/headers";
+import {Inter} from "next/font/google";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import Themes from "../utilities/theme";
-import SessionProviders from "./main-components/SessionProvider";
+import SessionProviders from "../main-components/SessionProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
   title: "SMRS Demo",
@@ -16,11 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   // Get theme based on the cookie "theme".
   const themeCookie = cookies().get("theme");
   // If the cookie "theme" does not exist, set theme to the first index of Themes.

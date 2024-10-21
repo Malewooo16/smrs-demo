@@ -1,22 +1,24 @@
-import { getUserNotifications } from "@/actions/notifications/getNotifications";
-import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
-import NewNotificationForm from "@/app/main-components/Notifications/NewNotificationForm";
-import { authOptions } from "@/utilities/authOptions";
-import { wordCount } from "@/utilities/wordCount";
-import { getServerSession } from "next-auth";
+import {getUserNotifications} from "@/actions/notifications/getNotifications";
+import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
+import NewNotificationForm from "@/main-components/Notifications/NewNotificationForm";
+import {authOptions} from "@/utilities/authOptions";
+import {wordCount} from "@/utilities/wordCount";
+import {getServerSession} from "next-auth";
 import Link from "next/link";
-import { IoFilter } from "react-icons/io5";
-import { MdEditSquare } from "react-icons/md";
+import {IoFilter} from "react-icons/io5";
+import {MdEditSquare} from "react-icons/md";
 
 export default async function TeachersNotifications({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: {[key: string]: string | string[] | undefined};
 }) {
   const session = await getServerSession(authOptions);
 
   if (session?.user.teacher) {
-    const school = await schoolInfoFromTeacherId(parseInt(session.user.teacher));
+    const school = await schoolInfoFromTeacherId(
+      parseInt(session.user.teacher)
+    );
     const schoolId = school?.id || 0;
 
     const notifications = await getUserNotifications(parseInt(session.user.id));
@@ -24,7 +26,9 @@ export default async function TeachersNotifications({
     const maxWordCount = 15;
 
     const filteredNotifications = notifications.filter((notification) => {
-      const userNotification = notification.NotificationUser.find((nu) => nu.userId === parseInt(session.user.id));
+      const userNotification = notification.NotificationUser.find(
+        (nu) => nu.userId === parseInt(session.user.id)
+      );
       const isRead = userNotification ? userNotification.isRead : false; // Default to false if no user-specific record is found
 
       if (searchParams.read === "true") return isRead; // Filter for read notifications
@@ -79,7 +83,9 @@ export default async function TeachersNotifications({
             <p className="text-gray-500">No notifications found.</p>
           ) : (
             filteredNotifications.map((n) => {
-              const userNotification = n.NotificationUser.find((nu) => nu.userId === parseInt(session.user.id));
+              const userNotification = n.NotificationUser.find(
+                (nu) => nu.userId === parseInt(session.user.id)
+              );
               const isRead = userNotification ? userNotification.isRead : false; // Get isRead status
 
               return (
@@ -102,7 +108,10 @@ export default async function TeachersNotifications({
                     {/* Message */}
                     <p className="text-gray-600 mb-2">
                       {wordCount(n.message) > maxWordCount
-                        ? `${n.message.split(/\s+/).slice(0, maxWordCount).join(" ")}...`
+                        ? `${n.message
+                            .split(/\s+/)
+                            .slice(0, maxWordCount)
+                            .join(" ")}...`
                         : n.message}
                     </p>
 

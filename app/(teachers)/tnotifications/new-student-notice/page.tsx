@@ -1,7 +1,7 @@
 import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
 import {getStudentandParentForNotice} from "@/actions/students/getStudentInfo";
 import {getSchoolHeadTeacher} from "@/actions/teachers/getTeacherInfo";
-import NewStudentNoticeForm from "@/app/main-components/Notifications/NewStudentNoticeForm";
+import NewStudentNoticeForm from "@/main-components/Notifications/NewStudentNoticeForm";
 import {authOptions} from "@/utilities/authOptions";
 import {getServerSession} from "next-auth";
 
@@ -10,7 +10,7 @@ export default async function page({searchParams}: {searchParams: any}) {
     parseInt(searchParams.student)
   );
 
-  const parentId = student?.parent?.user?.id
+  const parentId = student?.parent?.user?.id;
 
   const session = await getServerSession(authOptions);
 
@@ -22,8 +22,12 @@ export default async function page({searchParams}: {searchParams: any}) {
 
     if (student && headteacherId) {
       return (
-        <> 
-          <NewStudentNoticeForm headteacherId={headteacherId} parentId={parentId as number} studentName={student.name} />
+        <>
+          <NewStudentNoticeForm
+            headteacherId={headteacherId}
+            parentId={parentId as number}
+            studentName={student.name}
+          />
         </>
       );
     }

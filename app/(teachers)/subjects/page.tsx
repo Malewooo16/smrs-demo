@@ -17,7 +17,6 @@ export default async function Subjects() {
   const subjects = await getAllSubjects(schoolId as number);
   return (
     <div>
-      <h1 className="text-lg">Subjects</h1>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">
         {subjects && subjects.length > 0 ? (
           subjects.map((c, index) => (
