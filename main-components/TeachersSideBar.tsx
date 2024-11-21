@@ -43,7 +43,7 @@ const TeacherSideBar = ({
       {teacher && teacher.canAccessAdmissions && (
         <li
           className={`${
-            isActive("/tadmissions?T=1")
+            isActive("/tadmissions")
               ? "bg-sidebar-300 text-white  p-2 text-sm"
               : "text-[#7a80b4] hover:bg-sidebar-300 hover: hover:border-white  active: active p-2 text-sm"
           } mb-3 rounded-lg `}
@@ -107,11 +107,11 @@ const TeacherSideBar = ({
 
           <ul className="">
             <li
-              className={`${isActive("/tadmissions?T=1")
+              className={`${isActive("/tadmissions")
                   ? "bg-sidebar-300 text-white  p-2 text-sm"
                   : "text-[#7a80b4] hover:bg-sidebar-300 hover: hover:border-white  active: active p-2 text-sm"} rounded-lg `}
             >
-              <Link className="block w-full" href="/tadmissions?T=1">
+              <Link className="block w-full" href="/tadmissions">
                 Admissions
               </Link>
             </li>
@@ -142,15 +142,7 @@ const TeacherSideBar = ({
                 Reports
               </Link>
             </li>
-            <li
-              className={`${isActive("/announcements")
-                  ? "bg-sidebar-300 text-white  p-2 text-sm"
-                  : "text-[#7a80b4] hover:bg-sidebar-300 hover: hover:border-white  active: active p-2 text-sm"} rounded-lg `}
-            >
-              <Link className="block w-full" href="/announcements">
-                Announcements
-              </Link>
-            </li>
+            
             <li
               className={`${isActive("/feedback")
                   ? "bg-sidebar-300 text-white  p-2 text-sm"

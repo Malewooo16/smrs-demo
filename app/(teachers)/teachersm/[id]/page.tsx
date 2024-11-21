@@ -12,6 +12,7 @@ export default async function TeacherId({params}: {params: {id: string}}) {
     session.user.role.toLowerCase() === "headteacher"
   ) {
     const teacher = await getTeacherInfo(parseInt(params.id));
+   // console.log(teacher)
 
     // Conditional rendering: Check if teacher is not null
     if (teacher !== null) {

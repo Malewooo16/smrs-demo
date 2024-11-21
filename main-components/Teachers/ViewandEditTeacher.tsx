@@ -120,7 +120,7 @@ export default function ViewandEditTeacher({ teacher }: { teacher: TeacherType }
             <p><strong>Last Name:</strong> {teacher.lastName}</p>
             <p><strong>Email:</strong> {teacher.email}</p>
             <p><strong>Phone Number:</strong> {teacher.phoneNumber}</p>
-            {teacher.Classes && <p><strong>Class Teacher:</strong> {teacher.Classes[0].name} </p>}
+            {teacher.Classes && teacher.Classes.length > 0 && <p><strong>Class Teacher:</strong> {teacher.Classes[0].name} </p>}
             <p><strong>Can Access Academics:</strong> {teacher.canAccessAcademics ? "Yes" : "No"}</p>
             <p><strong>Can Access Admissions:</strong> {teacher.canAccessAdmissions ? "Yes" : "No"}</p>
             <p><strong>Can Access Discipline:</strong> {teacher.canAccessDiscpline ? "Yes" : "No"}</p>

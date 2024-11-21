@@ -35,6 +35,7 @@ export default function AddNewTeacher({schoolId}:{schoolId:number}) {
 
   const onSubmit = async (data: TeacherType) => {
     try {
+      //Todo add email validation
       const response = await createTeacher(data, schoolId);
       if (response.success) {
         toast.success("Teacher added successfully!");

@@ -2,12 +2,13 @@
 
 import prisma from "@/db/prisma"
 
-export const getClassCourseDetails = async (courseId:number) => {
+export const getClassCourseDetails = async (courseId:number,classId:number) => {
 
     try {
         const courseDetails = await prisma.classCourse.findFirst({
             where: {
-              courseId:courseId
+              courseId:courseId,
+              classId
             },
             include:{
                 teacher:true,
@@ -24,12 +25,46 @@ export const getClassCourseDetails = async (courseId:number) => {
     
 }
 
+export const getClassCourseReports = async(classCourseId:number, classId?:number) =>{
+  try{
+    const reports = await prisma.classCourseWeeklyReport.findMany({
+      where:{
+        classCourseId
+      }
+    })
+    return reports;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const getClassCourseOverview = async (courseId:number, classId?:number)=>{
+  try{
+    const courseDetails = await prisma.classCourse.findUnique({
+      where:{
+        id:courseId,
+        classId
+      },
+      include:{
+        teacher:true,
+        course:true,
+        class:true
+      }
+    });
+    return courseDetails;
+  }catch(err){
+    console.log(err);
+    return null; 
+  }
+}
+
 
 // Function to get and mutate student class details based on courseId
-export const getMutatedStudentDetails = async (courseId:number) => {
+export const getMutatedStudentDetails = async (courseId:number, classId:number) => {
     try {
       // Await the promise from the `getStudentsClassDetails` function
-      const students = await getStudentsClassDetails(courseId);
+      const students = await getStudentsClassDetails(courseId, classId);
   
       // Process the students and map over them to filter courses and extract scores
       const mutatedStudent = (students && students.length > 0) ? students.map((student) => {
@@ -60,11 +95,12 @@ export const getMutatedStudentDetails = async (courseId:number) => {
   };
   
   // The initial function to fetch student class details
-  export const getStudentsClassDetails = async (courseId:number) => {
+  export const getStudentsClassDetails = async (courseId:number, classId:number) => {
     try {
       const data = await prisma.classCourse.findFirst({
         where: {
-          courseId: courseId
+          courseId,
+          classId
         },
         include: {
           class: {

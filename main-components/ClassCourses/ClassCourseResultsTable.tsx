@@ -2,7 +2,7 @@
 "use client";
 import { getMutatedStudentDetails } from "@/actions/courses/getClassCourseInfo";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Define a type for student data
@@ -17,6 +17,9 @@ export function ClassCourseResultsTable() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [columns, setColumns] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const classId = searchParams.get('class');
+  
 
   // Use params correctly to extract the courseId
   const params = useParams() as { courseId: string };
@@ -30,7 +33,7 @@ export function ClassCourseResultsTable() {
     if (params.courseId) {
       const fetchData = async () => {
         try {
-          const response = await getMutatedStudentDetails(parseInt(params.courseId)); // Fetch student details
+          const response = await getMutatedStudentDetails(parseInt(params.courseId), parseInt(classId)); // Fetch student details
           
           setStudentResults(response); // Set the fetched results to state
 
@@ -100,7 +103,10 @@ export function ClassCourseResultsTable() {
         </tbody>
       </table>
       <div className="flex justify-center w-full mt-4"><button className="p-3 btn btn-success">
-        <Link href={`/tsubjects/edit/${params.courseId}`}>Update Results</Link>
+        <Link href={{
+          pathname: `/tsubjects/edit/${params.courseId}`,
+          query: { bayasi:"baya", aiii:"AAAAh" },
+        }}>Update Results</Link>
         </button></div>
     </div>
   </div>

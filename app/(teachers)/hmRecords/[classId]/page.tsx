@@ -1,7 +1,9 @@
 //@ts-nocheck
 
 import { schoolInfoFromTeacherId } from "@/actions/schools/getSchoolInfo";
-import { getAllStudentInClass } from "@/actions/students/getStudentInfo";
+import { getAllStudentInClass, getAllStudentInClassForProcessingReports } from "@/actions/students/getStudentInfo";
+import SendToParentResultsBtn from "@/main-components/StudentReports/SendResultsToParent";
+import SendToParentBtn from "@/main-components/StudentReports/SendToParentBtn";
 import { authOptions } from "@/utilities/authOptions";
 import { getServerSession } from "next-auth";
 
@@ -11,7 +13,7 @@ const RecordsManager = async ({ params, searchParams }: { params: { classId: str
 
   if (session?.user.teacher && session.user.role.toLocaleLowerCase() === "headteacher") {
     const school = await schoolInfoFromTeacherId(parseInt(session.user.teacher));
-    const students = await getAllStudentInClass(school?.id as number, parseInt(params.classId));
+    const students = await getAllStudentInClassForProcessingReports(school?.id as number, parseInt(params.classId));
 
     // Get the term from search parameters
     const term = searchParams.term;
@@ -35,10 +37,11 @@ const RecordsManager = async ({ params, searchParams }: { params: { classId: str
         rank: index + 1 // Assign ranks based on sorted order
       }));
 
+    //console.log(studentsWithRank);
     return (
       <div className="overflow-x-auto">
         <h2 className="text-2xl font-semibold mb-4">Student Records for {term}</h2>
-        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+        {studentsWithRank.length > 0 ?<table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-gray-200">
             <tr>
               <th className="py-3 px-4 text-left text-gray-700 font-semibold">Rank</th>
@@ -68,14 +71,12 @@ const RecordsManager = async ({ params, searchParams }: { params: { classId: str
                   </ul>
                 </td>
                 <td className="py-2 text-gray-800">
-                  <button className="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Send to Parent
-                  </button>
+                 <SendToParentResultsBtn studentId={student.id} email={student.parent?.email} semesterName={searchParams.term}  showRecords={student.results[0].showRecords} term={searchParams.term}/>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> : <p className="">Student Results Not Available</p>}
       </div>
     );
   }

@@ -1,6 +1,5 @@
 import {getUserNotifications} from "@/actions/notifications/getNotifications";
 import {schoolInfoFromTeacherId} from "@/actions/schools/getSchoolInfo";
-import NewNotificationForm from "@/main-components/Notifications/NewNotificationForm";
 import {authOptions} from "@/utilities/authOptions";
 import {wordCount} from "@/utilities/wordCount";
 import {getServerSession} from "next-auth";
@@ -66,7 +65,7 @@ export default async function TeachersNotifications({
               </ul>
             </div>
 
-            <button className="btn btn-success">
+           {session.user.role.toLowerCase()==="headteacher" &&  <button className="btn btn-success">
               <Link
                 href={`/tnotifications/new-notification`}
                 className="flex h-full py-4 items-center"
@@ -76,7 +75,7 @@ export default async function TeachersNotifications({
                   <MdEditSquare />{" "}
                 </span>
               </Link>
-            </button>
+            </button>}
           </div>
 
           {filteredNotifications.length === 0 ? (

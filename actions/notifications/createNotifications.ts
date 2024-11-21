@@ -51,6 +51,7 @@ export const createSchoolNotification = async (notification: any, schoolId:numbe
 
 export const createStudentNotice = async (formData:any,headteacherId:number, parentId:number, teacherId:number)=>{
   const {title, message,} = formData;
+  console.log(parentId)
   try{
     await prisma.notification.create({
       data:{
@@ -65,7 +66,7 @@ export const createStudentNotice = async (formData:any,headteacherId:number, par
         }
       }
     })
-    revalidatePath(`/tnotifications`)
+    revalidatePath(`/`, `layout`)
     return {success:true, message:"Notice created"}
   }catch(e){
     console.log(e);

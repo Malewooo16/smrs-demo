@@ -85,7 +85,7 @@ export function EditAdmissionInfo({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="rounded-lg shadow-md p-6 mb-4">
+      <div className="bg-white rounded-lg shadow-md p-6 mb-4">
         <h2 className="text-xl font-semibold mb-2">{schoolData.name}</h2>
         <p className="text-gray-600 mb-2">{schoolData.address}</p>
         <p className="text-gray-600 mb-2">Email: {schoolData.emailAddress}</p>
@@ -145,7 +145,7 @@ export function EditAdmissionInfo({
           ))}
         </div>
         <div className="flex max-w-xl justify-between mt-4">
-          <button className="btn btn-error" type="button" onClick={() => renderHandler(4)}>
+          <button className="btn btn-error" type="button" onClick={() => renderHandler(1)}>
             Cancel
           </button>
           <button className="btn btn-success" type="submit">

@@ -52,10 +52,13 @@ function ScoresManagementUI({ classId }: { classId: number }) {
               scores,
               avgScore: studentResult ? studentResult.avg : "0", // Set average score if exists
               term: term as string, // Initialize term
+              rank: 0, // Initialize rank with 0
+              showRecords: false, // Show
             };
           });
 
           setStudentScores(initialScores);
+         // console.log(initialScores);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -66,14 +69,22 @@ function ScoresManagementUI({ classId }: { classId: number }) {
   }, [classId, term]); // Add term as a dependency
 
   const updateScoresAndRank = useCallback((updatedScores: StudentScore[]) => {
+    // Calculate average scores
     const updatedScoresWithAvg = updatedScores.map((student) => {
       const scoresArray = Object.values(student.scores).map(parseFloat).filter((score) => !isNaN(score));
       const sum = scoresArray.reduce((acc, score) => acc + score, 0);
       const avgScore = scoresArray.length > 0 ? (sum / scoresArray.length).toFixed(2) : "0";
       return { ...student, avgScore };
     });
+  
+    // Calculate ranks based on avgScore
+    const sortedScores = [...updatedScoresWithAvg].sort((a, b) => parseFloat(b.avgScore) - parseFloat(a.avgScore));
+    sortedScores.forEach((student, index) => {
+      student.rank = index + 1;
+    });
 
-
+    //console.log(sortedScores)
+  
     setStudentScores(updatedScoresWithAvg);
   }, []);
 

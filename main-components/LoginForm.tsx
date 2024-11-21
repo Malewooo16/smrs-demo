@@ -30,7 +30,7 @@ export default function LoginForm() {
       console.log(signInData)
     }
     else{
-      router.push('/pdashboard', {scroll:false})
+      router.push('/studentsP', {scroll:false})
       
     }
   }

@@ -46,7 +46,23 @@ export async function getAllStudentInClass(schoolId: number, classId: number) {
     console.log("Error in getting all Student");
   }
 }
+export async function getAllStudentInClassForProcessingReports(schoolId: number, classId: number) {
+  try {
+    const student = await prisma.studentT.findMany({
+      where: {
+        schoolId,
+        classId,
+      },
 
+      include: {
+         parent:true
+      },
+    });
+    return student;
+  } catch (error) {
+    console.log("Error in getting all Student");
+  }
+}
 export async function getAllStudentResultsInClass(
   schoolId: number,
   classId: number
@@ -99,11 +115,13 @@ export async function getStudentForParent() {
   return [];
 }
 
+//TODO Modify to grant access to class teacher and headMaster
 export async function getSingleStudent(id: number) {
   try {
     const student = await prisma.studentT.findUnique({
       where: {
         id,
+      
       },
       include: {
         studentData: true,

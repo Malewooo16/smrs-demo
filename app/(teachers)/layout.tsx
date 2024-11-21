@@ -4,6 +4,7 @@ import {redirect} from "next/navigation";
 import {authOptions} from "@/utilities/authOptions";
 import {getTeacherInfo} from "@/actions/teachers/getTeacherInfo";
 import TeacherSideBar from "../../main-components/TeachersSideBar";
+import "../globals.css"
 
 export default async function AppLayout({
   children,

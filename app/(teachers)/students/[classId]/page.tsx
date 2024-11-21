@@ -67,6 +67,9 @@ export default async function StudentsPerClass({
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Home Address
             </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Details
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -87,6 +90,11 @@ export default async function StudentsPerClass({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {student.studentData?.homeAddress}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button className="btn-submit ">
+                    <Link href={`/tclass/${student.id}`} className="h-full">Details</Link>
+                  </button>
                 </td>
               </tr>
             ))

@@ -52,7 +52,7 @@ export async function getSpecifcAdmissionById<T>(admissionId:string, schoolId:nu
         return { success: false, message: "Failed to fetch admissions" };
     }
 }
-export async function getAllAdmissionsForParent <T> () : Promise<Response<T>>{
+export async function getAllAdmissionsForParent (){
     let parentId
     const session= await getServerSession(authOptions)
     if(session)
@@ -65,14 +65,14 @@ export async function getAllAdmissionsForParent <T> () : Promise<Response<T>>{
            include:{AdmissionStats:{include:{school:true}}}
         })
         if(!admissions){
-            return {success:false, message:"No admissions found"}
+            return []
         }
       
         const admissionsWithSchools = admissions.filter(a => a.AdmissionStats.length > 0);
-        return admissionsWithSchools.length > 0 ? admissionsWithSchools as T : { success: false, message: "No admissions connected to schools" };
+        return admissionsWithSchools.length > 0 ? admissionsWithSchools  : [];
         
     } catch (error) {
-        return {success:false, message:"No admissions found"}
+        return []
     }
 
 }

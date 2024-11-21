@@ -14,7 +14,7 @@ import {
   PointElement,
   LineElement,
 } from 'chart.js';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { getMutatedStudentDetails } from '@/actions/courses/getClassCourseInfo';
 
 // Register chart elements
@@ -42,13 +42,14 @@ const ClassCourseResultsGraph: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const params = useParams() as { courseId: string };
-
+  const searchParams = useSearchParams();
+  const classId = searchParams.get('class');
   // Fetch student scores data
   useEffect(() => {
     if (params.courseId) {
       const fetchData = async () => {
         try {
-          const response = await getMutatedStudentDetails(parseInt(params.courseId)); // Fetch student details
+          const response = await getMutatedStudentDetails(parseInt(params.courseId), parseInt(classId as string)); // Fetch student details
           
           setStudentResults(response); // Set the fetched results to state
 

@@ -36,17 +36,17 @@ export default async function Records() {
                   className="hover:underline"
                   href={`/trecords/${
                     c.id
-                  }?term=Term+1+${new Date().getFullYear()}`}
+                  }?term=Term+One+${new Date().getFullYear()}`}
                 >
-                  {`Term 1 ${new Date().getFullYear()}`}{" "}
+                  {`Term One ${new Date().getFullYear()}`}{" "}
                 </Link>
                 <Link
                   className="hover:underline"
                   href={`/trecords/${
                     c.id
-                  }?term=Term+2+${new Date().getFullYear()}`}
+                  }?term=Term+Two+${new Date().getFullYear()}`}
                 >
-                  {`Term 2 ${new Date().getFullYear()}`}{" "}
+                  {`Term Two ${new Date().getFullYear()}`}{" "}
                 </Link>
               </div>
             </div>

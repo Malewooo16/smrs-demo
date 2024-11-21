@@ -19,7 +19,7 @@ export default async function Admissions() {
  //console.log(schoolInfo)
 
   return (
-    <div>
+    <div className="p-2">
       <h1 className="text-2xl">Admissions</h1>
       <ClientWrapperTAdmissions admissions={admissions} school={schoolInfo} />
     </div>

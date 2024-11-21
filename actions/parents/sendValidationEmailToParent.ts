@@ -154,10 +154,12 @@ export const sendPassedAdmissionToParent = async (
 //     switch(sa)
 // }
 
+///TODO Figure out the efficacy of sending the email then upating the report.
 export const sendResults = async (
   studentId: number,
   emailAddress: string,
   semesterName: string,
+  term: string,
 ) => {
   const requestData = {
     api_key: process.env.NEXT_PUBLIC_SMTP_KEY,
@@ -177,7 +179,7 @@ export const sendResults = async (
   });
 
   if (response.ok) {
-    const updateStudent = await showStudentResults(studentId);
+    const updateStudent = await showStudentResults(studentId, term);
     if (updateStudent.success === false) {
       return { success: false, message: "Error While Updating Admissions" };
     }

@@ -24,9 +24,7 @@ export default async function NewStudent({
   );
   return (
     <div>
-      <h1 className="text-xl text-center my-4">
-        Add New Student to {classData?.name}
-      </h1>
+      
       <AddStudentForm />
     </div>
   );

@@ -30,7 +30,7 @@ export default async function ValidateAdmission({
     if (school && admissionData) {
       // Handle success case
       return (
-        <div className=" h-full px-2">
+        <div className=" h-full p-2">
           <ValidateAdmissionData
             admission={admissionData}
             schoolData={school}

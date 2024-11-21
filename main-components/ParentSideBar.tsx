@@ -6,43 +6,55 @@ import { usePathname } from "next/navigation";
 const ParentSideBar: React.FC = () => {
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => pathname.includes(path);
 
   return (
-    <ul className="hidden lg:flex flex-col  h-[93vh] w-52 sticky top-14  bg-[#072f7c] shadow-lg ">
-      <li
-        className={`${
-          isActive("/pdashboard")
-            ? "bg-[#051f4c] text-white border-l-4 border-yellow-400"
-            : "text-white hover:bg-[#0a4fa0] hover:border-l-4 hover:border-white active:bg-[#051f4c] active:border-l-4 active:border-yellow-400"
-        } mb-3 rounded mt-4  text-lg`}
-      >
-        <Link className="block w-full ms-2 py-4" href="/pdashboard">
-          Dashboard
-        </Link>
-      </li>
+    <ul className="hidden lg:flex flex-col h-full w-52 sticky top-20 bg-[#006d77] shadow-lg py-4 px-3">
+      <li className="mb-4 text-[#b3ebe5] px-2 uppercase font-semibold">Menu</li>
       <li
         className={`${
           isActive("/studentsP")
-            ? "bg-[#051f4c] text-white border-l-4 border-yellow-400"
-            : "text-white hover:bg-[#0a4fa0] hover:border-l-4 hover:border-white active:bg-[#051f4c] active:border-l-4 active:border-yellow-400"
-        } mb-3 rounded text-lg `}
+            ? "bg-[#005f66] text-[#e0f7fa] border-l-4 border-[#83c5be]"
+            : "text-white hover:text-[#f0fdfa] hover:bg-[#008c95] transition-all duration-200 ease-in-out"
+        } mb-3 rounded-lg p-3 text-sm`}
       >
-        <Link className="block w-full ms-2 py-4" href="/studentsP">
+        <Link className="block w-full" href="/studentsP">
           Students
         </Link>
       </li>
       <li
         className={`${
           isActive("/padmissions")
-            ? "bg-[#051f4c] text-white border-l-4 border-yellow-400"
-            : "text-white hover:bg-[#0a4fa0] hover:border-l-4 hover:border-white active:bg-[#051f4c] active:border-l-4 active:border-yellow-400"
-        } mb-3 rounded  text-lg`}
+            ? "bg-[#005f66] text-[#e0f7fa] border-l-4 border-[#83c5be]"
+            : "text-white hover:text-[#f0fdfa] hover:bg-[#008c95] transition-all duration-200 ease-in-out"
+        } mb-3 rounded-lg p-3 text-sm`}
       >
-        <Link className="block w-full ms-2 py-4" href="/padmissions">
+        <Link className="block w-full" href="/padmissions">
           Admissions
         </Link>
       </li>
+      <li
+        className={`${
+          isActive("/pnotifications")
+            ? "bg-[#005f66] text-[#e0f7fa] border-l-4 border-[#83c5be]"
+            : "text-white hover:text-[#f0fdfa] hover:bg-[#008c95] transition-all duration-200 ease-in-out"
+        } mb-3 rounded-lg p-3 text-sm`}
+      >
+        <Link className="block w-full" href="/pnotifications">
+          Notifications
+        </Link>
+      </li>
+      {/* <li
+        className={`${
+          isActive("/pinvoices")
+            ? "bg-[#005f66] text-[#e0f7fa] border-l-4 border-[#83c5be]"
+            : "text-white hover:text-[#f0fdfa] hover:bg-[#008c95] transition-all duration-200 ease-in-out"
+        } mb-3 rounded-lg p-3 text-sm`}
+      >
+        <Link className="block w-full" href="/pinvoices">
+          Invoices
+        </Link>
+      </li> */}
     </ul>
   );
 };

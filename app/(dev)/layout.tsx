@@ -4,6 +4,7 @@ import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
 import LoginForm from "../../main-components/LoginForm";
 import {authOptions} from "@/utilities/authOptions";
+import '../globals.css'
 
 export default async function AppLayout({
   children,

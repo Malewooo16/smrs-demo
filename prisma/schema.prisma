@@ -9,18 +9,18 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String
-  name      String?
-  role      UserRole
-  parentId  Int?     @unique
-  teacherId Int?     @unique
-  parent    Parent?  @relation(fields: [parentId], references: [id])
-  teacher   Teacher? @relation(fields: [teacherId], references: [id])
-  CreatedByNotification Notification[] @relation(name: "createdByNotifications")
-  School School[]
-  NotificationUser NotificationUser[]
+  id                    Int                @id @default(autoincrement())
+  username              String             @unique
+  password              String
+  name                  String?
+  role                  UserRole
+  parentId              Int?               @unique
+  teacherId             Int?               @unique
+  parent                Parent?            @relation(fields: [parentId], references: [id])
+  teacher               Teacher?           @relation(fields: [teacherId], references: [id])
+  CreatedByNotification Notification[]     @relation(name: "createdByNotifications")
+  School                School[]
+  NotificationUser      NotificationUser[]
 }
 
 model Parent {
@@ -40,6 +40,9 @@ model School {
   id                     Int               @id @default(autoincrement())
   name                   String
   address                String
+  logo                   String?
+  images                 String[]          @default([])
+  description            String?
   admissionDates         Json?
   admissionStatus        Boolean?          @default(false)
   admissionClasses       String[]          @default([])
@@ -192,26 +195,28 @@ enum EventType {
 }
 
 model ClassCourse {
-  id          Int     @id @default(autoincrement())
-  classId     Int
-  courseId    Int
-  teacherId   Int
-  courseLevel String  @default("Form One") // Level or version of the course in this class
-  description String? // Description specific to this class
-  class       Classes @relation(fields: [classId], references: [id])
-  course      Course  @relation(fields: [courseId], references: [id])
-  teacher     Teacher @relation(fields: [teacherId], references: [id])
-
-  @@unique([classId, courseId, teacherId]) // Ensures unique combination
+  id                      Int                       @id @default(autoincrement())
+  classId                 Int
+  courseId                Int
+  teacherId               Int?
+  courseLevel             String                    @default("Form One") // Level or version of the course in this class
+  description             String? // Description specific to this class
+  class                   Classes                   @relation(fields: [classId], references: [id])
+  course                  Course                    @relation(fields: [courseId], references: [id])
+  teacher                 Teacher?                  @relation(fields: [teacherId], references: [id])
   ClassCourseWeeklyReport ClassCourseWeeklyReport[]
+
+  @@unique([classId, courseId]) // Ensures unique combination
 }
 
 model ClassCourseWeeklyReport {
-  id          Int     @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   classCourseId Int
-  report       String? // Weekly report for the class course
-  createdAt    DateTime @default(now())
-  classCourse  ClassCourse @relation(fields: [classCourseId], references: [id])
+  week          Int
+  summary       String
+  report        String? // Weekly report for the class course
+  createdAt     DateTime    @default(now())
+  classCourse   ClassCourse @relation(fields: [classCourseId], references: [id], onDelete: Cascade)
 }
 
 model CourseEnrollment {
@@ -220,9 +225,9 @@ model CourseEnrollment {
   courseId   Int
   score      Json?
   studentTId Int
-  course     Course   @relation(fields: [courseId], references: [id])
-  student    Student? @relation(fields: [studentId], references: [id])
-  studentT   StudentT @relation(fields: [studentTId], references: [id])
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student    Student? @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentT   StudentT @relation(fields: [studentTId], references: [id], onDelete: Cascade)
 
   @@unique([studentTId, courseId])
 }

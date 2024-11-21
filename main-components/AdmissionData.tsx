@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { decryptData } from "@/actions/schools/crypto";
 import { ISchoolAdmission, IStudentAdmission } from "@/utilities/admissionTypes";
 import Image from "next/image";
@@ -8,55 +9,80 @@ import calculateAge from "@/utilities/ageCalculator";
 import BeemPay from "./BeemPay";
 
 export default function ValidateAdmissionData({ schoolData, admission }: { schoolData: any; admission: any }) {
-  const school = schoolData as ISchoolAdmission
-  const searchParams = useSearchParams()
-  const [selectedClass, setselectedClass] = useState("");
-  const schoolId = parseInt(decryptData(searchParams.get("escuela"), "MySuperSecretKeyMySuperSecretKey"))
+  const school = schoolData as ISchoolAdmission;
+  const searchParams = useSearchParams();
+  const [selectedClass, setSelectedClass] = useState("");
+  const schoolId = parseInt(decryptData(searchParams.get("escuela") as string, "MySuperSecretKeyMySuperSecretKey"));
   const validAdmission = admission as IStudentAdmission;
-  //console.log(validAdmission)
 
-  if(validAdmission.AdmissionStats && validAdmission.AdmissionStats.some(stats => stats.schoolId === schoolId )){
+  const activeAdmissionClasses = school.activeAdmissionClasses.find ((ac)=>{
+    return ac.id === parseInt(selectedClass)
+  })
+
+  if (
+    validAdmission.AdmissionStats &&
+    validAdmission.AdmissionStats.some((stats) => stats.schoolId === schoolId)
+  ) {
     return (
-      <h2 className="text-lg">The admission for {validAdmission.firstName} {validAdmission.lastName} to {school.name} already exists </h2>
-    )
+      <div className="flex justify-center items-center min-h-screen bg-[#e0f7fa]">
+        <h2 className="text-lg text-gray-700">
+          The admission for {validAdmission.firstName} {validAdmission.lastName} to {school.name} already exists.
+        </h2>
+      </div>
+    );
   }
-  //console.log(school)
+
   return (
-   <div className="flex h-full">
-     <div className="flex flex-col flex-1 mx-2 lg:w-auto justify-center items-start gap-10 ">
-      {/* Should Be Refactored as a Separate Component */}
-      {/* Student Data */}
-      <div className="min-w-md w-full p-6 border rounded-lg shadow-md">
-        <h1 className="text-xl font-semibold mb-4">Student Data</h1>
-        <div className="border-b-2 w-full"></div>
-        <div className="flex flex-col items-center">
-          <div className="w-36 h-36 relative rounded-full overflow-hidden my-4">
-            <Image src={validAdmission.imgUrl as string}  fill alt={validAdmission.id} />
+    <div className="flex flex-col lg:flex-row h-full bg-[#e0f7fa] p-6 gap-8">
+      {/* Left Panel: Student and School Data */}
+      <div className="flex flex-col flex-1 gap-8">
+        {/* Student Data */}
+        <div className="p-6 rounded-lg shadow-lg bg-white border">
+          <h1 className="text-2xl font-semibold mb-6 text-teal-700">Student Data</h1>
+          <div className="flex flex-col items-center">
+            <div className="w-36 h-36 relative rounded-full overflow-hidden shadow-md">
+              <Image src={validAdmission.imgUrl as string} fill alt={`Student ${validAdmission.id}`} />
+            </div>
+            <h2 className="text-xl font-medium mt-4 text-gray-800">
+              {validAdmission.firstName} {validAdmission.lastName}
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">Date of Birth: {new Date(validAdmission.dob).toLocaleDateString()}</p>
+            <p className="text-sm text-gray-600">Age: {calculateAge(validAdmission.dob)}</p>
+            <p className="text-sm text-gray-600 mt-2">Address: {validAdmission.homeAddress}</p>
           </div>
-          <h2 className="text-lg font-semibold">{validAdmission.firstName} {validAdmission.lastName}</h2>
-          <p className="text-sm mb-2">Date of Birth: {new Date(validAdmission.dob).toLocaleDateString()}</p>
-          <p> Age: {calculateAge(validAdmission.dob)} </p>
-          <p className="text-sm mb-2">Address: {validAdmission.homeAddress}</p>
+        </div>
+
+        {/* School Data */}
+        <div className="p-6 rounded-lg shadow-lg bg-white border">
+          <h1 className="text-2xl font-semibold text-teal-700 mb-6">School</h1>
+          <h2 className="text-lg font-medium text-gray-800">{school.name}</h2>
+          <p className="text-sm text-gray-600 mt-2">Address: {school.address}</p>
+          <div className="mt-6">
+            <label htmlFor="class-select" className="block text-sm font-medium text-gray-700 mb-2">
+              Select the Class to be Admitted
+            </label>
+            <select
+              id="class-select"
+              className="select select-bordered w-full max-w-xs border-gray-300 focus:ring-teal-500 focus:border-teal-500"
+              title="Class Selection"
+              onChange={(e) => setSelectedClass(e.target.value)}
+            >
+              {school.activeAdmissionClasses.map((ac) => (
+                <option key={ac.id} value={ac.id}>
+                  {ac.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* School */}
-      <div className="min-w-md w-full p-6 border rounded-lg shadow-md">
-        <h1 className="text-xl font-semibold ">School</h1>
-        <div className="border-b-2 w-full my-4"></div>
-        <div>
-          <h2 className="text-lg font-semibold">{school.name}</h2>
-          <p className="text-sm mb-2">Address: {school.address}</p>
+      {/* Right Panel: Payment Component */}
+      {school.activeAdmissionClasses.length > 0 && (
+        <div className="flex items-center justify-center lg:w-1/3">
+          <BeemPay selectedClass={selectedClass === "" ? `${school.activeAdmissionClasses[0].id}` : selectedClass} selectedClassName={activeAdmissionClasses?.name as string || school.activeAdmissionClasses[0].name}  />
         </div>
-        <p> Select the Class to be Admitted </p>
-        <select className="select select-bordered w-full max-w-xs" title="class selection" onChange={(e)=>setselectedClass(e.target.value.toString())}>
-        {school.activeAdmissionClasses.map((ac)=>(
-          <option key={ac.id} value={ac.id}> {ac.name}  </option>
-        ))}
-       </select>
-      </div>
+      )}
     </div>
-     {school.activeAdmissionClasses.length > 0 && <BeemPay selectedClass={selectedClass==="" ?  `${school.activeAdmissionClasses[0].id}` : selectedClass} />}
-   </div>
   );
 }

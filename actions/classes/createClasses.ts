@@ -6,7 +6,9 @@ export async function createNewClass(className: string, schoolId: number, metada
       data: {
         schoolId,
         name: className,
-        metadata
+        metadata,
+        classType:metadata.type
+
       },
     });
     return { success: true, message: "Added Succesfully" };

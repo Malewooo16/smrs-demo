@@ -4,8 +4,8 @@ import {authOptions} from "@/utilities/authOptions";
 import {getServerSession} from "next-auth";
 import {Fira_Code} from "next/font/google";
 
-export default async function page({params}: {params: {courseId: string}}) {
-  const students = await getStudentsClassDetails(parseInt(params.courseId));
+export default async function page({params, searchParams}: {params: {courseId: string}; searchParams: {classId: string}}) {
+  const students = await getStudentsClassDetails(parseInt(params.courseId), parseInt(searchParams.classId));
 
   const session = await getServerSession(authOptions);
 

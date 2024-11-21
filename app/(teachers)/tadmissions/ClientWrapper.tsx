@@ -18,13 +18,9 @@ export default function ClientWrapperTAdmissions({
   school: any;
 }) {
   const searchParams = useSearchParams();
-  const T = searchParams.get("T") as string;
-  const step = parseInt(T);
   const [component, setComponent] = useState(1);
   //console.log(school)
-  useEffect(() => {
-    setComponent(step);
-  }, [step]);
+ 
 
   const renderHandler = (num: number) => {
     setComponent(num);
@@ -32,34 +28,41 @@ export default function ClientWrapperTAdmissions({
 
   return (
     <div>
-      <div className="my-4">
-        <div className="flex justify-between w-[22rem] bg-base-200 p-2 rounded-xl">
-          <div
-            className={`rounded-lg px-4 py-1 cursor-pointer  hover:bg-base-300  ${
-              component === 1 ? "bg-base-300" : " "
-            }`}
-            onClick={() => renderHandler(1)}
-          >
-            General
-          </div>
-          <div
-            className={`rounded-lg px-4 py-1 cursor-pointer hover:bg-base-300 ${
-              component === 2 ? "bg-base-300" : ""
-            }`}
-            onClick={() => renderHandler(2)}
-          >
-            Pending
-          </div>
-          <div
-            className={`rounded-lg  px-4 py-1 cursor-pointer hover:bg-base-300 ${
-              component === 3 ? "bg-base-300" : ""
-            }`}
-            onClick={() => renderHandler(3)}
-          >
-            Approved
-          </div>
-        </div>
-      </div>
+     <div className="my-4">
+  <div className="flex space-x-4 border-b mb-4">
+    <div
+      className={`py-2 px-6 cursor-pointer ${
+        component === 1
+          ? "border-b-2 border-indigo-500 font-semibold text-indigo-500"
+          : "text-gray-500"
+      }`}
+      onClick={() => renderHandler(1)}
+    >
+      General
+    </div>
+    <div
+      className={`py-2 px-6 cursor-pointer ${
+        component === 2
+          ? "border-b-2 border-indigo-500 font-semibold text-indigo-500"
+          : "text-gray-500"
+      }`}
+      onClick={() => renderHandler(2)}
+    >
+      Pending
+    </div>
+    <div
+      className={`py-2 px-6 cursor-pointer ${
+        component === 3
+          ? "border-b-2 border-indigo-500 font-semibold text-indigo-500"
+          : "text-gray-500"
+      }`}
+      onClick={() => renderHandler(3)}
+    >
+      Approved
+    </div>
+  </div>
+</div>
+
 
       {component === 1 ? (
         <AdmissionInfo schoolData={school} renderHandler={renderHandler} />

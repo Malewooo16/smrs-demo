@@ -1,16 +1,15 @@
 "use client";
 import {useEffect, useState} from "react";
-
 import SuccessItem from "./SuccessItem";
 import AdmissionForm from "@/main-components/AdmissionForm";
 import ObjectsUplaod from "@/main-components/ObjectsUplaod";
 import UserPicUpload from "@/main-components/UserPicUpload";
-import FileUploadModal from "@/main-components/FileUploadModal";
 import {IStudentAdmission} from "@/utilities/admissionTypes";
 import Link from "next/link";
 import {useSearchParams} from "next/navigation";
 import {useRouter} from "next/navigation";
 import ParentInfo from "@/main-components/ParentInfo";
+import PreviousAdmissionsModal from "@/main-components/Admissions/PreviousAdmissonsModal";
 
 export default function AdmissionMain({admissions}: {admissions: any}) {
   const searchParams = useSearchParams();
@@ -45,7 +44,7 @@ export default function AdmissionMain({admissions}: {admissions: any}) {
   return (
     <div>
       {admissions.length > 0 && (
-        <FileUploadModal
+        <PreviousAdmissionsModal
           isOpen={modal}
           onClose={closeModal}
           header="Saved Admissions"
@@ -53,7 +52,7 @@ export default function AdmissionMain({admissions}: {admissions: any}) {
           <div className="flex justify-center w-full">
             {" "}
             <button
-              className="btn btn-success my-4"
+              className="btn btn-success my-2"
               onClick={handleNewAdmissions}
             >
               {" "}
@@ -86,7 +85,7 @@ export default function AdmissionMain({admissions}: {admissions: any}) {
               </li>
             ))}
           </ul>
-        </FileUploadModal>
+        </PreviousAdmissionsModal>
       )}
       {admissions.length === 0 || newAdmission ? (
         <div>

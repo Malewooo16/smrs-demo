@@ -14,15 +14,21 @@ export default async function Subjects() {
     );
     schoolId = school?.id || 0;
   }
+  //TODO Separate a-level from o-level
   const subjects = await getAllSubjects(schoolId as number);
   return (
     <div>
+      <div className="w-full flex justify-end my-2">
+        <button className="btn-submit w-1/5"><Link href={`/subjects/newSubject`}>
+              Add New Subject +         
+        </Link></button>
+        </div>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4 ">
         {subjects && subjects.length > 0 ? (
           subjects.map((c, index) => (
             <Link href={`/subjects/${c.id}`} key={c.id}>
               {" "}
-              <div key={index} className="card bg-base-200 ">
+              <div key={index} className="card bg-white ">
                 <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
                   {c.name}
                 </p>
@@ -32,16 +38,7 @@ export default async function Subjects() {
         ) : (
           <p>Classes Data Not Available</p>
         )}
-        <Link href={`/subjects/newSubject`}>
-          {" "}
-          <div className="card bg-white ">
-            {" "}
-            <p className="font-semibold text-lg px-6 py-4 rounded-tl-md rounded-tr-none">
-              {" "}
-              Add New Subject +{" "}
-            </p>{" "}
-          </div>
-        </Link>
+        
       </div>
     </div>
     

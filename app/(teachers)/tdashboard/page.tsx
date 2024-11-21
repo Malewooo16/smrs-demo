@@ -10,6 +10,8 @@ export default async function TDashboard() {
     parseInt(session?.user.teacher as string)
   );
 
+  //console.log(teacher)
+
   if (teacher && session?.user.role.toLocaleLowerCase() === "headteacher") {
     return <HeadMasterDashboard />;
   } else {

@@ -5,6 +5,7 @@ import { classTypeObject } from "@/utilities/classesInfo";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 interface classesData {
@@ -26,15 +27,13 @@ export function AddNewSubject({
   teachers: any;
   schoolId: any;
 }) {
-  const { id, setId, clearId } = useIdStore();
-  const [subjectSuccess, setSubjectSuccess] = useState(false);
+ 
   const [loading, setLoading] = useState(false);
   const classesData = classes as classesData[];
   const teachersData = teachers as teachersData[];
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Title is required"),
-    description: Yup.string().required("Description is required"),
     tagFor: Yup.string().required("Deadline is required"),
   });
 
@@ -52,41 +51,37 @@ export function AddNewSubject({
     const newObj = { ...formData, schoolId };
     const newSubjectResponse = await createSubject(newObj);
     if (newSubjectResponse.success) {
-      setId(newSubjectResponse.courseId as number);
       setLoading(false);
+      toast.success(newSubjectResponse.message);
     } else {
       setLoading(false);
+      toast.error(newSubjectResponse.message);
     }
   };
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center min-h-[80vh]">
+      
       <form
-        className={`flex flex-col`}
+        className={`flex flex-col bg-white px-10 rounded-md py-4 w-1/2`}
         onSubmit={handleSubmit(createNewSubject)}
       >
+        <div className="border-b w-full p-1 mb-4">
+      <h2 className="text-xl text-center font-semibold">Create a New Subject </h2>
+      </div>
         <label>
           <p>Subject Name</p>
           <input
             type="text"
             placeholder="Type here"
-            className="input input-bordered w-full max-w-lg"
+            className="input-base w-full max-w-lg mb-2"
             {...register("name")}
-          />
-        </label>
-        <label>
-          <p>Subject Description</p>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-lg"
-            {...register("description")}
           />
         </label>
         <label>
           <p>Subject For</p>
           <select
             title="select Class"
-            className="select select-bordered w-full max-w-lg"
+            className="input-base p-2 w-full max-w-lg"
             {...register("tagFor")}
           >
             <option disabled selected>

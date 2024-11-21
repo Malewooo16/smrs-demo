@@ -4,7 +4,7 @@ import { decryptData } from "./crypto";
 
 
 export async function getSchoolByIdForAdmission(encrpytedId:any){
-    const id = parseInt(decryptData(encrpytedId, "MySuperSecretKeyMySuperSecretKey"))
+    const id = parseInt(decryptData(encrpytedId, process.env.CRYPTO_KEY as string));
     try{
         const school = await prisma.school.findUnique({
             where:{
@@ -15,11 +15,38 @@ export async function getSchoolByIdForAdmission(encrpytedId:any){
             return school
         }
         else{
-            return {success:"false", message:"Failed to fetch School"}
+            return null;
         }
     }
     catch(e){
         console.log(e)
-        return {success:false, message:"Error While fetching Schools"}
+        return null;
+    }
+}
+
+export async function getSchoolById(encrpytedId:any){
+    const id = parseInt(decryptData(encrpytedId, process.env.CRYPTO_KEY as string));
+    try{
+        const school = await prisma.school.findUnique({
+            where:{
+                id
+            },
+            select:{
+                id:true,
+                name:true,
+                description:true,
+                images:true,
+                website:true,
+                logo:true
+            }
+        })
+        if(!school){
+            return null;
+        }
+        return school;
+    }
+    catch(e){
+        console.log(e)
+        return null;
     }
 }

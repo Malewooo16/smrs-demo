@@ -9,13 +9,13 @@ export default function ClassesAndSubjects() {
     <div className="flex flex-col items-center">
       <h1 className="text-xl my-4 font-semibold">Manage Classes and Subjects in your School</h1>
       <div className="flex justify-center ">
-        <div className="grid grid-cols-2 gap-10 ">
-          <Link href={`/classes`}><div className="card w-96 h-60 bg-white flex justify-center items-center hover:outline-outline hover:outline">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-10 ">
+          <Link href={`/classes`}><div className="card w-[90vw] md:w-80 lg:w-96  h-60 bg-white flex justify-center items-center hover:outline-outline hover:outline">
           <SiGoogleclassroom size={"3em"} />
           <p className="text-lg my-4 ">Classes</p>
 
           </div></Link>
-          <Link href={`/subjects`}><div className="card w-96 h-60 bg-white flex justify-center items-center hover:outline-outline hover:outline">
+          <Link href={`/subjects`}><div className="card w-[90vw] md:w-80 lg:w-96  h-60 bg-white flex justify-center items-center hover:outline-outline hover:outline">
           <GiBlackBook size={"3em"} />
           <p className="text-lg my-4 ">Subjects</p>
           </div></Link>

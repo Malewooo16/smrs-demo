@@ -4,7 +4,6 @@ import { AdmissionData, ISchoolAdmission } from "@/utilities/admissionTypes";
 import { FormEvent, useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
 import Link from "next/link";
-import { updateAdmissionStatusString } from "@/actions/admissions/validateAdmission";
 import { usePathname, useRouter } from "next/navigation";
 import {
   sendFailedAdmissionToParent,
@@ -36,13 +35,14 @@ export function AdmissionInfo({ schoolData, renderHandler }: AdmissionInfoProps)
   const toDate = admissionDates.to ? new Date(admissionDates.to).toLocaleDateString() : defaultDate;
 
   return (
-    <div className="rounded-lg shadow-md p-6 mb-4">
-      <div className="flex justify-end w-full">
+    <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+      <div className="flex justify-between items-center w-full">
+      <h2 className="text-xl font-semibold mb-2">{school.name}</h2>
         <button className="btn" onClick={() => renderHandler(4)}>
           <FaEdit />
         </button>
       </div>
-      <h2 className="text-xl font-semibold mb-2">{school.name}</h2>
+      
       <p className="text-gray-600 mb-2">{school.address}</p>
       <p className="text-gray-600 mb-2">Email: {school.emailAddress}</p>
       <p className="text-gray-600 mb-2">
@@ -94,7 +94,7 @@ export function PendingAdmissions({ admissionData }: { admissionData: any }) {
           .map((a) => (
             <li key={a.admissionId}>
               <Link href={`/tadmissions/${a.admissionId}`}>
-                <div className="rounded-lg shadow-md p-6 mb-4">
+                <div className="bg-white rounded-lg shadow-md p-6 mb-4">
                   <h1 className="text-xl">
                     {" "}
                     {a.admission.firstName} {a.admission.lastName}{" "}
@@ -117,7 +117,7 @@ export function ApprovedAdmissions({ admissionData }: { admissionData: any }) {
     setSearch(e.target.value);
   };
   return (
-    <div>
+    <div className="">
       <div className="my-4">
         {" "}
         <SearchInput searchHandler={searchHandler} />{" "}
@@ -139,7 +139,7 @@ export function ApprovedAdmissions({ admissionData }: { admissionData: any }) {
           .map((a) => (
             <li key={a.admissionId}>
               <Link href={`/tadmissions/${a.admissionId}`}>
-                <div className="rounded-lg shadow-md p-6 mb-4">
+                <div className="bg-white rounded-lg shadow-md p-6 mb-4">
                   <h1 className="text-xl">
                     {" "}
                     {a.admission.firstName} {a.admission.lastName}{" "}

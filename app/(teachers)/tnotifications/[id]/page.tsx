@@ -1,6 +1,6 @@
 import {getSingleNotification} from "@/actions/notifications/getNotifications";
 import NotificationReader from "@/main-components/Notifications/NotificationReader";
-import React from "react";
+
 
 export default async function SingleNotification({
   params,

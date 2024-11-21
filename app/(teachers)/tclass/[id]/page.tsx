@@ -6,6 +6,7 @@ import Image from "next/image";
 import React from "react";
 import moment from "moment";
 import Link from "next/link";
+import { FaEdit } from "react-icons/fa";
 
 export default async function StudentPage({params}: {params: {id: string}}) {
   const student = await getSingleStudent(parseInt(params.id));
@@ -18,7 +19,7 @@ export default async function StudentPage({params}: {params: {id: string}}) {
 
   return (
     <div className="w-full max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
-      <div className="flex items-center space-x-6 mb-6">
+      <div className="flex items-center space-x-6 mb-6 justify-between">
         {/* Student Image */}
         <div className="w-24 h-24 relative">
           <Image
@@ -27,6 +28,8 @@ export default async function StudentPage({params}: {params: {id: string}}) {
             className="rounded-full object-cover"
             layout="fill"
           />
+
+          
         </div>
 
         {/* Student Information */}
@@ -41,6 +44,8 @@ export default async function StudentPage({params}: {params: {id: string}}) {
             Home Address: {studentData?.homeAddress}
           </p>
         </div>
+
+        <button className="btn-submit w-48">Edit Student Details</button>
       </div>
 
       {/* Academic Records */}

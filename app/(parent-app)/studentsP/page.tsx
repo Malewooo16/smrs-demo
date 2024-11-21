@@ -34,25 +34,28 @@ export default async  function Gantts() {
   
     return (
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold my-8">Student List</h1>
-        <div className="flex flex-wrap -mx-2">
-          {students.map((student, index:any) => (
-           <Link href={`/studentsP/${student.id}`}  key={index}> <div className="max-w-sm rounded overflow-hidden shadow-lg m-4">
-           <Image
-             className="w-full h-48 object-cover"
-             src={student.studentData?.imgUrl as string}
-             alt={student.name}
-             width={250}
-             height={250}
-           />
-           <div className="px-6 py-4">
-             <div className="font-bold text-xl mb-2">{student.name}</div>
-             <p className="text-gray-700 text-base">{student.class?.name}</p>
-           </div>
-         </div></Link>
-          ))}
+  <h1 className="text-3xl font-bold text-[#006d77] m-4">Your Students</h1>
+  <div className="flex flex-wrap ">
+    {students.map((student, index: any) => (
+      <Link href={`/studentsP/${student.id}`} key={index}>
+        <div className="max-w-sm rounded-lg overflow-hidden shadow-lg m-4 bg-white hover:bg-[#e0f7fa] transition duration-300 ease-in-out">
+          <Image
+            className="w-full h-48 object-cover"
+            src={student.studentData?.imgUrl as string}
+            alt={student.name}
+            width={250}
+            height={250}
+          />
+          <div className="px-6 py-4">
+            <div className="font-bold text-xl mb-2 text-[#005f66]">{student.name}</div>
+            <p className="text-gray-600 text-base">{student.class?.name}</p>
+          </div>
         </div>
-      </div>
+      </Link>
+    ))}
+  </div>
+</div>
+
     );
   }
   else{
